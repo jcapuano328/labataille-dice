@@ -5,76 +5,95 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
-import com.ica.lb_dice.ui.FireScreen
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.Alignment
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp()
+            GameScreen()
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MyApp() {
-    var selectedTab by remember { mutableStateOf(Tab.Fire) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("La Bataille Dice") })
-        }
-    ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-            TabRow(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
-            when (selectedTab) {
-                Tab.Fire -> FireScreen()
-                Tab.Melee -> Text("Melee Screen") // Placeholder
-                Tab.Morale -> Text("Morale Screen") // Placeholder
-                Tab.General -> Text("General Screen") // Placeholder
+@Composable
+fun GameScreen() {
+    MaterialTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                // Navigation Tabs
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    listOf("Fire", "Melee", "Morale", "General").forEach { tab ->
+                        Button(onClick = { /* Handle Tab Click */ }) {
+                            Text(text = tab, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Dice Row
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    listOf("Red", "White", "Blue", "Yellow", "Green", "Black").forEach { color ->
+                        Box(modifier = Modifier.size(40.dp).background(Color.LightGray)) {
+                            // Placeholder for Dice Images
+                            Text(text = color.first().toString(), modifier = Modifier.align(Alignment.Center))
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Modifiers Row
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    listOf(-6, -3, -1, 1, 3, 6).forEach { mod ->
+                        Button(onClick = { /* Apply Modifier */ }) {
+                            Text(text = mod.toString())
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Results Table
+                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    items(listOf(
+                        Triple("1:1", "0", "✅"),
+                        Triple("2:1", "1", "❌"),
+                        Triple("3:1", "2", "❌")
+                    )) { (odds, result, morale) ->
+                        Row(modifier = Modifier.fillMaxWidth().padding(4.dp)) {
+                            Text(text = odds, modifier = Modifier.weight(1f))
+                            Text(text = result, modifier = Modifier.weight(1f))
+                            Text(text = morale, modifier = Modifier.weight(1f))
+                        }
+                    }
+                }
             }
         }
     }
 }
-
-enum class Tab {
-    Fire, Melee, Morale, General
-}
-
-@Composable
-fun TabRow(selectedTab: Tab, onTabSelected: (Tab) -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        TabButton(text = "Fire", isSelected = selectedTab == Tab.Fire, onClick = { onTabSelected(Tab.Fire) })
-        TabButton(text = "Melee", isSelected = selectedTab == Tab.Melee, onClick = { onTabSelected(Tab.Melee) })
-        TabButton(text = "Morale", isSelected = selectedTab == Tab.Morale, onClick = { onTabSelected(Tab.Morale) })
-        TabButton(text = "General", isSelected = selectedTab == Tab.General, onClick = { onTabSelected(Tab.General) })
-    }
-}
-
-@Composable
-fun TabButton(text: String, isSelected: Boolean, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .padding(8.dp),
-        colors = if (isSelected) {
-            ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
-        } else {
-            ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-        }
-    ) {
-        Text(text = text)
-    }
-}
-
