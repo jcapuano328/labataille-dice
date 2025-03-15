@@ -43,6 +43,8 @@ android {
 }
 
 dependencies {
+    val navVersion = "2.8.9"
+    val composeVersion = "1.7.8"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -60,9 +62,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.compose.ui:ui:1.5.4") // replace with latest version
-    implementation("androidx.compose.material:material:1.5.4") // replace with latest version
-    implementation("androidx.compose.ui:ui-tooling-preview:1.5.4") // replace with latest version
-    debugImplementation("androidx.compose.ui:ui-tooling:1.5.4") // replace with latest version
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.4") // replace with latest version
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.ui)
+    implementation(libs.androidx.material)
+    implementation(libs.ui.tooling.preview)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+    implementation(libs.androidx.navigation.compose)
 }
