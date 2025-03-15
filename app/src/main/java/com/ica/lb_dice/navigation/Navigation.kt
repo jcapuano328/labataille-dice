@@ -15,11 +15,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.compose.material3.FabPosition
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 
 import com.ica.lb_dice.R
 import com.ica.lb_dice.ui.FontAwesomeIcon
+import com.ica.lb_dice.viewmodels.DiceRollViewModel
 import com.ica.lb_dice.screens.FireCombatScreen
 import com.ica.lb_dice.screens.MeleeCombatScreen
 import com.ica.lb_dice.screens.MoraleCheckScreen
@@ -38,27 +42,27 @@ import com.ica.lb_dice.screens.GeneralScreen
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
-
+    val diceRollViewModel: DiceRollViewModel = viewModel()
     Scaffold(
         bottomBar = { MainBottomNavigationBar(navController = navController) },
-        floatingActionButton = { MainFloatingActionButton(navController) },
+        floatingActionButton = { MainFloatingActionButton(navController, diceRollViewModel) },
         floatingActionButtonPosition = FabPosition.Center
     ) { innerPadding ->
-        MainNavigationContent(navController, innerPadding)
+        MainNavigationContent(navController, innerPadding, diceRollViewModel)
     }
 }
 
 @Composable
-fun MainNavigationContent(navController: NavHostController, innerPadding: PaddingValues) {
+fun MainNavigationContent(navController: NavHostController, innerPadding: PaddingValues, viewModel: DiceRollViewModel) {
     NavHost(
         navController = navController,
         startDestination = NavigationDestinations.FireCombat.route,
         modifier = Modifier.padding(innerPadding) // Apply padding here
     ) {
-        composable(NavigationDestinations.FireCombat.route) { FireCombatScreen(navController) }
-        composable(NavigationDestinations.MeleeCombat.route) { MeleeCombatScreen(navController) }
-        composable(NavigationDestinations.MoraleCheck.route) { MoraleCheckScreen(navController) }
-        composable(NavigationDestinations.General.route) { GeneralScreen(navController) }
+        composable(NavigationDestinations.FireCombat.route) { FireCombatScreen(navController, viewModel) }
+        composable(NavigationDestinations.MeleeCombat.route) { MeleeCombatScreen(navController, viewModel) }
+        composable(NavigationDestinations.MoraleCheck.route) { MoraleCheckScreen(navController, viewModel) }
+        composable(NavigationDestinations.General.route) { GeneralScreen(navController, viewModel) }
     }
 }
 
@@ -111,8 +115,13 @@ fun RowScope.MyNavigationItems(navController: NavHostController, currentDestinat
 
 
 @Composable
-fun MainFloatingActionButton(navController: NavHostController) {
-    FloatingActionButton(onClick = { /*TODO*/ }) {
+fun MainFloatingActionButton(navController: NavHostController, viewModel: DiceRollViewModel) {
+    val scope  = rememberCoroutineScope()
+    FloatingActionButton(onClick = {
+        scope.launch {
+            viewModel.onFabClicked()
+        }
+    }) {
         Image(
             painter = painterResource(id = R.drawable.dice),
             contentDescription = "Roll"
