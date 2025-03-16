@@ -6,18 +6,22 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ica.lb_dice.navigation.NavigationDestinations
 
 import com.ica.lb_dice.viewmodels.DiceRollViewModel
+import com.ica.lb_dice.viewmodels.FireCombatViewModel
 
 @Composable
-fun FireCombatScreen(navController: NavController, viewModel: DiceRollViewModel) {
+fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
     val scope = rememberCoroutineScope()
+    val fireCombatViewModel: FireCombatViewModel = viewModel()
     LaunchedEffect(key1 = Unit) {
-        viewModel.fabEvent.collect {
+        diceRollViewModel.fabEvent.collect {
             // Perform FireCombatScreen-specific logic here
             println("FAB tapped in FireCombatScreen!")
+            fireCombatViewModel.onFabClicked()
         }
     }
     Column {

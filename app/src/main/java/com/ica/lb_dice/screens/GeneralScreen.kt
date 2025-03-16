@@ -6,17 +6,22 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 import androidx.navigation.NavController
 import com.ica.lb_dice.viewmodels.DiceRollViewModel
+import com.ica.lb_dice.viewmodels.GeneralViewModel
 
 
 @Composable
-fun GeneralScreen(navController: NavController, viewModel: DiceRollViewModel) {
+fun GeneralScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
     val scope = rememberCoroutineScope()
+    val generalViewModel: GeneralViewModel = viewModel()
     LaunchedEffect(key1 = Unit) {
-        viewModel.fabEvent.collect {
+        diceRollViewModel.fabEvent.collect {
             // Perform GeneralScreen-specific logic here
             println("FAB tapped in GeneralScreen!")
+            generalViewModel.onFabClicked()
         }
     }
     Column {
