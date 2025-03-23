@@ -9,11 +9,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import com.ica.lb_dice.R
 
 @Composable
-fun DiceIcon(modifier: Modifier = Modifier) {
+fun PngIcon(resId: Int, desc: String, modifier: Modifier = Modifier) {
     Image(
-        painter = painterResource(id = R.drawable.dice),
-        contentDescription = "Dice",
-        modifier = modifier,
-        colorFilter = ColorFilter.tint(Color.LightGray)
+        painter = painterResource(id = resId),
+        contentDescription = desc,
+        modifier = modifier
     )
 }

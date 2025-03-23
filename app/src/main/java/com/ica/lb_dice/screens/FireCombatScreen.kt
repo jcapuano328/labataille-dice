@@ -1,27 +1,47 @@
 package com.ica.lb_dice.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 import com.ica.lb_dice.viewmodels.DiceRollViewModel
 import com.ica.lb_dice.viewmodels.FireCombatViewModel
 import com.ica.lb_dice.ui.DiceSet
+import com.ica.lb_dice.ui.ModifierButtonsRow
+import com.ica.lb_dice.ui.PngIcon
+import com.ica.lb_dice.viewmodels.DiceSet
+import com.ica.lb_dice.viewmodels.FireCombatResultsSet
+import com.ica.lb_dice.viewmodels.FireResult
+import com.ica.lb_dice.viewmodels.LeaderCasualtyResult
+import com.ica.lb_dice.viewmodels.MoraleResult
 
 @Composable
 fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
@@ -29,8 +49,10 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
     // 1. Get the FireCombatViewModel instance
     val fireCombatViewModel: FireCombatViewModel = viewModel()
     // 2. Get the state from the viewmodel.
-    val diceSetConfig by fireCombatViewModel.diceSetConfig.collectAsState()
-    val dieValues by fireCombatViewModel.dieValues.collectAsState()
+    val diceSetFire by fireCombatViewModel.diceSetFire.collectAsState()
+    val diceSetLeader by fireCombatViewModel.diceSetLeader.collectAsState()
+    val diceSetMorale by fireCombatViewModel.diceSetMorale.collectAsState()
+    val resultsSet by fireCombatViewModel.resultsSet.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         diceRollViewModel.fabEvent.collect {
@@ -39,29 +61,335 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
             fireCombatViewModel.onFabClicked()
         }
     }
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(16.dp)) {
         // Display Fire Combat Screen Text
-        Text("Fire Combat Screen")
+        //Text("Fire Combat Screen")
+        //Spacer(modifier = Modifier.height(16.dp))
+        FireCombatDice(
+            diceSetFire = diceSetFire,
+            onFireDieIncrement = { die ->
+                println("Fire Dice Changed")
+                fireCombatViewModel.incrementFireDie(die)
+            },
+            onFireDiceModify = { value ->
+                println("Fire Dice Modify")
+                fireCombatViewModel.modifyFireDice(value)
+            },
+            diceSetLeader = diceSetLeader,
+            onLeaderDieIncrement = { die ->
+                println("Leader Dice Changed")
+                fireCombatViewModel.incrementLeaderDie(die)
+            },
+            diceSetMorale = diceSetMorale,
+            onMoraleDieIncrement = { die ->
+                println("Morale Dice Changed")
+                fireCombatViewModel.incrementMoraleDie(die)
+            },
+            onMoraleDiceModify = { value ->
+                println("Morale Dice Changed")
+                fireCombatViewModel.modifyMoraleDice(value)
+            }
+        )
         Spacer(modifier = Modifier.height(16.dp))
-        // 3. Display the DiceSet, using the dieConfigs from ScreenViewModel.
-        if (diceSetConfig != null && dieValues.isNotEmpty()) {
-            DiceSet(
-                dieConfigs = diceSetConfig!!.dieConfigs,
-                dieValues = dieValues,
-                modifierButtonsVisible = false,
-                modifier = Modifier.fillMaxWidth(),
-                onDieClicked = { dieNumber ->
-                    println("Die $dieNumber clicked")
-                },
-                onModifierButtonClicked = { buttonNumber ->
-                    println("Modifier Button $buttonNumber clicked")
+        // Display the results
+        FireCombatResults(resultsSet)
+    }
+}
+
+@Composable
+fun FireCombatDice(
+    diceSetFire: DiceSet, onFireDieIncrement: (die: Int) -> Unit, onFireDiceModify: (value: Int) -> Unit,
+    diceSetLeader: DiceSet, onLeaderDieIncrement: (die: Int) -> Unit,
+    diceSetMorale: DiceSet, onMoraleDieIncrement: (die: Int) -> Unit, onMoraleDiceModify: (value: Int) -> Unit
+)
+{
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+        //.height(200.dp)
+        //.padding(8.dp)
+        //.background(Color.LightGray)
+        ,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        DiceSet(
+            dieConfigs = diceSetFire.dieConfigs,
+            dieValues = diceSetFire.dieValues.collectAsState().value,
+            modifier = Modifier.weight(2/7f),
+            //modifier = Modifier.fillMaxWidth(),
+            onDieClicked = { dieNumber ->
+                println("Fire Die $dieNumber clicked")
+                onFireDieIncrement(dieNumber)
+            }
+        )
+        DiceSet(
+            dieConfigs = diceSetLeader.dieConfigs,
+            dieValues = diceSetLeader.dieValues.collectAsState().value,
+            modifier = Modifier.weight(3/7f),
+            //modifier = Modifier.fillMaxWidth(),
+            onDieClicked = { dieNumber ->
+                println("Leader Die $dieNumber clicked")
+                onLeaderDieIncrement(dieNumber)
+            }
+        )
+        DiceSet(
+            dieConfigs = diceSetMorale.dieConfigs,
+            dieValues = diceSetMorale.dieValues.collectAsState().value,
+            modifier = Modifier.weight(2/7f),
+            //modifier = Modifier.fillMaxWidth(),
+            onDieClicked = { dieNumber ->
+                println("Morale Die $dieNumber clicked")
+                onMoraleDieIncrement(dieNumber)
+            }
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(30.dp)
+        //.padding(8.dp)
+        //.background(Color.LightGray)
+        ,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        ModifierButtonsRow(
+            label = "Fire",
+            foregroundColor = Color.White,
+            backgroundColor = Color.Blue,
+            modifier = Modifier.weight(1f),
+            onModifierButtonClicked = { value ->
+                println("Fire Modifier clicked: $value")
+                onFireDiceModify(value)
+            }
+        )
+        ModifierButtonsRow(
+            label = "Morale",
+            foregroundColor = Color.White,
+            backgroundColor = Color(0xFFB200FF), // purple
+            modifier = Modifier.weight(1f),
+            onModifierButtonClicked = { value ->
+                println("Morale Modifier clicked: $value")
+                onMoraleDiceModify(value)
+            }
+        )
+    }
+}
+
+@Composable
+fun FireCombatResults(resultsSet: FireCombatResultsSet) {
+    //Text("Results")
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            //.padding(8.dp)
+            //.background(Color.LightGray)
+        ,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        CombatResults(Modifier.weight(1f), resultsSet.fireResults)
+        LeaderCasualtyResults(Modifier.weight(1f), resultsSet.leaderCasualtyResults)
+        MoraleResults(Modifier.weight(1f), resultsSet.moraleResults)
+    }
+}
+
+@Composable
+fun CombatResults(modifier: Modifier = Modifier, results: List<FireResult>) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
+            .border(2.dp, Color.Black, RoundedCornerShape(16.dp)) // Black border around the entire table
+            .fillMaxWidth()
+            .background(Color(0xFFFFFAE5)) // Light Yellow
+    ) {
+        //Text("Combat Results")
+        //CombatResultsTable(data = results.map { Pair(it.odds, it.result) })
+        val data = results.map { Pair(it.odds, it.result) }
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
+                .border(2.dp, Color.Black, RoundedCornerShape(16.dp)) // Black border around the entire table
+                .fillMaxWidth()
+        ) {
+            // Header Row (Gray)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Gray)
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Combat",
+                    style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
+                    modifier = Modifier
+                        .weight(2f)
+                    //.border(1.dp, Color.Black) // Black border on the left
+                )
+//            Text(
+//                text = "Results",
+//                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp),
+//                modifier = Modifier
+//                    .weight(1/3f)
+//                    .border(1.dp, Color.Black)// Black border on the right
+//            )
+            }
+
+            // Body (Light Yellow)
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFFFFAE5)) // Light Yellow
+            ) {
+                items(data) { item ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    ) {
+                        Text(text = item.first, modifier = Modifier.weight(2/3f)
+                            //.border(1.dp, Color.Black)
+                        ) // Black border on the left
+                        Text(text = item.second, modifier = Modifier.weight(1/3f)
+                            //.border(1.dp, Color.Black)
+                        )// Black border on the right
+                    }
                 }
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        // Display the navigation button
-        Button(onClick = { navController.popBackStack() }) {
-            Text("Go Back")
+            }
         }
     }
+}
+
+@Composable
+fun LeaderCasualtyResults(modifier: Modifier = Modifier, data: LeaderCasualtyResult) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
+            .border(2.dp, Color.Black, RoundedCornerShape(16.dp)) // Black border around the entire table
+            .fillMaxWidth()
+            //.background(Color.Blue)
+    ) {
+        //Text("Leader Casualty Results")
+        // Header Row (Gray)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Gray)
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Leader Casualty",
+                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
+                modifier = Modifier
+                    .weight(2f)
+                //.border(1.dp, Color.Black) // Black border on the left
+            )
+        }
+
+        // Body (Light Yellow)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFFFFAE5)) // Light Yellow
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (data.icon != "")
+                    PngIcon(iconForResult(data.icon), data.icon, modifier = Modifier.weight(1/3f))
+                Text(text = data.result, modifier = Modifier.weight(2/3f), textAlign = TextAlign.Center
+                    //.border(1.dp, Color.Black)
+                ) // Black border on the left
+//                Text(text = data.icon, modifier = Modifier.weight(1/3f)
+//                    //.border(1.dp, Color.Black)
+//                )// Black border on the right
+            }
+        }
+    }
+}
+
+@Composable
+fun MoraleResults(modifier: Modifier = Modifier, results: List<MoraleResult>) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
+            .border(2.dp, Color.Black, RoundedCornerShape(16.dp)) // Black border around the entire table
+            .fillMaxWidth()
+            //.background(Color.Green)
+    ) {
+        //Text("Morale Results")
+        // Header Row (Gray)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Gray)
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Morale",
+                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
+                modifier = Modifier
+                    .weight(2f)
+                //.border(1.dp, Color.Black) // Black border on the left
+            )
+//            Text(
+//                text = "Results",
+//                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp),
+//                modifier = Modifier
+//                    .weight(1/3f)
+//                    .border(1.dp, Color.Black)// Black border on the right
+//            )
+        }
+
+        val data = results.map { Triple(it.result, it.modifier, iconForResult(it.icon)) }
+        // Body (Light Yellow)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFFFFAE5)) // Light Yellow
+        ) {
+            items(data) { item ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = item.first, modifier = Modifier.weight(3/7f), fontSize = 12.sp, textAlign = TextAlign.Center
+                        //.border(1.dp, Color.Black)
+                    ) // Black border on the left
+                    Text(text = item.second, modifier = Modifier.weight(2/7f), fontSize = 12.sp, textAlign = TextAlign.Center
+                        //.border(1.dp, Color.Black)
+                    )// Black border on the right
+//                    Text(text = item.third, modifier = Modifier.weight(1/7f), fontSize = 8.sp
+//                        //.border(1.dp, Color.Black)
+//                    )// Black border on the right
+                    PngIcon(item.third, "", modifier = Modifier.weight(2/7f))
+                }
+            }
+        }
+    }
+}
+
+private fun iconForResult(result: String) : Int {
+    if (result == "Pass") return com.ica.lb_dice.R.drawable.pass
+    if (result == "Fail") return com.ica.lb_dice.R.drawable.fail
+    if (result == "Arm") return com.ica.lb_dice.R.drawable.arm
+    if (result == "Leg") return com.ica.lb_dice.R.drawable.leg
+    if (result == "Stun") return com.ica.lb_dice.R.drawable.stun
+    if (result == "Mortal") return com.ica.lb_dice.R.drawable.mortal
+    return 0
 }
