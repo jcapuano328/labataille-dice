@@ -38,7 +38,7 @@ fun ModifierButtonsRow(
         modifier = modifier
             .fillMaxWidth()
             //.wrapContentHeight()
-            .padding(1.dp)
+            //.padding(1.dp)
             //.border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(1.dp))
             ,
         horizontalArrangement = Arrangement.spacedBy(2.dp)

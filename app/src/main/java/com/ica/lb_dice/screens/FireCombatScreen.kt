@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -71,10 +72,6 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
                 println("Fire Dice Changed")
                 fireCombatViewModel.incrementFireDie(die)
             },
-            onFireDiceModify = { value ->
-                println("Fire Dice Modify")
-                fireCombatViewModel.modifyFireDice(value)
-            },
             diceSetLeader = diceSetLeader,
             onLeaderDieIncrement = { die ->
                 println("Leader Dice Changed")
@@ -84,23 +81,26 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
             onMoraleDieIncrement = { die ->
                 println("Morale Dice Changed")
                 fireCombatViewModel.incrementMoraleDie(die)
+            }
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        // Display the results
+        FireCombatResults(resultsSet,
+            onFireDiceModify = { value ->
+                fireCombatViewModel.modifyFireDice(value)
             },
             onMoraleDiceModify = { value ->
-                println("Morale Dice Changed")
                 fireCombatViewModel.modifyMoraleDice(value)
             }
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        // Display the results
-        FireCombatResults(resultsSet)
     }
 }
 
 @Composable
 fun FireCombatDice(
-    diceSetFire: DiceSet, onFireDieIncrement: (die: Int) -> Unit, onFireDiceModify: (value: Int) -> Unit,
+    diceSetFire: DiceSet, onFireDieIncrement: (die: Int) -> Unit,
     diceSetLeader: DiceSet, onLeaderDieIncrement: (die: Int) -> Unit,
-    diceSetMorale: DiceSet, onMoraleDieIncrement: (die: Int) -> Unit, onMoraleDiceModify: (value: Int) -> Unit
+    diceSetMorale: DiceSet, onMoraleDieIncrement: (die: Int) -> Unit
 )
 {
     Row(
@@ -144,55 +144,62 @@ fun FireCombatDice(
             }
         )
     }
-    Spacer(modifier = Modifier.height(8.dp))
-    Row(
+}
+
+@Composable
+fun FireCombatResults(resultsSet: FireCombatResultsSet, onFireDiceModify: (value: Int) -> Unit, onMoraleDiceModify: (value: Int) -> Unit) {
+    //Text("Results")
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(30.dp)
-        //.padding(8.dp)
-        //.background(Color.LightGray)
-        ,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.Top
+            //.fillMaxHeight()
+            .wrapContentHeight()
+            //.padding(8.dp)
+            //.background(Color.LightGray)
     ) {
         ModifierButtonsRow(
             label = "Fire",
             foregroundColor = Color.White,
             backgroundColor = Color.Blue,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .weight(1/10f)
+            ,
             onModifierButtonClicked = { value ->
                 println("Fire Modifier clicked: $value")
                 onFireDiceModify(value)
             }
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                //.fillMaxHeight()
+                .weight(3/8f)
+                .wrapContentHeight()
+            //.padding(8.dp)
+            //.background(Color.Red)
+            ,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            CombatResults(Modifier.weight(1f), resultsSet.fireResults)
+            LeaderCasualtyResults(Modifier.weight(1f), resultsSet.leaderCasualtyResults)
+        }
         ModifierButtonsRow(
             label = "Morale",
             foregroundColor = Color.White,
             backgroundColor = Color(0xFFB200FF), // purple
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .weight(1/10f)
+            ,
             onModifierButtonClicked = { value ->
                 println("Morale Modifier clicked: $value")
                 onMoraleDiceModify(value)
             }
         )
-    }
-}
-
-@Composable
-fun FireCombatResults(resultsSet: FireCombatResultsSet) {
-    //Text("Results")
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            //.padding(8.dp)
-            //.background(Color.LightGray)
-        ,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        CombatResults(Modifier.weight(1f), resultsSet.fireResults)
-        LeaderCasualtyResults(Modifier.weight(1f), resultsSet.leaderCasualtyResults)
-        MoraleResults(Modifier.weight(1f), resultsSet.moraleResults)
+        MoraleResults(Modifier.weight(3/8f), resultsSet.moraleResults)
     }
 }
 
@@ -205,59 +212,40 @@ fun CombatResults(modifier: Modifier = Modifier, results: List<FireResult>) {
             .fillMaxWidth()
             .background(Color(0xFFFFFAE5)) // Light Yellow
     ) {
-        //Text("Combat Results")
-        //CombatResultsTable(data = results.map { Pair(it.odds, it.result) })
         val data = results.map { Pair(it.odds, it.result) }
-        Column(
+        // Header Row (Gray)
+        Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
-                .border(2.dp, Color.Black, RoundedCornerShape(16.dp)) // Black border around the entire table
                 .fillMaxWidth()
+                .background(Color.Gray)
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Header Row (Gray)
-            Row(
+            Text(
+                text = "Combat",
+                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Gray)
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Combat",
-                    style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
-                    modifier = Modifier
-                        .weight(2f)
-                    //.border(1.dp, Color.Black) // Black border on the left
-                )
-//            Text(
-//                text = "Results",
-//                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp),
-//                modifier = Modifier
-//                    .weight(1/3f)
-//                    .border(1.dp, Color.Black)// Black border on the right
-//            )
-            }
+                    .weight(2f)
+            )
+        }
 
-            // Body (Light Yellow)
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFFFFAE5)) // Light Yellow
-            ) {
-                items(data) { item ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                    ) {
-                        Text(text = item.first, modifier = Modifier.weight(2/3f)
-                            //.border(1.dp, Color.Black)
-                        ) // Black border on the left
-                        Text(text = item.second, modifier = Modifier.weight(1/3f)
-                            //.border(1.dp, Color.Black)
-                        )// Black border on the right
-                    }
+        // Body (Light Yellow)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFFFFAE5)) // Light Yellow
+        ) {
+            items(data) { item ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = item.first, modifier = Modifier.weight(2/3f), textAlign = TextAlign.Center)
+                    Text(text = item.second, modifier = Modifier.weight(1/3f), textAlign = TextAlign.Center)
                 }
             }
         }
@@ -288,7 +276,6 @@ fun LeaderCasualtyResults(modifier: Modifier = Modifier, data: LeaderCasualtyRes
                 style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
                 modifier = Modifier
                     .weight(2f)
-                //.border(1.dp, Color.Black) // Black border on the left
             )
         }
 
@@ -307,12 +294,7 @@ fun LeaderCasualtyResults(modifier: Modifier = Modifier, data: LeaderCasualtyRes
             ) {
                 if (data.icon != "")
                     PngIcon(iconForResult(data.icon), data.icon, modifier = Modifier.weight(1/3f))
-                Text(text = data.result, modifier = Modifier.weight(2/3f), textAlign = TextAlign.Center
-                    //.border(1.dp, Color.Black)
-                ) // Black border on the left
-//                Text(text = data.icon, modifier = Modifier.weight(1/3f)
-//                    //.border(1.dp, Color.Black)
-//                )// Black border on the right
+                Text(text = data.result, modifier = Modifier.weight(2/3f), textAlign = TextAlign.Center)
             }
         }
     }
@@ -327,7 +309,6 @@ fun MoraleResults(modifier: Modifier = Modifier, results: List<MoraleResult>) {
             .fillMaxWidth()
             //.background(Color.Green)
     ) {
-        //Text("Morale Results")
         // Header Row (Gray)
         Row(
             modifier = Modifier
@@ -342,15 +323,7 @@ fun MoraleResults(modifier: Modifier = Modifier, results: List<MoraleResult>) {
                 style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
                 modifier = Modifier
                     .weight(2f)
-                //.border(1.dp, Color.Black) // Black border on the left
             )
-//            Text(
-//                text = "Results",
-//                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp),
-//                modifier = Modifier
-//                    .weight(1/3f)
-//                    .border(1.dp, Color.Black)// Black border on the right
-//            )
         }
 
         val data = results.map { Triple(it.result, it.modifier, iconForResult(it.icon)) }
@@ -358,26 +331,21 @@ fun MoraleResults(modifier: Modifier = Modifier, results: List<MoraleResult>) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
+                .wrapContentHeight()
                 .background(Color(0xFFFFFAE5)) // Light Yellow
         ) {
             items(data) { item ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(4.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = item.first, modifier = Modifier.weight(3/7f), fontSize = 12.sp, textAlign = TextAlign.Center
-                        //.border(1.dp, Color.Black)
-                    ) // Black border on the left
-                    Text(text = item.second, modifier = Modifier.weight(2/7f), fontSize = 12.sp, textAlign = TextAlign.Center
-                        //.border(1.dp, Color.Black)
-                    )// Black border on the right
-//                    Text(text = item.third, modifier = Modifier.weight(1/7f), fontSize = 8.sp
-//                        //.border(1.dp, Color.Black)
-//                    )// Black border on the right
-                    PngIcon(item.third, "", modifier = Modifier.weight(2/7f))
+                    Text(text = item.first, modifier = Modifier.weight(3/7f), fontSize = 12.sp, textAlign = TextAlign.Center)
+                    Text(text = item.second, modifier = Modifier.weight(2/7f), fontSize = 12.sp, textAlign = TextAlign.Center)
+//                    Text(text = item.third, modifier = Modifier.weight(1/7f), fontSize = 8.sp)
+                    PngIcon(item.third, "", modifier = Modifier.weight(2/7f).fillParentMaxHeight(1/8f))
                 }
             }
         }
@@ -387,9 +355,9 @@ fun MoraleResults(modifier: Modifier = Modifier, results: List<MoraleResult>) {
 private fun iconForResult(result: String) : Int {
     if (result == "Pass") return com.ica.lb_dice.R.drawable.pass
     if (result == "Fail") return com.ica.lb_dice.R.drawable.fail
-    if (result == "Arm") return com.ica.lb_dice.R.drawable.arm
-    if (result == "Leg") return com.ica.lb_dice.R.drawable.leg
+    if (result == "Arm") return com.ica.lb_dice.R.drawable.arm_2
+    if (result == "Leg") return com.ica.lb_dice.R.drawable.leg_2
     if (result == "Stun") return com.ica.lb_dice.R.drawable.stun
-    if (result == "Mortal") return com.ica.lb_dice.R.drawable.mortal
+    if (result == "Mortal") return com.ica.lb_dice.R.drawable.tombstone_2
     return 0
 }

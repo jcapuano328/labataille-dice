@@ -1,7 +1,10 @@
 package com.ica.lb_dice.navigation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
@@ -22,6 +25,20 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.compose.material3.FabPosition
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
@@ -85,7 +102,32 @@ fun MainBottomNavigationBar(navController: NavHostController) {
 fun RowScope.MyNavigationItems(navController: NavHostController, currentDestination: NavDestination?) {
     listOf(
         NavigationDestinations.FireCombat,
-        NavigationDestinations.MeleeCombat,
+        NavigationDestinations.MeleeCombat
+    ).forEach { destination ->
+        NavigationBarItem(
+            icon = { FontAwesomeIcon(unicode = destination.icon, description = destination.route) },
+            label = { Text(text = destination.route) },
+            selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true,
+            onClick = {
+                navController.navigate(destination.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            },
+            colors = NavigationBarItemDefaults.colors(
+                indicatorColor = Color.Transparent,
+                selectedIconColor = Color.White,
+                selectedTextColor = Color.Red,
+                unselectedIconColor = Color.Gray,
+                unselectedTextColor = Color.Gray
+            )
+        )
+    }
+    Spacer(Modifier.weight(1f)) // Space for FAB
+    listOf(
         NavigationDestinations.MoraleCheck,
         NavigationDestinations.General
     ).forEach { destination ->
@@ -111,19 +153,22 @@ fun RowScope.MyNavigationItems(navController: NavHostController, currentDestinat
             )
         )
     }
-}
 
+}
 
 @Composable
 fun MainFloatingActionButton(navController: NavHostController, viewModel: DiceRollViewModel) {
     val scope  = rememberCoroutineScope()
-    FloatingActionButton(onClick = {
+    SmallFloatingActionButton(
+        modifier = Modifier.offset(y = 80.dp), // Moves FAB downward into the BottomAppBar
+        shape = CircleShape,
+        onClick = {
         scope.launch {
             viewModel.onFabClicked()
         }
     }) {
         Image(
-            painter = painterResource(id = R.drawable.dice),
+            painter = painterResource(id = R.drawable.dice_round),
             contentDescription = "Roll"
         )
     }
