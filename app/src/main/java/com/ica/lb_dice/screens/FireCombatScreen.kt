@@ -62,7 +62,7 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
             fireCombatViewModel.onFabClicked()
         }
     }
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(8.dp)) {
         // Display Fire Combat Screen Text
         //Text("Fire Combat Screen")
         //Spacer(modifier = Modifier.height(16.dp))
@@ -108,10 +108,8 @@ fun FireCombatDice(
             .fillMaxWidth()
         //.height(200.dp)
         //.padding(8.dp)
-        //.background(Color.LightGray)
-        ,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.Top
+        ,horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ,verticalAlignment = Alignment.Top
     ) {
         DiceSet(
             dieConfigs = diceSetFire.dieConfigs,
@@ -148,58 +146,67 @@ fun FireCombatDice(
 
 @Composable
 fun FireCombatResults(resultsSet: FireCombatResultsSet, onFireDiceModify: (value: Int) -> Unit, onMoraleDiceModify: (value: Int) -> Unit) {
-    //Text("Results")
     Column(
         modifier = Modifier
             .fillMaxWidth()
             //.fillMaxHeight()
             .wrapContentHeight()
             //.padding(8.dp)
-            //.background(Color.LightGray)
+        ,horizontalAlignment = Alignment.CenterHorizontally
+        ,verticalArrangement = Arrangement.Top
     ) {
-        ModifierButtonsRow(
-            label = "Fire",
-            foregroundColor = Color.White,
-            backgroundColor = Color.Blue,
-            modifier = Modifier
+        Column(modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .weight(1/10f)
-            ,
-            onModifierButtonClicked = { value ->
-                println("Fire Modifier clicked: $value")
-                onFireDiceModify(value)
-            }
-        )
+                .weight(1 / 10f)
+        ) {
+            ModifierButtonsRow(
+                label = "Fire",
+                foregroundColor = Color.White,
+                backgroundColor = Color.Blue,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    //.weight(1 / 10f)
+                ,
+                onModifierButtonClicked = { value ->
+                    println("Fire Modifier clicked: $value")
+                    onFireDiceModify(value)
+                }
+            )
+        }
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .weight(1 / 10f)
+        ) {
+            ModifierButtonsRow(
+                label = "Morale",
+                foregroundColor = Color.White,
+                backgroundColor = Color(0xFFB200FF), // purple
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    //.weight(1 / 10f)
+                ,
+                onModifierButtonClicked = { value ->
+                    println("Morale Modifier clicked: $value")
+                    onMoraleDiceModify(value)
+                }
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                //.fillMaxHeight()
-                .weight(3/8f)
-                .wrapContentHeight()
-            //.padding(8.dp)
-            //.background(Color.Red)
-            ,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                .fillMaxHeight()
+                .weight(8/10f)
+            ,horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ,verticalAlignment = Alignment.Top
         ) {
             CombatResults(Modifier.weight(1f), resultsSet.fireResults)
             LeaderCasualtyResults(Modifier.weight(1f), resultsSet.leaderCasualtyResults)
+            MoraleResults(Modifier.weight(1f), resultsSet.moraleResults)
         }
-        ModifierButtonsRow(
-            label = "Morale",
-            foregroundColor = Color.White,
-            backgroundColor = Color(0xFFB200FF), // purple
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .weight(1/10f)
-            ,
-            onModifierButtonClicked = { value ->
-                println("Morale Modifier clicked: $value")
-                onMoraleDiceModify(value)
-            }
-        )
-        MoraleResults(Modifier.weight(3/8f), resultsSet.moraleResults)
     }
 }
 
@@ -210,6 +217,7 @@ fun CombatResults(modifier: Modifier = Modifier, results: List<FireResult>) {
             .clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
             .border(2.dp, Color.Black, RoundedCornerShape(16.dp)) // Black border around the entire table
             .fillMaxWidth()
+            .fillMaxHeight()
             .background(Color(0xFFFFFAE5)) // Light Yellow
     ) {
         val data = results.map { Pair(it.odds, it.result) }
@@ -261,7 +269,6 @@ fun LeaderCasualtyResults(modifier: Modifier = Modifier, data: LeaderCasualtyRes
             .fillMaxWidth()
             //.background(Color.Blue)
     ) {
-        //Text("Leader Casualty Results")
         // Header Row (Gray)
         Row(
             modifier = Modifier
@@ -307,8 +314,11 @@ fun MoraleResults(modifier: Modifier = Modifier, results: List<MoraleResult>) {
             .clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
             .border(2.dp, Color.Black, RoundedCornerShape(16.dp)) // Black border around the entire table
             .fillMaxWidth()
-            //.background(Color.Green)
+            .fillMaxHeight()
+            .background(Color(0xFFFFFAE5)) // Light Yellow
     ) {
+        val data = results.map { Triple(it.result, it.modifier, iconForResult(it.icon)) }
+
         // Header Row (Gray)
         Row(
             modifier = Modifier
@@ -326,26 +336,27 @@ fun MoraleResults(modifier: Modifier = Modifier, results: List<MoraleResult>) {
             )
         }
 
-        val data = results.map { Triple(it.result, it.modifier, iconForResult(it.icon)) }
         // Body (Light Yellow)
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .background(Color(0xFFFFFAE5)) // Light Yellow
+                //.background(Color(0xFFFFFAE5)) // Light Yellow
         ) {
             items(data) { item ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(2.dp)
+                    ,horizontalArrangement = Arrangement.Center
+                    ,verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = item.first, modifier = Modifier.weight(3/7f), fontSize = 12.sp, textAlign = TextAlign.Center)
                     Text(text = item.second, modifier = Modifier.weight(2/7f), fontSize = 12.sp, textAlign = TextAlign.Center)
-//                    Text(text = item.third, modifier = Modifier.weight(1/7f), fontSize = 8.sp)
-                    PngIcon(item.third, "", modifier = Modifier.weight(2/7f).fillParentMaxHeight(1/8f))
+//                    Text(text = item.third, modifier = Modifier.weight(2/7f), fontSize = 8.sp)
+                    PngIcon(item.third, "", modifier = Modifier
+                        .weight(2/7f)
+                        .padding(4.dp)
+                    )
                 }
             }
         }
