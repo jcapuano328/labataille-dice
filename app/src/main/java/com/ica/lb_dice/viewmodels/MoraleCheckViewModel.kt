@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-import com.ica.lb_dice.util.Random
+import com.ica.lb_dice.util.MathUtils
 
 class MoraleCheckViewModel : ViewModel() {
     private val _randomNumbers = MutableStateFlow<List<Int>>(emptyList())
@@ -14,9 +14,9 @@ class MoraleCheckViewModel : ViewModel() {
 
     private fun generateRandomNumbers() {
         viewModelScope.launch {
-            val random = Random()
+            val random = MathUtils()
             // Generate 2 random numbers from 1 to 6
-            val newNumbers = List(2) { random.RandomDie6() }
+            val newNumbers = List(2) { random.randomDie6() }
             _randomNumbers.value = newNumbers
         }
     }

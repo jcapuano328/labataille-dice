@@ -3,22 +3,24 @@ package com.ica.lb_dice.viewmodels
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ica.lb_dice.services.FireCombatService
-import com.ica.lb_dice.services.LeaderCasualtyService
-import com.ica.lb_dice.services.MoraleService
-import com.ica.lb_dice.util.DiceBase6
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 import com.ica.lb_dice.util.DieConfig
-import com.ica.lb_dice.util.Random
+import com.ica.lb_dice.util.MathUtils
+
+import com.ica.lb_dice.services.FireCombatService
+import com.ica.lb_dice.services.LeaderCasualtyService
+import com.ica.lb_dice.services.MoraleService
+import com.ica.lb_dice.util.DiceBase6
+
 
 data class DiceSet(
     val dieConfigs: List<DieConfig>,
     val dieValues: MutableStateFlow<List<Int>>
 )
-data class FireResult (
+data class CombatResult (
     val odds: String,
     val result: String
 )
@@ -33,7 +35,7 @@ data class MoraleResult(
 )
 data class FireCombatResultsSet(
     val fireDice: Int,
-    val fireResults: List<FireResult>,
+    val fireResults: List<CombatResult>,
     val leaderCasualtyDice: Int,
     val leaderCasualtyDurationDice: Int,
     val leaderCasualtyResults: LeaderCasualtyResult,
@@ -131,12 +133,12 @@ class FireCombatViewModel : ViewModel() {
 
     private fun rollDice() {
         println("FireCombatViewModel: roll dice:")
-        val random = Random()
+        val random = MathUtils()
 
         // Generate random numbers from 1 to 6
-        _diceSetFire.value.dieValues.value = List(_diceSetFire.value.dieConfigs.size) { random.RandomDie6() }
-        _diceSetLeader.value.dieValues.value = List(_diceSetLeader.value.dieConfigs.size) { random.RandomDie6() }
-        _diceSetMorale.value.dieValues.value = List(_diceSetMorale.value.dieConfigs.size) { random.RandomDie6() }
+        _diceSetFire.value.dieValues.value = List(_diceSetFire.value.dieConfigs.size) { random.randomDie6() }
+        _diceSetLeader.value.dieValues.value = List(_diceSetLeader.value.dieConfigs.size) { random.randomDie6() }
+        _diceSetMorale.value.dieValues.value = List(_diceSetMorale.value.dieConfigs.size) { random.randomDie6() }
         println("Set Fire: ${_diceSetFire.value.dieValues.value}")
         println("Set Leader: ${_diceSetLeader.value.dieValues.value}")
         println("Set Morale: ${_diceSetMorale.value.dieValues.value}")
@@ -152,7 +154,7 @@ class FireCombatViewModel : ViewModel() {
         println("FireCombatViewModel: updateFireCombatResults:")
         val fireDice = DiceBase6.fromDice(_diceSetFire.value.dieValues.value[0], _diceSetFire.value.dieValues.value[1]).toDiceBase6()
         val fireResults = FireCombatService().resolve(fireDice)
-        _resultsSet.value = _resultsSet.value.copy(fireResults = fireResults.map { FireResult(it.odds, it.result) })
+        _resultsSet.value = _resultsSet.value.copy(fireResults = fireResults.map { CombatResult(it.odds, it.result) })
     }
 
     private fun updateLeaderCasualtyResults() {

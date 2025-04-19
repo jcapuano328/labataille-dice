@@ -1,9 +1,11 @@
 package com.ica.lb_dice.util
 
+import kotlin.math.floor
+import kotlin.math.ceil
 import kotlin.random.Random
 
-class Random {
-    fun RandomDie6(): Int {
+class MathUtils {
+    fun randomDie6(): Int {
         return generateRandomNumber(1, 6)
     }
 
@@ -17,4 +19,8 @@ class Random {
         return Random.nextInt(range) + min
     }
 
+    fun roundFloatToNearestHalf(value: Float, roundUp: Boolean): Float {
+        val roundedValue = if (roundUp) ceil(value * 2) / 2 else floor(value * 2) / 2
+        return if (roundedValue < 0.5f) 0.5f else roundedValue
+    }
 }

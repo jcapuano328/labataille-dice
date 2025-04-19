@@ -1,13 +1,9 @@
 package com.ica.lb_dice.navigation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
@@ -26,18 +22,8 @@ import androidx.navigation.NavHostController
 import androidx.compose.material3.FabPosition
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
@@ -73,7 +59,8 @@ fun MainNavigation() {
 fun MainNavigationContent(navController: NavHostController, innerPadding: PaddingValues, viewModel: DiceRollViewModel) {
     NavHost(
         navController = navController,
-        startDestination = NavigationDestinations.FireCombat.route,
+        //startDestination = NavigationDestinations.FireCombat.route,
+        startDestination = NavigationDestinations.MeleeCombat.route,
         modifier = Modifier.padding(innerPadding) // Apply padding here
     ) {
         composable(NavigationDestinations.FireCombat.route) { FireCombatScreen(navController, viewModel) }
@@ -153,7 +140,6 @@ fun RowScope.MyNavigationItems(navController: NavHostController, currentDestinat
             )
         )
     }
-
 }
 
 @Composable
