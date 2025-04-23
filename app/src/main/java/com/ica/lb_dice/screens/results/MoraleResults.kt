@@ -43,7 +43,7 @@ fun MoraleResults(modifier: Modifier = Modifier, title: String = "Morale", resul
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Gray)
-                .padding(8.dp),
+                .padding(4.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {

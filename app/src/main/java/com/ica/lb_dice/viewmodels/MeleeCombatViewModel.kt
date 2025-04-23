@@ -15,7 +15,7 @@ import com.ica.lb_dice.services.LeaderCasualtyService
 import com.ica.lb_dice.services.MoraleService
 
 data class MeleeCombatResultsSet(
-    val attackerPreMeleeMoralDice: Int,
+    val attackerPreMeleeMoraleDice: Int,
     val attackerPreMeleeMoraleResults: List<MoraleResult>,
     val defenderPreMeleeMoraleDice: Int,
     val defenderPreMeleeMoraleResults: List<MoraleResult>,
@@ -32,6 +32,7 @@ data class MeleeCombatResultsSet(
     val moraleDice: Int,
     val moraleResults: List<MoraleResult>
 )
+
 class MeleeCombatViewModel : ViewModel() {
     private val _diceSetAttackerPreMeleeMorale = MutableStateFlow(DiceSet(emptyList(), MutableStateFlow(emptyList())))
     val diceSetAttackerPreMeleeMorale = _diceSetAttackerPreMeleeMorale.asStateFlow()
@@ -274,11 +275,11 @@ class MeleeCombatViewModel : ViewModel() {
 
     private fun updateLeaderCasualtyResults() {
         println("MeleeCombatViewModel: updateLeaderCasualtyResults:")
-        val fireDice = DiceBase6.fromDice(_diceSetMelee.value.dieValues.value[0], _diceSetMelee.value.dieValues.value[1]).toDiceBase6()
+        val meleeDice = DiceBase6.fromDice(_diceSetMelee.value.dieValues.value[0], _diceSetMelee.value.dieValues.value[1]).toDiceBase6()
         val leaderCasualtyDie = _diceSetLeader.value.dieValues.value[0]
         val leaderCasualtyDurationDie1 = _diceSetLeader.value.dieValues.value[1]
         val leaderCasualtyDurationDie2 = _diceSetLeader.value.dieValues.value[2]
-        val leaderCasualtyResults = LeaderCasualtyService().resolveFireCombat(fireDice, leaderCasualtyDie, leaderCasualtyDurationDie1, leaderCasualtyDurationDie2)
+        val leaderCasualtyResults = LeaderCasualtyService().resolveMeleeCombat(meleeDice, leaderCasualtyDie, leaderCasualtyDurationDie1, leaderCasualtyDurationDie2)
         _meleeResultsSet.value = _meleeResultsSet.value.copy(leaderCasualtyResults = LeaderCasualtyResult(leaderCasualtyResults.result, leaderCasualtyResults.icon))
     }
 

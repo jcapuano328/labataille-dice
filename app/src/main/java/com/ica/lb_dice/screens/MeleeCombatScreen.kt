@@ -3,7 +3,10 @@ package com.ica.lb_dice.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -11,6 +14,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -39,9 +44,11 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
             meleeCombatViewModel.onFabClicked()
         }
     }
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(8.dp)) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(2.dp)) {
         MeleeCombatOddsSection(
-            modifier = Modifier.weight(0.15f).background(color = Color.Yellow),
+            modifier = Modifier
+                .fillMaxWidth()
+            ,
             meleeResults.value.attackerMeleeStrength,
             onAttackerMeleeStrengthChange = { value ->
                 meleeCombatViewModel.setAttackerMeleeStrength(value)
@@ -53,7 +60,10 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
             meleeOdds = meleeResults.value.meleeOdds
         )
         PreMeleeMoraleCheckSection(
-            modifier = Modifier.weight(0.35f).background(color = Color.Red),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+            ,
             diceSetAttackerPreMeleeMorale = diceSetAttackerPreMeleeMorale,
             onPreMeleeMoraleAttackerDieIncrement = { die ->
                 meleeCombatViewModel.incrementAttackerPreMeleeMoraleDie(die)
@@ -72,7 +82,9 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
             defenderPreMeleeMoraleResults = meleeResults.value.defenderPreMeleeMoraleResults
         )
         MeleeCombatSection(
-            modifier = Modifier.weight(0.50f).background(color = Color.Green),
+            modifier = Modifier
+                .fillMaxWidth()
+            ,
             meleeDiceSet = diceSetMelee,
             onMeleeDieIncrement = { die ->
                 meleeCombatViewModel.incrementMeleeDie(die)
@@ -93,5 +105,12 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
     }
 }
 
-
+@Preview(showBackground = true)
+@Composable
+fun PreviewMeleeCombatScreen() {
+    MeleeCombatScreen(
+        navController = NavController(LocalContext.current),
+        diceRollViewModel = DiceRollViewModel()
+    )
+}
 

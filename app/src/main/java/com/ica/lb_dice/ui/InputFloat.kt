@@ -13,13 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun InputFloatWithIncrementDecrement(
@@ -32,14 +29,10 @@ fun InputFloatWithIncrementDecrement(
     step: Float = 1f,
 ) {
     Row(
-        modifier = modifier
-        //.fillMaxSize()
-        //.background(color = Color.Yellow)
-        ,
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-
         OutlinedIconButton(
             modifier = Modifier
                 .defaultMinSize(minWidth = 28.dp, minHeight = 28.dp) // Set min size
@@ -54,9 +47,9 @@ fun InputFloatWithIncrementDecrement(
 
         Box(
             modifier = Modifier
+                .defaultMinSize(minWidth = 28.dp, minHeight = 28.dp) // Set min size
+                .size(28.dp)
                 .weight(1f)
-                .fillMaxHeight() // Apply fillMaxHeight to the Box
-                .padding(4.dp)
                 .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(1.dp))
             ,
             contentAlignment = Alignment.Center
@@ -96,9 +89,12 @@ fun InputFloatWithIncrementDecrement(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewNumericInput() {
+fun PreviewInputFloat() {
     var value by remember { mutableStateOf(5.5f) }
     InputFloatWithIncrementDecrement(
+        modifier = Modifier
+            .fillMaxWidth()
+        ,
         value = value,
         onValueChange = { value = it },
         label = "Count",

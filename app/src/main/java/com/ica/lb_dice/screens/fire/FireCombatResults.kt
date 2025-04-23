@@ -20,13 +20,10 @@ fun FireCombatResults(resultsSet: FireCombatResultsSet) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            //.fillMaxHeight()
             .wrapContentHeight()
-        //.padding(8.dp)
         ,horizontalAlignment = Alignment.CenterHorizontally
         ,verticalArrangement = Arrangement.Top
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()

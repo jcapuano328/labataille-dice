@@ -1,16 +1,16 @@
 package com.ica.lb_dice.ui
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -31,7 +32,7 @@ fun Die(
 ) {
     Box(
         modifier = modifier
-            //.size(40.dp)
+            //.sizeIn(minWidth = 64.dp, minHeight = 64.dp)
             .aspectRatio(1f)
             //.border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(1.dp))
             //.background(backgroundColor, shape = RoundedCornerShape(1.dp))
@@ -97,4 +98,18 @@ fun DieRenderer(
             drawCircle(color = dotColor, radius = dotRadius, center = pos)
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDie() {
+    var value by remember { mutableStateOf(6) }
+    Die(
+        modifier = Modifier.size(40.dp),
+        dieNumber = 1,
+        onDieClicked = { die -> value = die },
+        backgroundColor = Color.White,
+        dotColor = Color.Black,
+        dieValue = value
+    )
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ica.lb_dice.ui.InputFloatWithIncrementDecrement
@@ -40,7 +42,7 @@ fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
                 .fillMaxWidth()
                 //.background(Color.Gray)
                 .background(Color.Transparent)
-                .padding(8.dp),
+                .padding(4.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -50,6 +52,7 @@ fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
                 modifier = Modifier
                     .weight(1f)
             )
+            // need an icon button
             Spacer(modifier = Modifier.weight(0.5f))
             Text(
                 text = "Defender",
@@ -62,7 +65,7 @@ fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
             modifier = Modifier
                 .fillMaxWidth()
                 //.background(Color.Gray)
-                .padding(8.dp),
+                .padding(4.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -81,4 +84,17 @@ fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewMeleeCombatOdds() {
+    MeleeCombatOddsSection(
+        modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+        attackerMeleeStrength = 1f,
+        onAttackerMeleeStrengthChange = {},
+        defenderMeleeStrength = 1f,
+        onDefenderMeleeStrengthChange = {},
+        meleeOdds = "1:1"
+    )
 }
