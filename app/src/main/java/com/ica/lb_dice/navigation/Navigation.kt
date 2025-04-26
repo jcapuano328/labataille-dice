@@ -59,8 +59,8 @@ fun MainNavigation() {
 fun MainNavigationContent(navController: NavHostController, innerPadding: PaddingValues, viewModel: DiceRollViewModel) {
     NavHost(
         navController = navController,
-        //startDestination = NavigationDestinations.FireCombat.route,
-        startDestination = NavigationDestinations.MeleeCombat.route,
+        startDestination = NavigationDestinations.FireCombat.route,
+        //startDestination = NavigationDestinations.MeleeCombat.route,
         modifier = Modifier.padding(innerPadding) // Apply padding here
     ) {
         composable(NavigationDestinations.FireCombat.route) { FireCombatScreen(navController, viewModel) }

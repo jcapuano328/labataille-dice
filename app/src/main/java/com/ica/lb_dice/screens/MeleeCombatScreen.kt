@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +25,7 @@ import androidx.navigation.NavController
 import com.ica.lb_dice.screens.melee.MeleeCombatOddsSection
 import com.ica.lb_dice.screens.melee.MeleeCombatSection
 import com.ica.lb_dice.screens.melee.PreMeleeMoraleCheckSection
+import com.ica.lb_dice.ui.CalculatorDialog
 import com.ica.lb_dice.viewmodels.DiceRollViewModel
 import com.ica.lb_dice.viewmodels.MeleeCombatViewModel
 
@@ -36,6 +40,8 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
     val diceSetLeader by meleeCombatViewModel.diceSetLeader.collectAsState()
     val diceSetMorale by meleeCombatViewModel.diceSetMorale.collectAsState()
     val meleeResults = meleeCombatViewModel.meleeResultsSet.collectAsState()
+
+    var isCalculatorDialogOpen by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = Unit) {
         diceRollViewModel.fabEvent.collect {
@@ -57,7 +63,10 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
             onDefenderMeleeStrengthChange = { value ->
                 meleeCombatViewModel.setDefenderMeleeStrength(value)
             },
-            meleeOdds = meleeResults.value.meleeOdds
+            meleeOdds = meleeResults.value.meleeOdds,
+            onShowCalculatorClicked = {
+                isCalculatorDialogOpen = true
+            }
         )
         PreMeleeMoraleCheckSection(
             modifier = Modifier
@@ -101,6 +110,20 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
                 meleeCombatViewModel.incrementMoraleDie(die)
             },
             meleeCombatResults = meleeResults.value
+        )
+    }
+    if (isCalculatorDialogOpen) {
+        CalculatorDialog(
+            Modifier.fillMaxSize(),
+            onSetAttack = { value ->
+                meleeCombatViewModel.setAttackerMeleeStrength(value)
+            },
+            onSetDefend = { value ->
+                meleeCombatViewModel.setDefenderMeleeStrength(value)
+            },
+            onDismissRequest = {
+                isCalculatorDialogOpen = false
+            }
         )
     }
 }

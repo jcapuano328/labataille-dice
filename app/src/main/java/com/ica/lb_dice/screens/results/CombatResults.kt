@@ -43,7 +43,7 @@ fun CombatResults(modifier: Modifier = Modifier, results: List<CombatResult>) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Gray)
-                .padding(8.dp),
+                .padding(4.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {

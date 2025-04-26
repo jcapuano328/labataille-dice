@@ -47,6 +47,7 @@ fun MeleeCombatSection(modifier: Modifier = Modifier,
                        meleeCombatResults: MeleeCombatResultsSet
 ) {
     Column(modifier = modifier) {
+        /*
         // Header Row (Gray)
         Row(
             modifier = Modifier
@@ -63,6 +64,7 @@ fun MeleeCombatSection(modifier: Modifier = Modifier,
                 //modifier = Modifier.weight(2f)
             )
         }
+        */
         MeleeCombatDice(
             modifier = modifier,
             diceSetMelee = meleeDiceSet,

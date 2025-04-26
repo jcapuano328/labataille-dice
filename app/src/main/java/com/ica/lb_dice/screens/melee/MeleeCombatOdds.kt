@@ -2,12 +2,16 @@ package com.ica.lb_dice.screens.melee
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,13 +23,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ica.lb_dice.ui.CalculatorDialog
 import com.ica.lb_dice.ui.InputFloatWithIncrementDecrement
+import com.ica.lb_dice.ui.PngIcon
 
 @Composable
 fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
                            attackerMeleeStrength: Float = 1f, onAttackerMeleeStrengthChange: (value: Float) -> Unit,
                            defenderMeleeStrength: Float = 1f, onDefenderMeleeStrengthChange: (value: Float) -> Unit,
-                           meleeOdds: String = "1:1") {
+                           meleeOdds: String = "1:1",
+                           onShowCalculatorClicked : () -> Unit = {}) {
     //Text(text = "Melee Combat Odds", modifier = modifier)
     Column(
         modifier = modifier
@@ -42,9 +49,10 @@ fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
                 .fillMaxWidth()
                 //.background(Color.Gray)
                 .background(Color.Transparent)
-                .padding(4.dp),
+                //.padding(4.dp)
+            ,
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Bottom
         ) {
             Text(
                 text = "Attacker",
@@ -52,8 +60,25 @@ fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
                 modifier = Modifier
                     .weight(1f)
             )
-            // need an icon button
-            Spacer(modifier = Modifier.weight(0.5f))
+            //*
+            Box(modifier = Modifier.weight(0.5f)) {
+                IconButton(
+                    onClick = onShowCalculatorClicked,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                ) {
+                    PngIcon(
+                        resId = com.ica.lb_dice.R.drawable.calc,
+                        desc = "Calculator",
+                        modifier = Modifier
+                            .size(32.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+
+            }
+            //*/
+            //Spacer(modifier = Modifier.weight(0.5f))
             Text(
                 text = "Defender",
                 style = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),

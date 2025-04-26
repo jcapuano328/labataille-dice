@@ -51,6 +51,7 @@ fun PreMeleeMoraleCheckSection(modifier: Modifier = Modifier,
         ,
         verticalArrangement = Arrangement.Top
     ) {
+        /*
         // Header Row (Gray)
         Row(
             modifier = Modifier
@@ -67,6 +68,7 @@ fun PreMeleeMoraleCheckSection(modifier: Modifier = Modifier,
                 //modifier = Modifier.weight(2f)
             )
         }
+        */
         PreMeleeMoraleCheckDice(Modifier.fillMaxWidth(),
             diceSetAttackerPreMeleeMorale, onPreMeleeMoraleAttackerDieIncrement, onPreMeleeMoraleAttackerDiceModify,
             diceSetDefenderPreMeleeMorale, onPreMeleeMoraleDefenderDieIncrement, onPreMeleeMoraleDefenderDiceModify

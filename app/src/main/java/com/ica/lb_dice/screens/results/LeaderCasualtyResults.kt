@@ -37,7 +37,7 @@ fun LeaderCasualtyResults(modifier: Modifier = Modifier, data: LeaderCasualtyRes
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.Gray)
-                .padding(8.dp),
+                .padding(4.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
