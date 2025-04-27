@@ -51,7 +51,7 @@ class MoraleCheckViewModel : ViewModel() {
                 _diceSetMorale.value.dieValues.value[0],
                 _diceSetMorale.value.dieValues.value[1]
             ).plus(value)
-            println("FireCombatViewModel.modifyMoraleDice() New Value: ${newValue.toDiceBase6()}")
+            println("MoraleCheckViewModel.modifyMoraleDice() New Value: ${newValue.toDiceBase6()}")
             _diceSetMorale.value.dieValues.value = newValue.decompose().toList()
             updateResults()
         }

@@ -1,9 +1,12 @@
 package com.ica.lb_dice.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,7 +26,8 @@ fun ModifierButtonsRow(
     label: String = "",
     foregroundColor: Color = Color.Black,
     backgroundColor: Color = Color.White,
-    onModifierButtonClicked: (Int) -> Unit
+    onModifierButtonClicked: (Int) -> Unit,
+    fullRow: Boolean = true
 ) {
     Row(
         modifier = modifier
@@ -34,13 +38,17 @@ fun ModifierButtonsRow(
             ,
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        ModifierButton(
-            value = "-6",
-            modifier = Modifier.weight(1f),
-            foregroundColor = foregroundColor,
-            backgroundColor = backgroundColor,
-            onModifierButtonClicked = { onModifierButtonClicked(-6) }
-        )
+        if (fullRow) {
+            ModifierButton(
+                value = "-6",
+                modifier = Modifier.weight(1f),
+                foregroundColor = foregroundColor,
+                backgroundColor = backgroundColor,
+                onModifierButtonClicked = { onModifierButtonClicked(-6) }
+            )
+        } else {
+            Spacer(modifier = Modifier.weight(1f))
+        }
         ModifierButton(
             value = "-3",
             modifier = Modifier.weight(1f),
@@ -69,13 +77,17 @@ fun ModifierButtonsRow(
             backgroundColor = backgroundColor,
             onModifierButtonClicked = { onModifierButtonClicked(3) }
         )
-        ModifierButton(
-            value = "+6",
-            modifier = Modifier.weight(1f),
-            foregroundColor = foregroundColor,
-            backgroundColor = backgroundColor,
-            onModifierButtonClicked = { onModifierButtonClicked(6) }
-        )
+        if (fullRow) {
+            ModifierButton(
+                value = "+6",
+                modifier = Modifier.weight(1f),
+                foregroundColor = foregroundColor,
+                backgroundColor = backgroundColor,
+                onModifierButtonClicked = { onModifierButtonClicked(6) }
+            )
+        } else {
+            Spacer(modifier = Modifier.weight(1f))
+        }
     }
 }
 
@@ -111,14 +123,28 @@ fun ModifierButton(
 @Preview(showBackground = true)
 @Composable
 fun PreviewModifierButtons() {
-    ModifierButtonsRow(
-        label = "Fire",
-        foregroundColor = Color.White,
-        backgroundColor = Color.Blue,
-        onModifierButtonClicked = { value ->
-            println("Fire Modifier clicked: $value")
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-    )
+    Column(modifier = Modifier.fillMaxSize()) {
+        ModifierButtonsRow(
+            label = "Fire",
+            foregroundColor = Color.White,
+            backgroundColor = Color.Blue,
+            onModifierButtonClicked = { value ->
+                println("Fire Modifier clicked: $value")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        ModifierButtonsRow(
+            fullRow = false,
+            label = "General",
+            foregroundColor = Color.White,
+            backgroundColor = Color(0xFF007F0E),
+            onModifierButtonClicked = { value ->
+                println("General Modifier clicked: $value")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
 }
