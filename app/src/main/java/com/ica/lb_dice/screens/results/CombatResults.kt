@@ -69,8 +69,8 @@ fun CombatResults(modifier: Modifier = Modifier, results: List<CombatResult>) {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = item.first, modifier = Modifier.weight(2/3f), textAlign = TextAlign.Center)
-                    Text(text = item.second, modifier = Modifier.weight(1/3f), textAlign = TextAlign.Center)
+                    Text(text = item.first, modifier = Modifier.weight(2/3f), textAlign = TextAlign.Center, fontSize = 18.sp)
+                    Text(text = item.second, modifier = Modifier.weight(1/3f), textAlign = TextAlign.Center, fontSize = 18.sp)
                 }
             }
         }

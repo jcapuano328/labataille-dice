@@ -41,7 +41,7 @@ class LeaderCasualtyService {
                 return LeaderCasualtyResult(side,"$durationDie1 turns", "Stun")
             }
             else -> {
-                return LeaderCasualtyResult(side,"Flesh", "")
+                return LeaderCasualtyResult(side,"No time", "Flesh")
             }
         }
     }

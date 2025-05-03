@@ -69,9 +69,8 @@ fun MoraleResults(modifier: Modifier = Modifier, title: String = "Morale", resul
                     ,horizontalArrangement = Arrangement.Center
                     ,verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = item.first, modifier = Modifier.weight(3/7f), fontSize = 12.sp, textAlign = TextAlign.Center)
-                    Text(text = item.second, modifier = Modifier.weight(2/7f), fontSize = 12.sp, textAlign = TextAlign.Center)
-//                    Text(text = item.third, modifier = Modifier.weight(2/7f), fontSize = 8.sp)
+                    Text(text = item.first, modifier = Modifier.weight(3/7f), fontSize = 18.sp, textAlign = TextAlign.Center)
+                    Text(text = item.second, modifier = Modifier.weight(2/7f), fontSize = 14.sp, textAlign = TextAlign.Center)
                     PngIcon(item.third, "", modifier = Modifier
                         .weight(2/7f)
                         .padding(4.dp)
