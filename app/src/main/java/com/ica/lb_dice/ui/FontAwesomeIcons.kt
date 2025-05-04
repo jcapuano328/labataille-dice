@@ -13,5 +13,4 @@ object FontAwesomeIcons {
     const val DICE_FOUR = "\uF524"
     const val DICE_FIVE = "\uF523"
     const val DICE_SIX = "\uF526"
-
 }

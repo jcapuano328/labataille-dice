@@ -39,6 +39,7 @@ import com.ica.lb_dice.screens.FireCombatScreen
 import com.ica.lb_dice.screens.MeleeCombatScreen
 import com.ica.lb_dice.screens.MoraleCheckScreen
 import com.ica.lb_dice.screens.GeneralScreen
+import com.ica.lb_dice.ui.PngIcon
 
 // In Navigation.kt
 
@@ -59,14 +60,13 @@ fun MainNavigation() {
 fun MainNavigationContent(navController: NavHostController, innerPadding: PaddingValues, viewModel: DiceRollViewModel) {
     NavHost(
         navController = navController,
-        startDestination = NavigationDestinations.FireCombat.route,
-        //startDestination = NavigationDestinations.MeleeCombat.route,
+        startDestination = NavigationDestinationsAlt.FireCombat.route,
         modifier = Modifier.padding(innerPadding) // Apply padding here
     ) {
-        composable(NavigationDestinations.FireCombat.route) { FireCombatScreen(navController, viewModel) }
-        composable(NavigationDestinations.MeleeCombat.route) { MeleeCombatScreen(navController, viewModel) }
-        composable(NavigationDestinations.MoraleCheck.route) { MoraleCheckScreen(navController, viewModel) }
-        composable(NavigationDestinations.General.route) { GeneralScreen(navController, viewModel) }
+        composable(NavigationDestinationsAlt.FireCombat.route) { FireCombatScreen(navController, viewModel) }
+        composable(NavigationDestinationsAlt.MeleeCombat.route) { MeleeCombatScreen(navController, viewModel) }
+        composable(NavigationDestinationsAlt.MoraleCheck.route) { MoraleCheckScreen(navController, viewModel) }
+        composable(NavigationDestinationsAlt.General.route) { GeneralScreen(navController, viewModel) }
     }
 }
 
@@ -88,11 +88,12 @@ fun MainBottomNavigationBar(navController: NavHostController) {
 @Composable
 fun RowScope.MyNavigationItems(navController: NavHostController, currentDestination: NavDestination?) {
     listOf(
-        NavigationDestinations.FireCombat,
-        NavigationDestinations.MeleeCombat
+        NavigationDestinationsAlt.FireCombat,
+        NavigationDestinationsAlt.MeleeCombat
     ).forEach { destination ->
         NavigationBarItem(
-            icon = { FontAwesomeIcon(unicode = destination.icon, description = destination.route) },
+            //icon = { FontAwesomeIcon(unicode = destination.icon, description = destination.route) },
+            icon = { PngIcon(resId = destination.icon, desc = destination.route) },
             label = { Text(text = destination.route) },
             selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true,
             onClick = {
@@ -115,11 +116,12 @@ fun RowScope.MyNavigationItems(navController: NavHostController, currentDestinat
     }
     Spacer(Modifier.weight(1f)) // Space for FAB
     listOf(
-        NavigationDestinations.MoraleCheck,
-        NavigationDestinations.General
+        NavigationDestinationsAlt.MoraleCheck,
+        NavigationDestinationsAlt.General
     ).forEach { destination ->
         NavigationBarItem(
-            icon = { FontAwesomeIcon(unicode = destination.icon, description = destination.route) },
+            //icon = { FontAwesomeIcon(unicode = destination.icon, description = destination.route) },
+            icon = { PngIcon(resId = destination.icon, desc = destination.route) },
             label = { Text(text = destination.route) },
             selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true,
             onClick = {
