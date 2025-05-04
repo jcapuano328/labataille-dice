@@ -12,27 +12,19 @@ import com.ica.lb_dice.util.MathUtils
 
 import com.ica.lb_dice.services.FireCombatService
 import com.ica.lb_dice.services.LeaderCasualtyService
+
 import com.ica.lb_dice.services.MoraleService
 import com.ica.lb_dice.util.DiceBase6
+import com.ica.lb_dice.viewmodels.results.CombatResult
+import com.ica.lb_dice.viewmodels.results.LeaderCasualtyResult
+import com.ica.lb_dice.viewmodels.results.MoraleResult
 
 
 data class DiceSet(
     val dieConfigs: List<DieConfig>,
     val dieValues: MutableStateFlow<List<Int>>
 )
-data class CombatResult (
-    val odds: String,
-    val result: String
-)
-data class LeaderCasualtyResult (
-    val result: String,
-    val icon: String
-)
-data class MoraleResult(
-    val result: String,
-    val modifier: String,
-    val icon: String
-)
+
 data class FireCombatResultsSet(
     val fireDice: Int,
     val fireResults: List<CombatResult>,
@@ -42,6 +34,7 @@ data class FireCombatResultsSet(
     val moraleDice: Int,
     val moraleResults: List<MoraleResult>
 )
+
 class FireCombatViewModel : ViewModel() {
     private val _diceSetFire = MutableStateFlow(DiceSet(emptyList(), MutableStateFlow(emptyList())))
     val diceSetFire = _diceSetFire.asStateFlow()
@@ -52,7 +45,7 @@ class FireCombatViewModel : ViewModel() {
     private val _diceSetMorale = MutableStateFlow(DiceSet(emptyList(), MutableStateFlow(emptyList())))
     val diceSetMorale = _diceSetMorale.asStateFlow()
 
-    private val _resultsSet = MutableStateFlow(FireCombatResultsSet(0, emptyList(), 0, 0, LeaderCasualtyResult("", ""), 0, emptyList()))
+    private val _resultsSet = MutableStateFlow(FireCombatResultsSet(0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
     val resultsSet = _resultsSet.asStateFlow()
 
     init {
@@ -164,7 +157,7 @@ class FireCombatViewModel : ViewModel() {
         val leaderCasualtyDurationDie1 = _diceSetLeader.value.dieValues.value[1]
         val leaderCasualtyDurationDie2 = _diceSetLeader.value.dieValues.value[2]
         val leaderCasualtyResults = LeaderCasualtyService().resolveFireCombat(fireDice, leaderCasualtyDie, leaderCasualtyDurationDie1, leaderCasualtyDurationDie2)
-        _resultsSet.value = _resultsSet.value.copy(leaderCasualtyResults = LeaderCasualtyResult(leaderCasualtyResults.result, leaderCasualtyResults.icon))
+        _resultsSet.value = _resultsSet.value.copy(leaderCasualtyResults = LeaderCasualtyResult(leaderCasualtyResults.side, leaderCasualtyResults.result, leaderCasualtyResults.icon))
     }
 
     private fun updateMoraleResults() {
@@ -172,5 +165,6 @@ class FireCombatViewModel : ViewModel() {
         val moraleDice = DiceBase6.fromDice(_diceSetMorale.value.dieValues.value[0], _diceSetMorale.value.dieValues.value[1]).toDiceBase6()
         val moraleResults = MoraleService().check(moraleDice)
         _resultsSet.value = _resultsSet.value.copy(moraleResults = moraleResults.map { MoraleResult(it.result, it.modifier, it.icon) })
+
     }
 }

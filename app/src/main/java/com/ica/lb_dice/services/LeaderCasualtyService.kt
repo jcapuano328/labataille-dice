@@ -2,7 +2,8 @@ package com.ica.lb_dice.services
 
 class LeaderCasualtyService {
     fun resolveFireCombat(combatDice: Int, casualtyDie: Int, durationDie1: Int, durationDie2: Int): LeaderCasualtyResult {
-        return resolve(combatDice, casualtyDie, durationDie1, durationDie2, 65, 66)
+        val result = resolve(combatDice, casualtyDie, durationDie1, durationDie2, 65, 66)
+        return result.copy(side = "")
     }
     fun resolveMeleeCombat(combatDice: Int, casualtyDie: Int, durationDie1: Int, durationDie2: Int): LeaderCasualtyResult {
         var result = resolve(combatDice, casualtyDie, durationDie1, durationDie2, 11, 12)
@@ -18,9 +19,9 @@ class LeaderCasualtyService {
         }
         var side = ""
         if (combatDice <= 12) {
-            side = "A "
+            side = "A"
         } else {
-            side = "D "
+            side = "D"
         }
 
         when (casualtyDie) {

@@ -33,9 +33,9 @@ import com.ica.lb_dice.services.LeaderCasualtyService
 import com.ica.lb_dice.services.MeleeCombatService
 import com.ica.lb_dice.services.MoraleService
 import com.ica.lb_dice.util.DieConfig
-import com.ica.lb_dice.viewmodels.CombatResult
-import com.ica.lb_dice.viewmodels.LeaderCasualtyResult
-import com.ica.lb_dice.viewmodels.MoraleResult
+import com.ica.lb_dice.viewmodels.results.CombatResult
+import com.ica.lb_dice.viewmodels.results.LeaderCasualtyResult
+import com.ica.lb_dice.viewmodels.results.MoraleResult
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
@@ -151,6 +151,7 @@ fun MeleeCombatDice(modifier: Modifier = Modifier,
 }
 @Composable
 fun MeleeCombatResults(modifier: Modifier = Modifier, resultsSet: MeleeCombatResultsSet) {
+    /*
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -160,10 +161,32 @@ fun MeleeCombatResults(modifier: Modifier = Modifier, resultsSet: MeleeCombatRes
         ,horizontalArrangement = Arrangement.spacedBy(4.dp)
         ,verticalAlignment = Alignment.Top
     ) {
-        CombatResults(Modifier.weight(1f), resultsSet.meleeResults)
+        CombatResults(Modifier.weight(1f), "", resultsSet.meleeResults)
         LeaderCasualtyResults(Modifier.weight(1f), resultsSet.leaderCasualtyResults)
         MoraleResults(modifier = Modifier.weight(1f), results = resultsSet.moraleResults)
     }
+    */
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+        ,horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ,verticalAlignment = Alignment.Top
+    ) {
+        CombatResults(Modifier.weight(1f), "Combat", resultsSet.meleeResults)
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .wrapContentHeight()
+            ,horizontalAlignment = Alignment.CenterHorizontally
+            ,verticalArrangement = Arrangement.Top
+        ) {
+            LeaderCasualtyResults(Modifier.height(100.dp).padding(bottom = 4.dp), resultsSet.leaderCasualtyResults)
+            MoraleResults(modifier = Modifier.weight(1f), "Morale", results = resultsSet.moraleResults)
+        }
+    }
+
 }
 
 
@@ -209,7 +232,7 @@ fun PreviewMeleeCombat() {
         meleeResults = meleeCombatService.resolve(52).map { CombatResult(it.odds, it.result) },
         leaderCasualtyDice = 3,
         leaderCasualtyDurationDice = 4,
-        leaderCasualtyResults = LeaderCasualtyResult(leaderCasualtyResult.result, leaderCasualtyResult.icon),
+        leaderCasualtyResults = LeaderCasualtyResult(leaderCasualtyResult.side, leaderCasualtyResult.result, leaderCasualtyResult.icon),
         moraleDice = 44,
         moraleResults = moraleService.check(44).map { MoraleResult(it.result, it.modifier, it.icon) }
     )

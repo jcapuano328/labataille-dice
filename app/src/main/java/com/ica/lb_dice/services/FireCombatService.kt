@@ -5,6 +5,10 @@ class FireCombatService {
     fun resolve(dice: Int) : List<CombatResult> {
         return FireCombatTable.getResults(dice)
     }
+
+    fun resolveAlt(dice: Int) : List<CombatResultAlt> {
+        return FireCombatTable.getResultsAlt(dice)
+    }
 }
 
 private class FireCombatTable {
@@ -95,6 +99,28 @@ private class FireCombatTable {
                     continue
                 }
             }
+            return results
+        }
+
+        fun getResultsAlt(dice: Int): List<CombatResultAlt> {
+            val results = mutableListOf<CombatResultAlt>()
+            for (odds in fireCombatTable) {
+                val casualties = odds.results.filter { dice >= it.range.min && dice <= it.range.max }
+                if (casualties.isNotEmpty()) {
+                    var result = CombatResultAlt(odds.odds, "", "", "", "","")
+                    for (casualty in casualties) {
+                        when (casualty.result) {
+                            "1" -> result = result.copy(result1 = "${casualty.range.min}-${casualty.range.max}")
+                            "2" -> result = result.copy(result2 = "${casualty.range.min}-${casualty.range.max}")
+                            "3" -> result = result.copy(result3 = "${casualty.range.min}-${casualty.range.max}")
+                            "4" -> result = result.copy(result4 = "${casualty.range.min}-${casualty.range.max}")
+                            "5" -> result = result.copy(result5 = "${casualty.range.min}-${casualty.range.max}")
+                        }
+                    }
+                    results.add(result)
+                }
+            }
+
             return results
         }
     }

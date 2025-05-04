@@ -13,12 +13,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 import com.ica.lb_dice.util.MathUtils
+import com.ica.lb_dice.viewmodels.results.LeaderCasualtyResult
+import com.ica.lb_dice.viewmodels.results.MoraleResult
 
 class MoraleCheckViewModel : ViewModel() {
     private val _diceSetMorale = MutableStateFlow(DiceSet(emptyList(), MutableStateFlow(emptyList())))
     val diceSetMorale = _diceSetMorale.asStateFlow()
 
-    private val _resultsSet = MutableStateFlow(FireCombatResultsSet(0, emptyList(), 0, 0, LeaderCasualtyResult("", ""), 0, emptyList()))
+    private val _resultsSet = MutableStateFlow(FireCombatResultsSet(0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
     val resultsSet = _resultsSet.asStateFlow()
 
     init {

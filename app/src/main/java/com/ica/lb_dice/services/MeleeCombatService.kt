@@ -134,7 +134,7 @@ private class MeleeCombatTable {
             CombatOdds("5:1", listOf(
                 CombatCasualty(DiceRange(11, 32), "DD"),
                 CombatCasualty(DiceRange(33, 61), "DR"),
-                CombatCasualty(DiceRange(62, 66), "DR")
+                CombatCasualty(DiceRange(62, 66), "DS")
             ))
 
         )

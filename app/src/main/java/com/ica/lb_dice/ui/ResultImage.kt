@@ -9,6 +9,8 @@ object ResultImage {
         if (result == "Stun") return com.ica.lb_dice.R.drawable.stun
         if (result == "Flesh") return com.ica.lb_dice.R.drawable.flesh
         if (result == "Mortal") return com.ica.lb_dice.R.drawable.tombstone_2
+        if (result == "A") return com.ica.lb_dice.R.drawable.attacker
+        if (result == "D") return com.ica.lb_dice.R.drawable.defender
         return 0
     }
 }

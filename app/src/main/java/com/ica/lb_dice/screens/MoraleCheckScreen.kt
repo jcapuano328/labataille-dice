@@ -28,7 +28,7 @@ import com.ica.lb_dice.ui.ModifierButtonsRow
 import com.ica.lb_dice.viewmodels.DiceRollViewModel
 import com.ica.lb_dice.viewmodels.DiceSet
 import com.ica.lb_dice.viewmodels.MoraleCheckViewModel
-import com.ica.lb_dice.viewmodels.MoraleResult
+import com.ica.lb_dice.viewmodels.results.MoraleResult
 
 @Composable
 fun MoraleCheckScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
@@ -133,7 +133,7 @@ fun MoraleCheckResults(modifier: Modifier = Modifier, moraleResults: List<Morale
             ,verticalAlignment = Alignment.Top
         ) {
             Spacer(modifier = modifier.weight(1f))
-            MoraleResults(modifier = modifier.weight(1f), title = "Morale", results = moraleResults)
+            MoraleResults(modifier = modifier.weight(3f), title = "Morale", results = moraleResults)
             Spacer(modifier = modifier.weight(1f))
         }
     }

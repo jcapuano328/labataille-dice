@@ -32,7 +32,7 @@ import com.ica.lb_dice.ui.DiceSet
 import com.ica.lb_dice.ui.ModifierButtonsRow
 import com.ica.lb_dice.util.DieConfig
 import com.ica.lb_dice.viewmodels.DiceSet
-import com.ica.lb_dice.viewmodels.MoraleResult
+import com.ica.lb_dice.viewmodels.results.MoraleResult
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
@@ -162,9 +162,9 @@ fun PreMeleeMoraleCheckResults(modifier: Modifier = Modifier, attackerPreMeleeMo
             ,horizontalArrangement = Arrangement.spacedBy(4.dp)
             ,verticalAlignment = Alignment.Top
         ) {
-            MoraleResults(modifier = modifier.weight(1f), title = "Attacker", results = attackerPreMeleeMoraleResults)
+            MoraleResults(modifier = modifier.weight(3f), title = "Attacker", results = attackerPreMeleeMoraleResults)
             Spacer(modifier = modifier.weight(1f))
-            MoraleResults(modifier = modifier.weight(1f), title = "Defender", results = defenderPreMeleeMoraleResults)
+            MoraleResults(modifier = modifier.weight(3f), title = "Defender", results = defenderPreMeleeMoraleResults)
         }
     }
 }

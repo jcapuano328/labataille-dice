@@ -40,6 +40,11 @@ class DiceBase6 private constructor(private val tens: Int, private val ones: Int
         return fromDecimal(newDecimal)
     }
 
+    operator fun minus(decimal: Int) : DiceBase6 {
+        val newDecimal = (toDecimal() - decimal).coerceIn(7, 42)
+        return fromDecimal(newDecimal)
+    }
+
     override fun toString(): String {
         return "$tens$ones"
     }

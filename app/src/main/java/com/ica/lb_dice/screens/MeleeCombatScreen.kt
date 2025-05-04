@@ -68,7 +68,7 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
         PreMeleeMoraleCheckSection(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
+                .height(250.dp)
             ,
             diceSetAttackerPreMeleeMorale = diceSetAttackerPreMeleeMorale,
             onPreMeleeMoraleAttackerDieIncrement = { die ->

@@ -24,6 +24,7 @@ import com.ica.lb_dice.viewmodels.FireCombatResultsSet
 import com.ica.lb_dice.screens.fire.FireCombatDice
 import com.ica.lb_dice.screens.fire.FireCombatResults
 
+
 @Composable
 fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
     val scope = rememberCoroutineScope()

@@ -13,17 +13,20 @@ import com.ica.lb_dice.util.MathUtils
 import com.ica.lb_dice.services.MeleeCombatService
 import com.ica.lb_dice.services.LeaderCasualtyService
 import com.ica.lb_dice.services.MoraleService
+import com.ica.lb_dice.viewmodels.results.CombatResult
+import com.ica.lb_dice.viewmodels.results.LeaderCasualtyResult
+import com.ica.lb_dice.viewmodels.results.MoraleResult
 
 data class MeleeCombatResultsSet(
     val attackerPreMeleeMoraleDice: Int,
     val attackerPreMeleeMoraleResults: List<MoraleResult>,
     val defenderPreMeleeMoraleDice: Int,
     val defenderPreMeleeMoraleResults: List<MoraleResult>,
-    
+
     val attackerMeleeStrength: Float,
     val defenderMeleeStrength: Float,
     val meleeOdds: String,
-        
+
     val meleeDice: Int,
     val meleeResults: List<CombatResult>,
     val leaderCasualtyDice: Int,
@@ -49,7 +52,7 @@ class MeleeCombatViewModel : ViewModel() {
     private val _diceSetMorale = MutableStateFlow(DiceSet(emptyList(), MutableStateFlow(emptyList())))
     val diceSetMorale = _diceSetMorale.asStateFlow()
 
-    private val _meleeResultsSet = MutableStateFlow(MeleeCombatResultsSet(0, emptyList(), 0, emptyList(), 0f, 0f, "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", ""), 0, emptyList()))
+    private val _meleeResultsSet = MutableStateFlow(MeleeCombatResultsSet(0, emptyList(), 0, emptyList(), 0f, 0f, "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
     val meleeResultsSet = _meleeResultsSet.asStateFlow()
 
     init {
@@ -76,7 +79,7 @@ class MeleeCombatViewModel : ViewModel() {
         }
     }
     private fun setInitialState() {
-        _meleeResultsSet.value = MeleeCombatResultsSet(0, emptyList(), 0, emptyList(), 1f, 1f, "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", ""), 0, emptyList())
+        _meleeResultsSet.value = MeleeCombatResultsSet(0, emptyList(), 0, emptyList(), 1f, 1f, "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList())
     }
 
     fun incrementAttackerPreMeleeMoraleDie(die: Int) {
@@ -280,7 +283,7 @@ class MeleeCombatViewModel : ViewModel() {
         val leaderCasualtyDurationDie1 = _diceSetLeader.value.dieValues.value[1]
         val leaderCasualtyDurationDie2 = _diceSetLeader.value.dieValues.value[2]
         val leaderCasualtyResults = LeaderCasualtyService().resolveMeleeCombat(meleeDice, leaderCasualtyDie, leaderCasualtyDurationDie1, leaderCasualtyDurationDie2)
-        _meleeResultsSet.value = _meleeResultsSet.value.copy(leaderCasualtyResults = LeaderCasualtyResult(leaderCasualtyResults.result, leaderCasualtyResults.icon))
+        _meleeResultsSet.value = _meleeResultsSet.value.copy(leaderCasualtyResults = LeaderCasualtyResult(leaderCasualtyResults.side, leaderCasualtyResults.result, leaderCasualtyResults.icon))
     }
 
     private fun updateMoraleResults() {
