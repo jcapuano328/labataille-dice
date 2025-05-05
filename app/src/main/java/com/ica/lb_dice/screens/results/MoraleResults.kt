@@ -73,6 +73,7 @@ fun MoraleResults(modifier: Modifier = Modifier, title: String = "Morale", resul
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(end = 8.dp)
                         //.padding(2.dp)
                     ,horizontalArrangement = Arrangement.Center
                     ,verticalAlignment = Alignment.CenterVertically

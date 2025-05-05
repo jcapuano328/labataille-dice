@@ -76,7 +76,7 @@ fun CombatResults(modifier: Modifier = Modifier, title: String = "", results: Li
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp),
+                        .padding(top = 4.dp, bottom = 4.dp, end = 8.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
