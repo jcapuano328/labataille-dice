@@ -23,8 +23,8 @@ data class MeleeCombatResultsSet(
     val defenderPreMeleeMoraleDice: Int,
     val defenderPreMeleeMoraleResults: List<MoraleResult>,
 
-    val attackerMeleeStrength: Float,
-    val defenderMeleeStrength: Float,
+    val attackerMeleeStrength: String,
+    val defenderMeleeStrength: String,
     val meleeOdds: String,
 
     val meleeDice: Int,
@@ -52,7 +52,7 @@ class MeleeCombatViewModel : ViewModel() {
     private val _diceSetMorale = MutableStateFlow(DiceSet(emptyList(), MutableStateFlow(emptyList())))
     val diceSetMorale = _diceSetMorale.asStateFlow()
 
-    private val _meleeResultsSet = MutableStateFlow(MeleeCombatResultsSet(0, emptyList(), 0, emptyList(), 0f, 0f, "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
+    private val _meleeResultsSet = MutableStateFlow(MeleeCombatResultsSet(0, emptyList(), 0, emptyList(), "1", "1", "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
     val meleeResultsSet = _meleeResultsSet.asStateFlow()
 
     init {
@@ -79,7 +79,7 @@ class MeleeCombatViewModel : ViewModel() {
         }
     }
     private fun setInitialState() {
-        _meleeResultsSet.value = MeleeCombatResultsSet(0, emptyList(), 0, emptyList(), 1f, 1f, "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList())
+        _meleeResultsSet.value = MeleeCombatResultsSet(0, emptyList(), 0, emptyList(), "1", "1", "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList())
     }
 
     fun incrementAttackerPreMeleeMoraleDie(die: Int) {
@@ -123,27 +123,31 @@ class MeleeCombatViewModel : ViewModel() {
     }
 
     fun incrementAttackerMeleeStrength() {
-        _meleeResultsSet.value = _meleeResultsSet.value.copy(attackerMeleeStrength = _meleeResultsSet.value.attackerMeleeStrength + 1)
+        val newValue = (_meleeResultsSet.value.attackerMeleeStrength.toFloatOrNull() ?: 1f) + 1
+        _meleeResultsSet.value = _meleeResultsSet.value.copy(attackerMeleeStrength = newValue.toString())
         updateResults()
     }
     fun decrementAttackerMeleeStrength() {
-        _meleeResultsSet.value = _meleeResultsSet.value.copy(attackerMeleeStrength = _meleeResultsSet.value.attackerMeleeStrength - 1)
+        val newValue = (_meleeResultsSet.value.attackerMeleeStrength.toFloatOrNull() ?: 1f) - 1
+        _meleeResultsSet.value = _meleeResultsSet.value.copy(attackerMeleeStrength = newValue.toString())
         updateResults()
     }
-    fun setAttackerMeleeStrength(value: Float) {
+    fun setAttackerMeleeStrength(value: String) {
         _meleeResultsSet.value = _meleeResultsSet.value.copy(attackerMeleeStrength = value)
         updateResults()
     }
 
     fun incrementDefenderMeleeStrength() {
-        _meleeResultsSet.value = _meleeResultsSet.value.copy(defenderMeleeStrength = _meleeResultsSet.value.defenderMeleeStrength + 1)
+        val newValue = (_meleeResultsSet.value.defenderMeleeStrength.toFloatOrNull() ?: 1f) + 1
+        _meleeResultsSet.value = _meleeResultsSet.value.copy(defenderMeleeStrength = newValue.toString())
         updateResults()
     }
     fun decrementDefenderMeleeStrength() {
-        _meleeResultsSet.value = _meleeResultsSet.value.copy(defenderMeleeStrength = _meleeResultsSet.value.defenderMeleeStrength - 1)
+        val newValue = (_meleeResultsSet.value.defenderMeleeStrength.toFloatOrNull() ?: 1f) - 1
+        _meleeResultsSet.value = _meleeResultsSet.value.copy(defenderMeleeStrength = newValue.toString())
         updateResults()
     }
-    fun setDefenderMeleeStrength(value: Float) {
+    fun setDefenderMeleeStrength(value: String) {
         _meleeResultsSet.value = _meleeResultsSet.value.copy(defenderMeleeStrength = value)
         updateResults()
     }
@@ -247,17 +251,19 @@ class MeleeCombatViewModel : ViewModel() {
 
     private fun updateMeleeOdds() {
         var odds = 1f
-        val attackerAdvantage = _meleeResultsSet.value.attackerMeleeStrength >= _meleeResultsSet.value.defenderMeleeStrength
+        val attackerStr = _meleeResultsSet.value.attackerMeleeStrength.toFloatOrNull() ?: 1f
+        val defenderStr = _meleeResultsSet.value.defenderMeleeStrength.toFloatOrNull() ?: 1f
+        val attackerAdvantage = attackerStr >= defenderStr
 
         if (attackerAdvantage) {
-            odds = _meleeResultsSet.value.attackerMeleeStrength / _meleeResultsSet.value.defenderMeleeStrength
+            odds = attackerStr / defenderStr
         } else {
-            odds = _meleeResultsSet.value.defenderMeleeStrength / _meleeResultsSet.value.attackerMeleeStrength
+            odds = defenderStr / attackerStr
         }
         println("MeleeCombatViewModel: updateMeleeOdds: raw: $odds ($attackerAdvantage)")
 
         // Round the odds to the nearest 0.5, rounding up
-        val roundedOdds = MathUtils().roundFloatToNearestHalf(odds, attackerAdvantage)
+        val roundedOdds = MathUtils().roundFloatToNearestHalf(odds, !attackerAdvantage)
         println("MeleeCombatViewModel: updateMeleeOdds: rounded: $roundedOdds ($attackerAdvantage)")
         var oddsString = ""
         if (attackerAdvantage) {

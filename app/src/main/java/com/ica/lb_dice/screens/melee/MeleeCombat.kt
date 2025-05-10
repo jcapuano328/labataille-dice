@@ -225,8 +225,8 @@ fun PreviewMeleeCombat() {
         attackerPreMeleeMoraleResults = moraleService.check(33).map { MoraleResult(it.result, it.modifier, it.icon) },
         defenderPreMeleeMoraleDice = 44,
         defenderPreMeleeMoraleResults = moraleService.check(44).map { MoraleResult(it.result, it.modifier, it.icon) },
-        attackerMeleeStrength = 2f,
-        defenderMeleeStrength = 1f,
+        attackerMeleeStrength = "2",
+        defenderMeleeStrength = "1",
         meleeOdds = "2.0/1",
         meleeDice = 52,
         meleeResults = meleeCombatService.resolve(52).map { CombatResult(it.odds, it.result) },
@@ -260,9 +260,9 @@ fun PreviewMeleeCombat() {
             modifier = Modifier
                 .fillMaxWidth()
             ,
-            attackerMeleeStrength = 1f,
+            attackerMeleeStrength = "1",
             onAttackerMeleeStrengthChange = {},
-            defenderMeleeStrength = 1f,
+            defenderMeleeStrength = "1",
             onDefenderMeleeStrengthChange = {},
             meleeOdds = "1:1"
         )

@@ -21,7 +21,7 @@ fun CalculatorDialog(
     Card(modifier = modifier.padding(2.dp)) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+            horizontalAlignment = androidx.compose.ui.Alignment.Start
         ) {
             ProportionalStrengthCalculator(
                 modifier = modifier.weight(10f),
