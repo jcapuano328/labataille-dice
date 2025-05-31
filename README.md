@@ -29,7 +29,7 @@ In the middle of the nav bar is a "button" that will roll the dice and apply the
 ## Dice
 Each activity has at least 1 set of dice. 
 
-Each die can be tapped to increase it's value by 1. There is a "rollover" but there is no "carry the one". Meaning, when a die of 6 is tapped the value only "rolls over" to 1; the corresponding "left die", if there is on, is not incremented by one (the "carry").
+Each die can be tapped to increase it's value by 1. There is a "rollover" but there is no "carry the one". Meaning, when a die of 6 is tapped the value only "rolls over" to 1; the corresponding "left die", if there is one, is not incremented by 1 (the "carry").
 
 When a die changes for any reason, the results are determined and displayed anew.
 
@@ -48,33 +48,34 @@ The "fire combat" chart is represented here, along with leader casualty and mora
 - The first 2 dice are the "combat dice".
 - The middle 3 dice are the "leader casualty dice":
   - First die is the Casualty type (head, chest, etc)
-  - Second dice are the Casualty duration (if applicable)
+  - Second 2 dice are the Casualty duration (if applicable)
+ - The last 2 dice are the "morale dice".
 
 ### Results
-The possible combat results are presented, with the odds and losses that are possible for the combat dice roll. The player will "calculate" (or estimate) the odds if the dice suggest it necessary.
+The possible combat results are presented, with the odds and losses that are possible for the combat dice roll. The player will "calculate" (or estimate) the odds if the dice suggest it is necessary. (Lots of fire combat dice rolling in La Bataille with no result).
 
 The possible morale results are presented, with the morale value required to pass the morale dice roll and the list of results for typical morale adjustments.
 
-The leader casualty is the only thing that is "certain": if the combat dice call for a casualty icons will indicate the severity and duration out of the game.
+The leader casualty is the only thing that is "certain": if the combat dice call for a casualty icons will indicate the severity and duration the leader (counter) is out of the game.
 
 ## Melee
 This is a little more involved, but not much. It is divided into an "odds determination" section and a "resolution" section. 
 
-### Odds Calculation
-At the top is the "combat odds calculator", since determining melee odds in La Bataille is a bit of a chore. This is just a convenience for the player.
+### Odds Determination
+At the top is the "combat odds calculator", since determining melee odds in La Bataille is a bit of a chore. This is just a convenience for the player; the odds do not affect the behavior of the app in any way.
 
 Melee Values for the attacker and defender may be entered directly into the boxes and the odds will be calculated. Also, the "calculator" button may be used to bring up the "proportional melee value" calculator to determine both attacker and defender melee values.
 
 #### Proportional Melee Value Calculator
-- Tap the numbers to enter the value for the unit size: Tap the Size button.
-- Tap the numbers to enter the value for the losses the unit has incurred: Tap the Loss button.
-- Tap the numbers to enter the value of the unit melee (original): Tap the Str (strength) button.
+- Tap the numbers to enter the value for the unit size: Tap the SIZE button.
+- Tap the numbers to enter the value for the losses the unit has incurred: Tap the LOSS button.
+- Tap the numbers to enter the value of the unit melee (original): Tap the STR (strength) button.
 
 The top left will present the calculated proportional melee value. 
 
-- Tap the numbers to enter whole melee value: Tap the + (plus) button.
+- Tap the numbers to enter a melee value: Tap the + (plus) button.
 
-The top left will adjust calculated proportional melee value by the entered value. 
+The top left will adjust calculated proportional melee value by the entered value. (This is a convenience to allow quick entry of an unmodified unit melee value).
 
 - Tap a modifier button, x1/3, x1/2, etc as necessary to represent Disorder, Tired, etc.
 
@@ -100,7 +101,7 @@ This behaves exactly the same as Fire Combat, except for the differences in the 
 ## Morale
 We've addressed the presentation of Morale dice and results 3 times now: this is exactly the same. 
 
-The purpose of this screen is for all of the ancillary morale checks that occur, such as:
+The purpose of this screen is assist with all of the ancillary morale checks that occur, such as:
 - Stand before Charge
 - Rally
 - Etc, Etc, Etc (lots of morale checks in La Bataille)
