@@ -173,7 +173,7 @@ fun MeleeCombatResults(modifier: Modifier = Modifier, resultsSet: MeleeCombatRes
         ,horizontalArrangement = Arrangement.spacedBy(4.dp)
         ,verticalAlignment = Alignment.Top
     ) {
-        CombatResults(Modifier.weight(1f), "Combat", resultsSet.meleeResults)
+        CombatResults(Modifier.weight(1f), "If Odds are...", resultsSet.meleeResults)
 
         Column(
             modifier = Modifier
@@ -182,8 +182,8 @@ fun MeleeCombatResults(modifier: Modifier = Modifier, resultsSet: MeleeCombatRes
             ,horizontalAlignment = Alignment.CenterHorizontally
             ,verticalArrangement = Arrangement.Top
         ) {
-            LeaderCasualtyResults(Modifier.height(100.dp).padding(bottom = 4.dp), resultsSet.leaderCasualtyResults)
-            MoraleResults(modifier = Modifier.weight(1f), "Morale", results = resultsSet.moraleResults)
+            MoraleResults(modifier = Modifier.weight(1f), "If Morale is...", results = resultsSet.moraleResults)
+            LeaderCasualtyResults(Modifier.height(100.dp).padding(top = 4.dp), resultsSet.leaderCasualtyResults)
         }
     }
 

@@ -53,7 +53,7 @@ fun CombatResults(modifier: Modifier = Modifier, title: String = "", results: Li
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Combat",
+                    text = title,
                     style = TextStyle(
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
@@ -146,7 +146,7 @@ fun CombatResultsAlt(modifier: Modifier = Modifier, title: String = "", results:
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Combat",
+                    text = title,
                     style = TextStyle(
                         color = Color.White,
                         fontWeight = FontWeight.Bold,

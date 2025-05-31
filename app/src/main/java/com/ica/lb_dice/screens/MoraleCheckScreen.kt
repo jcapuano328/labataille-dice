@@ -133,7 +133,7 @@ fun MoraleCheckResults(modifier: Modifier = Modifier, moraleResults: List<Morale
             ,verticalAlignment = Alignment.Top
         ) {
             Spacer(modifier = modifier.weight(1f))
-            MoraleResults(modifier = modifier.weight(3f), title = "Morale", results = moraleResults)
+            MoraleResults(modifier = modifier.weight(3f), title = "If Morale is...", results = moraleResults)
             Spacer(modifier = modifier.weight(1f))
         }
     }

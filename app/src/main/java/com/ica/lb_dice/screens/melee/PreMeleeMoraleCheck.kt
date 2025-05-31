@@ -162,9 +162,9 @@ fun PreMeleeMoraleCheckResults(modifier: Modifier = Modifier, attackerPreMeleeMo
             ,horizontalArrangement = Arrangement.spacedBy(4.dp)
             ,verticalAlignment = Alignment.Top
         ) {
-            MoraleResults(modifier = modifier.weight(3f), title = "Attacker", results = attackerPreMeleeMoraleResults)
+            MoraleResults(modifier = modifier.weight(3f), title = "If Attacker Morale is...", results = attackerPreMeleeMoraleResults)
             Spacer(modifier = modifier.weight(1f))
-            MoraleResults(modifier = modifier.weight(3f), title = "Defender", results = defenderPreMeleeMoraleResults)
+            MoraleResults(modifier = modifier.weight(3f), title = "If Defender Morale is...", results = defenderPreMeleeMoraleResults)
         }
     }
 }
