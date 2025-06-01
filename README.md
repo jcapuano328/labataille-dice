@@ -15,6 +15,9 @@ Also, I didn't want to detract from the "game on the table", so no sound effects
 The app will assist with the resolution of the 3 core features of La Bataille: fire, melee and morale.
 
 ## Navigation
+
+![Navigation](https://github.com/jcapuano328/labataille-dice/raw/main/assets/Navigation.png "Navigation")
+
 Pretty simple: a "bottom bar" navigation scheme for the 4 activities:
 - Fire
 - Melee
@@ -28,6 +31,8 @@ In the middle of the nav bar is a "button" that will roll the dice and apply the
 
 ## Dice
 Each activity has at least 1 set of dice. 
+
+![Dice](https://github.com/jcapuano328/labataille-dice/raw/main/assets/Dice.png "Dice")
 
 Each die can be tapped to increase it's value by 1. There is a "rollover" but there is no "carry the one". Meaning, when a die of 6 is tapped the value only "rolls over" to 1; the corresponding "left die", if there is one, is not incremented by 1 (the "carry").
 
@@ -43,6 +48,9 @@ In general, the "blue buttons" will adjust the "combat dice" while the "purple b
 
 ## Fire
 The "fire combat" chart is represented here, along with leader casualty and morale results. The idea is to present the possible outcomes based on the dice rolled.
+
+![Fire](https://github.com/jcapuano328/labataille-dice/raw/main/assets/Fire.png "Fire")
+
 
 ### Dice
 - The first 2 dice are the "combat dice".
@@ -62,11 +70,15 @@ The leader casualty is the only thing that is "certain": if the combat dice call
 This is a little more involved, but not much. It is divided into an "odds determination" section and a "resolution" section. 
 
 ### Odds Determination
+![Melee-Odds](https://github.com/jcapuano328/labataille-dice/raw/main/assets/Melee-Odds.png "Melee-Odds")
+
 At the top is the "combat odds calculator", since determining melee odds in La Bataille is a bit of a chore. This is just a convenience for the player; the odds do not affect the behavior of the app in any way.
 
 Melee Values for the attacker and defender may be entered directly into the boxes and the odds will be calculated. Also, the "calculator" button may be used to bring up the "proportional melee value" calculator to determine both attacker and defender melee values.
 
 #### Proportional Melee Value Calculator
+![Melee-Calculator](https://github.com/jcapuano328/labataille-dice/raw/main/assets/Melee-Calculator.png "Melee-Calculator")
+
 - Tap the numbers to enter the value for the unit size: Tap the SIZE button.
 - Tap the numbers to enter the value for the losses the unit has incurred: Tap the LOSS button.
 - Tap the numbers to enter the value of the unit melee (original): Tap the STR (strength) button.
@@ -90,6 +102,8 @@ A "tabbed navigator" permits switching between the Pre-Melee Morale Check resolu
 
 #### Pre Melee Morale Check
 
+![Melee-PreMelee](https://github.com/jcapuano328/labataille-dice/raw/main/assets/Melee-PreMelee.png "Melee-PreMelee")
+
 ##### Dice
 There are 2 groups of dice: Attacker morale and Defender morale. The blue modifier buttons adjust the Attacker morale dice while the purple modifier buttons adjust the Defender morale dice.
 
@@ -98,8 +112,12 @@ The possible morale results for each side are presented, with the morale value r
 #### Melee Combat
 This behaves exactly the same as Fire Combat, except for the differences in the available combat results. (Though for some reason that escapes me now I opted not to include morale modifier buttons).
 
+![Melee-Combat](https://github.com/jcapuano328/labataille-dice/raw/main/assets/Melee-Combat.png "Melee-Combat")
+
 ## Morale
 We've addressed the presentation of Morale dice and results 3 times now: this is exactly the same. 
+
+![Morale](https://github.com/jcapuano328/labataille-dice/raw/main/assets/Morale.png "Morale")
 
 The purpose of this screen is assist with all of the ancillary morale checks that occur, such as:
 - Stand before Charge
@@ -107,6 +125,9 @@ The purpose of this screen is assist with all of the ancillary morale checks tha
 - Etc, Etc, Etc (lots of morale checks in La Bataille)
 
 ## General
+![General](https://github.com/jcapuano328/labataille-dice/raw/main/assets/General.png "General")
+
+
 This is just a set of dice that can be used for "other" purposes, such as:
 - Cavalry recall
 - Artillery limber
