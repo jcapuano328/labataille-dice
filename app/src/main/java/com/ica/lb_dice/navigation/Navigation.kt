@@ -1,7 +1,9 @@
 package com.ica.lb_dice.navigation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,8 +25,14 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
@@ -56,17 +64,61 @@ fun MainNavigation() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavigationContent(navController: NavHostController, innerPadding: PaddingValues, viewModel: DiceRollViewModel) {
-    NavHost(
-        navController = navController,
-        startDestination = NavigationDestinationsAlt.FireCombat.route,
-        modifier = Modifier.padding(innerPadding) // Apply padding here
-    ) {
-        composable(NavigationDestinationsAlt.FireCombat.route) { FireCombatScreen(navController, viewModel) }
-        composable(NavigationDestinationsAlt.MeleeCombat.route) { MeleeCombatScreen(navController, viewModel) }
-        composable(NavigationDestinationsAlt.MoraleCheck.route) { MoraleCheckScreen(navController, viewModel) }
-        composable(NavigationDestinationsAlt.General.route) { GeneralScreen(navController, viewModel) }
+    Column() {
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                actionIconContentColor = MaterialTheme.colorScheme.onSecondary
+            ),
+            navigationIcon = {
+                // perhaps make this a button and display the "about" popup?
+                PngIcon(
+                    resId = com.ica.lb_dice.R.drawable.logo,
+                    desc = "Logo",
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .size(40.dp)
+                    //.align(Alignment.Center)
+                )
+            },
+            title = { Text("La Bataille Dice") }
+        )
+
+        NavHost(
+            navController = navController,
+            startDestination = NavigationDestinationsAlt.FireCombat.route,
+            modifier = Modifier.padding(innerPadding) // Apply padding here
+        ) {
+            composable(NavigationDestinationsAlt.FireCombat.route) {
+                FireCombatScreen(
+                    navController,
+                    viewModel
+                )
+            }
+            composable(NavigationDestinationsAlt.MeleeCombat.route) {
+                MeleeCombatScreen(
+                    navController,
+                    viewModel
+                )
+            }
+            composable(NavigationDestinationsAlt.MoraleCheck.route) {
+                MoraleCheckScreen(
+                    navController,
+                    viewModel
+                )
+            }
+            composable(NavigationDestinationsAlt.General.route) {
+                GeneralScreen(
+                    navController,
+                    viewModel
+                )
+            }
+        }
     }
 }
 
