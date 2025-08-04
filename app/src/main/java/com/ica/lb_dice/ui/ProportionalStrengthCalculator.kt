@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,7 +41,8 @@ import androidx.compose.ui.unit.sp
 fun ProportionalStrengthCalculator(
     modifier: Modifier = Modifier,
     onSetAttack: (Float) -> Unit,
-    onSetDefend: (Float) -> Unit
+    onSetDefend: (Float) -> Unit,
+    onDismissRequest: () -> Unit
 ) {
     var display by remember { mutableStateOf("0") }
     var result by remember { mutableStateOf(0f) }
@@ -212,8 +217,13 @@ fun ProportionalStrengthCalculator(
                     ) {
                         //Text("R${row}C$col")
                         //CalculatorDisplay.getCellContent(row, col, modifier)
-                        if (row == 6 && (col == 1 || col == 2 || col == 4)) {
+                        if (row == 6 && col == 1) {
+                            IconButton(onClick = onDismissRequest) {
+                                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                            }
+                        } else if (row == 6 && (col == 2 || col == 4)) {
                             Spacer(modifier = modifier)
+                            //Spacer(modifier = Modifier.height(16.dp))
                         } else {
                             CalculatorIconButton(
                                 CalculatorDisplay.iconForCell(row, col),
@@ -467,6 +477,9 @@ fun PreviewProportionalStrengthCalculator() {
         },
         onSetDefend = { value ->
             println("Defend value: $value")
+        },
+        onDismissRequest = {
+            println("Dialog dismissed")
         }
     )
 }
