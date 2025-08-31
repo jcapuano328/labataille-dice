@@ -3,7 +3,6 @@ package com.ica.lb_dice.navigation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.NavigationBarItem
@@ -24,27 +23,22 @@ import androidx.navigation.NavHostController
 import androidx.compose.material3.FabPosition
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -52,17 +46,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 import com.ica.lb_dice.R
-import com.ica.lb_dice.help.FireCombatHelpContent
-import com.ica.lb_dice.help.GeneralHelpContent
-import com.ica.lb_dice.help.HelpDialog
-import com.ica.lb_dice.help.MeleeCombatHelpContent
-import com.ica.lb_dice.help.MoraleHelpContent
-import com.ica.lb_dice.ui.FontAwesomeIcon
-import com.ica.lb_dice.viewmodels.DiceRollViewModel
-import com.ica.lb_dice.screens.FireCombatScreen
-import com.ica.lb_dice.screens.MeleeCombatScreen
-import com.ica.lb_dice.screens.MoraleCheckScreen
-import com.ica.lb_dice.screens.GeneralScreen
+import com.ica.lb_dice.features.fire.FireCombatHelpContent
+import com.ica.lb_dice.features.general.GeneralHelpContent
+import com.ica.lb_dice.features.help.HelpDialog
+import com.ica.lb_dice.features.melee.MeleeCombatHelpContent
+import com.ica.lb_dice.features.morale.MoraleHelpContent
+import com.ica.lb_dice.features.common.DiceRollViewModel
+import com.ica.lb_dice.features.fire.FireCombatScreen
+import com.ica.lb_dice.features.melee.MeleeCombatScreen
+import com.ica.lb_dice.features.morale.MoraleCheckScreen
+import com.ica.lb_dice.features.general.GeneralScreen
 import com.ica.lb_dice.ui.PngIcon
 
 // In Navigation.kt
@@ -111,33 +104,16 @@ fun MainNavigation() {
     }
 
     if (showHelp) {
-        /*
-        Dialog(onDismissRequest = { showHelp = false }) {
-            Surface(
-                shape = RoundedCornerShape(16.dp),
-                tonalElevation = 6.dp,
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
-            ) {
-                when (currentRoute) {
-                    NavigationDestinationsAlt.FireCombat.route -> FireCombatHelpContent()
-                    NavigationDestinationsAlt.MeleeCombat.route -> MeleeCombatHelpContent()
-                    NavigationDestinationsAlt.MoraleCheck.route -> MoraleHelpContent()
-                    NavigationDestinationsAlt.General.route -> GeneralHelpContent()
-                    else -> Text("No help available for this screen")
-                }
-            }
-        }
-        */
         currentRoute?.let {
             HelpDialog(
                 onDismiss = {showHelp = false},
                 currentTopic = it
             ) {
                 when (currentRoute) {
-                    NavigationDestinationsAlt.FireCombat.route -> FireCombatHelpContent()
-                    NavigationDestinationsAlt.MeleeCombat.route -> MeleeCombatHelpContent()
-                    NavigationDestinationsAlt.MoraleCheck.route -> MoraleHelpContent()
-                    NavigationDestinationsAlt.General.route -> GeneralHelpContent()
+                    NavigationDestinations.FireCombat.route -> FireCombatHelpContent()
+                    NavigationDestinations.MeleeCombat.route -> MeleeCombatHelpContent()
+                    NavigationDestinations.MoraleCheck.route -> MoraleHelpContent()
+                    NavigationDestinations.General.route -> GeneralHelpContent()
                     else -> Text("No help available for this screen")
                 }
             }
@@ -150,28 +126,28 @@ fun MainNavigationContent(navController: NavHostController, innerPadding: Paddin
     Column() {
         NavHost(
             navController = navController,
-            startDestination = NavigationDestinationsAlt.FireCombat.route,
+            startDestination = NavigationDestinations.FireCombat.route,
             modifier = Modifier.padding(innerPadding) // Apply padding here
         ) {
-            composable(NavigationDestinationsAlt.FireCombat.route) {
+            composable(NavigationDestinations.FireCombat.route) {
                 FireCombatScreen(
                     navController,
                     viewModel
                 )
             }
-            composable(NavigationDestinationsAlt.MeleeCombat.route) {
+            composable(NavigationDestinations.MeleeCombat.route) {
                 MeleeCombatScreen(
                     navController,
                     viewModel
                 )
             }
-            composable(NavigationDestinationsAlt.MoraleCheck.route) {
+            composable(NavigationDestinations.MoraleCheck.route) {
                 MoraleCheckScreen(
                     navController,
                     viewModel
                 )
             }
-            composable(NavigationDestinationsAlt.General.route) {
+            composable(NavigationDestinations.General.route) {
                 GeneralScreen(
                     navController,
                     viewModel
@@ -199,8 +175,8 @@ fun MainBottomNavigationBar(navController: NavHostController) {
 @Composable
 fun RowScope.MyNavigationItems(navController: NavHostController, currentDestination: NavDestination?) {
     listOf(
-        NavigationDestinationsAlt.FireCombat,
-        NavigationDestinationsAlt.MeleeCombat
+        NavigationDestinations.FireCombat,
+        NavigationDestinations.MeleeCombat
     ).forEach { destination ->
         NavigationBarItem(
             //icon = { FontAwesomeIcon(unicode = destination.icon, description = destination.route) },
@@ -227,8 +203,8 @@ fun RowScope.MyNavigationItems(navController: NavHostController, currentDestinat
     }
     Spacer(Modifier.weight(1f)) // Space for FAB
     listOf(
-        NavigationDestinationsAlt.MoraleCheck,
-        NavigationDestinationsAlt.General
+        NavigationDestinations.MoraleCheck,
+        NavigationDestinations.General
     ).forEach { destination ->
         NavigationBarItem(
             //icon = { FontAwesomeIcon(unicode = destination.icon, description = destination.route) },

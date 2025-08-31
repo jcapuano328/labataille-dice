@@ -1,5 +1,6 @@
 package com.ica.lb_dice.services
 
+import com.ica.lb_dice.features.fire.FireCombatService
 import com.ica.lb_dice.util.DiceBase6
 import org.junit.Test
 
