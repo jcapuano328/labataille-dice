@@ -1,0 +1,96 @@
+package com.ica.lb_dice.help.components
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.ica.lb_dice.ui.Die
+import com.ica.lb_dice.ui.ModifierButtonsRow
+
+@Composable
+fun CombatResultsHelpSection(modifier: Modifier = Modifier) {
+    Column(modifier.padding(16.dp)) {
+        // combat dice
+        Row() {
+            Die(dieNumber = 1,
+                modifier = Modifier
+                    .padding(1.dp)
+                    .size(40.dp)
+                ,
+                onDieClicked = { },
+                backgroundColor = Color.Red,
+                dotColor = Color.White,
+                dieValue = 1
+            )
+            Spacer(modifier = Modifier.width(2.dp))
+            Die(dieNumber = 2,
+                modifier = Modifier
+                    .padding(1.dp)
+                    .size(40.dp)
+                ,
+                onDieClicked = { },
+                backgroundColor = Color.White,
+                dotColor = Color.Black,
+                dieValue = 1
+            )
+        }
+        /*
+        Text(
+            text = "The fire dice are used to determine the results of the combat. Tap a die to increase its value by 1.",
+            style = MaterialTheme.typography.bodyMedium
+        )
+        */
+        BulletPoint(text = "The fire dice are used to determine the results of the combat.")
+        BulletPoint(text = "Tap a die to increase its value by 1.")
+        Spacer(Modifier.height(12.dp))
+
+        // modifier buttons
+        ModifierButtonsRow(
+            label = "Fire",
+            foregroundColor = Color.White,
+            backgroundColor = Color.Blue,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+            ,
+            onModifierButtonClicked = { }
+        )
+        /*
+        Text(
+            text = "The modifier buttons are used to adjust the dice. Tap a button to adjust the dice by the value of the button.",
+            style = MaterialTheme.typography.bodyMedium
+        )
+        */
+        BulletPoint(text = "The modifier buttons are used to adjust the dice.")
+        BulletPoint(text = "Tap a button to adjust the dice by the value of the button.")
+        Spacer(Modifier.height(12.dp))
+
+        // results explanation
+        /*
+        Text(
+            text = "The combat results are the list of the possible outcomes based on the dice. Each result indicates the loss for the odds ratio. Estimate or calculate the odds of the combat and choose the corresponding row.",
+            style = MaterialTheme.typography.bodyMedium
+        )
+        */
+        BulletPoint(text = "The combat results are a list of the possible outcomes based on the dice.")
+        BulletPoint(text = "Each result indicates the loss for the odds ratio.")
+        BulletPoint(text = "Estimate or calculate the odds of the combat and choose the corresponding row.")
+        Spacer(Modifier.height(16.dp))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewCombatResultsHelpSection() {
+    CombatResultsHelpSection()
+}
