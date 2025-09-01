@@ -23,6 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ica.lb_dice.features.help.HelpDialog
 
+data class CalculatorDialogRequest(
+    val initialValue: Float,
+    val onSetAttack: (Float) -> Unit,
+    val onSetDefend: (Float) -> Unit
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalculatorDialog(

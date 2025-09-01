@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.compose.material3.FabPosition
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -46,6 +47,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 import com.ica.lb_dice.R
+import com.ica.lb_dice.features.calculator.CalculatorDialog
+import com.ica.lb_dice.features.calculator.CalculatorDialogRequest
 import com.ica.lb_dice.features.fire.FireCombatHelpContent
 import com.ica.lb_dice.features.general.GeneralHelpContent
 import com.ica.lb_dice.features.help.HelpDialog
@@ -67,6 +70,11 @@ fun MainNavigation() {
     val currentRoute = navBackStackEntry?.destination?.route
     val diceRollViewModel: DiceRollViewModel = viewModel()
     var showHelp by remember { mutableStateOf(false) }
+    var dialogRequest: CalculatorDialogRequest? by remember { mutableStateOf(null) }
+    val openDialog: (Float, (Float) -> Unit, (Float) -> Unit) -> Unit =
+        { initial, onSetAttack, onSetDefend ->
+            dialogRequest = CalculatorDialogRequest(initial, onSetAttack, onSetDefend)
+        }
 
     Scaffold(
         topBar = {
@@ -97,10 +105,59 @@ fun MainNavigation() {
             )
         },
         bottomBar = { MainBottomNavigationBar(navController = navController) },
-        floatingActionButton = { MainFloatingActionButton(navController, diceRollViewModel) },
+        floatingActionButton = {
+            if (dialogRequest == null) {
+                MainFloatingActionButton(navController, diceRollViewModel)
+            }
+        },
         floatingActionButtonPosition = FabPosition.Center
     ) { innerPadding ->
-        MainNavigationContent(navController, innerPadding, diceRollViewModel)
+        NavHost(
+            navController = navController,
+            startDestination = NavigationDestinations.FireCombat.route,
+            modifier = Modifier.padding(innerPadding) // Apply padding here
+        ) {
+            composable(NavigationDestinations.FireCombat.route) {
+                FireCombatScreen(
+                    navController,
+                    diceRollViewModel
+                )
+            }
+            composable(NavigationDestinations.MeleeCombat.route) {
+                MeleeCombatScreen(
+                    navController,
+                    diceRollViewModel,
+                    openDialog = openDialog
+                )
+            }
+            composable(NavigationDestinations.MoraleCheck.route) {
+                MoraleCheckScreen(
+                    navController,
+                    diceRollViewModel
+                )
+            }
+            composable(NavigationDestinations.General.route) {
+                GeneralScreen(
+                    navController,
+                    diceRollViewModel
+                )
+            }
+        }
+    }
+
+    dialogRequest?.let { req ->
+        CalculatorDialog(
+            Modifier.fillMaxSize(),
+            onSetAttack = { value ->
+                req.onSetAttack(value)
+            },
+            onSetDefend = { value ->
+                req.onSetDefend(value)
+            },
+            onDismissRequest = {
+                dialogRequest = null
+            }
+        )
     }
 
     if (showHelp) {
@@ -116,42 +173,6 @@ fun MainNavigation() {
                     NavigationDestinations.General.route -> GeneralHelpContent()
                     else -> Text("No help available for this screen")
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun MainNavigationContent(navController: NavHostController, innerPadding: PaddingValues, viewModel: DiceRollViewModel) {
-    Column() {
-        NavHost(
-            navController = navController,
-            startDestination = NavigationDestinations.FireCombat.route,
-            modifier = Modifier.padding(innerPadding) // Apply padding here
-        ) {
-            composable(NavigationDestinations.FireCombat.route) {
-                FireCombatScreen(
-                    navController,
-                    viewModel
-                )
-            }
-            composable(NavigationDestinations.MeleeCombat.route) {
-                MeleeCombatScreen(
-                    navController,
-                    viewModel
-                )
-            }
-            composable(NavigationDestinations.MoraleCheck.route) {
-                MoraleCheckScreen(
-                    navController,
-                    viewModel
-                )
-            }
-            composable(NavigationDestinations.General.route) {
-                GeneralScreen(
-                    navController,
-                    viewModel
-                )
             }
         }
     }

@@ -27,7 +27,8 @@ import com.ica.lb_dice.features.calculator.CalculatorDialog
 import com.ica.lb_dice.features.common.DiceRollViewModel
 
 @Composable
-fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
+fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel,
+                      openDialog: (initial: Float, onSetAttack: (Float) -> Unit, onSetDefend: (Float) -> Unit) -> Unit) {
     val meleeCombatViewModel: MeleeCombatViewModel = viewModel()
 
     val diceSetAttackerPreMeleeMorale by meleeCombatViewModel.diceSetAttackerPreMeleeMorale.collectAsState()
@@ -37,8 +38,6 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
     val diceSetLeader by meleeCombatViewModel.diceSetLeader.collectAsState()
     val diceSetMorale by meleeCombatViewModel.diceSetMorale.collectAsState()
     val meleeResults = meleeCombatViewModel.meleeResultsSet.collectAsState()
-
-    var isCalculatorDialogOpen by remember { mutableStateOf(false) }
 
     var selectedTabIndex by remember { mutableStateOf(0) }
 
@@ -72,7 +71,13 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
             },
             meleeOdds = meleeResults.value.meleeOdds,
             onShowCalculatorClicked = {
-                isCalculatorDialogOpen = true
+                openDialog(/*uiState.attack*/0f,
+                    { value ->
+                        meleeCombatViewModel.setAttackerMeleeStrength(value.toString())
+                    },
+                    { value ->
+                        meleeCombatViewModel.setDefenderMeleeStrength(value.toString())
+                    })
             }
         )
 
@@ -134,20 +139,6 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
             )
         }
     }
-    if (isCalculatorDialogOpen) {
-        CalculatorDialog(
-            Modifier.fillMaxSize(),
-            onSetAttack = { value ->
-                meleeCombatViewModel.setAttackerMeleeStrength(value.toString())
-            },
-            onSetDefend = { value ->
-                meleeCombatViewModel.setDefenderMeleeStrength(value.toString())
-            },
-            onDismissRequest = {
-                isCalculatorDialogOpen = false
-            }
-        )
-    }
 }
 
 @Preview(showBackground = true)
@@ -155,7 +146,8 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
 fun PreviewMeleeCombatScreen() {
     MeleeCombatScreen(
         navController = NavController(LocalContext.current),
-        diceRollViewModel = DiceRollViewModel()
+        diceRollViewModel = DiceRollViewModel(),
+        openDialog = { _, _, _ -> }
     )
 }
 

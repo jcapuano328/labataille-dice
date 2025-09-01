@@ -21,20 +21,6 @@ fun FireCombatHelpContent() {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
         .fillMaxSize()
         .padding(2.dp)) {
-        /*
-        Text("Fire Combat Screen Help",
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = MaterialTheme.shapes.medium
-                )
-        )
-        Spacer(Modifier.height(8.dp))
-        */
         LazyColumn(
             modifier = Modifier
                 .padding(4.dp)
@@ -66,7 +52,7 @@ fun FireCombatHelpContent() {
                     MoraleResultsHelpSection(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        details = ", the the event the combat result calls for a morale check"
+                        details = ", in the event the combat result calls for a morale check."
                     )
                 }
             }

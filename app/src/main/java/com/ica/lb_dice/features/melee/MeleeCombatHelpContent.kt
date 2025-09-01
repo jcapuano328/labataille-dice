@@ -206,6 +206,7 @@ fun MeleeCombatHelpSection() {
                 LeaderCasualtyResultsHelpSection(
                     modifier = Modifier
                         .fillMaxWidth()
+                    ,melee = true
                 )
             }
         }
