@@ -43,8 +43,8 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
 
     data class TabItem(val title: String, val icon: Int)
     val tabs = listOf(
-        TabItem("Pre-Melee", com.ica.lb_dice.R.drawable.melee_premelee),
-        TabItem("Combat", com.ica.lb_dice.R.drawable.melee_combat)
+        TabItem("Assault", com.ica.lb_dice.R.drawable.melee_premelee),
+        TabItem("Melee", com.ica.lb_dice.R.drawable.melee_combat)
     )
 
     //val tabTitles = listOf("Pre-Melee", "Melee")

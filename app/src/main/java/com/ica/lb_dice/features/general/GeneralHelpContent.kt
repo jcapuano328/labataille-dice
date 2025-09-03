@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ica.lb_dice.features.help.components.BulletPoint
-import com.ica.lb_dice.features.help.components.HelpSection
+import com.ica.lb_dice.features.help.BulletPoint
+import com.ica.lb_dice.features.help.HelpSection
 import com.ica.lb_dice.features.help.components.RollDiceHelpSection
 
 @Composable

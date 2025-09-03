@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ica.lb_dice.R
-import com.ica.lb_dice.features.help.components.BulletPoint
-import com.ica.lb_dice.features.help.components.HelpSection
+import com.ica.lb_dice.features.help.BulletPoint
+import com.ica.lb_dice.features.help.HelpSection
 import com.ica.lb_dice.ui.PngIcon
 
 @Composable
@@ -30,7 +30,12 @@ fun CalculatorHelpContent() {
         .padding(2.dp)) {
         Card(modifier = Modifier.padding(2.dp)) {
             Text(
-                "This is a specialized calculator to determine the proportional strength of a unit.",
+                "This is a specialized calculator to determine the proportional strength of a unit. The idea is to open the calculator, determine attack and defense strengths and then return to the resolution screen.",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(8.dp)
+            )
+            Text(
+                "Each time the calculator is opened a new \"calculation session\" is begun.",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(8.dp)
             )
@@ -45,11 +50,9 @@ fun CalculatorHelpContent() {
             // Section 1
             item {
                 HelpSection(title = "Procedure") {
-                    BulletPoint(text = "Enter Size, Loss, and Strength values using the number pad to calculate the value.")
-                    BulletPoint(text = "The proportional strength is automatically calculated.")
-                    BulletPoint(text = "Apply the optional strength modifier to the value.")
-                    BulletPoint(text = "Choose the PLUS button to accumulate the current value to the result.")
-                    BulletPoint(text = "Calculate additional values as necessary, accumulating the total using the PLUS button.")
+                    BulletPoint(text = "Enter Size, Loss, and Strength values using the number pad: the proportional strength is automatically calculated.")
+                    BulletPoint(text = "Apply the optional strength modifier to the value by tapping the appropriate button.")
+                    BulletPoint(text = "Add whole number values to the total using the number pad and PLUS button.")
                     BulletPoint(text = "Add final result to the Attack or Defend value by choosing the appropriate button.")
                     Spacer(Modifier.height(16.dp))
                 }
@@ -65,7 +68,7 @@ fun CalculatorHelpContent() {
                     }
                     BulletPoint(text = "SIZE: Total increments of the unit.")
                     BulletPoint(text = "LOSS: Total increments lost from the unit.")
-                    BulletPoint(text = "STR:  Raw combat strength of the unit.")
+                    BulletPoint(text = "STR:  Full melee strength of the unit.")
                     Spacer(Modifier.height(16.dp))
                 }
             }
@@ -89,7 +92,8 @@ fun CalculatorHelpContent() {
             item {
                 HelpSection(title = "+ (PLUS)") {
                     PngIcon(R.drawable.calc_add, "PLUS", modifier = Modifier.size(40.dp))
-                    BulletPoint(text = "Add the current value to the accumulated result.")
+                    BulletPoint(text = "This is a quick way to include a full strength unit (no losses) to the accumulated result.")
+                    BulletPoint(text = "Enter a value with the number pad and tap the PLUS button.")
                     Spacer(Modifier.height(16.dp))
                 }
             }
@@ -102,8 +106,29 @@ fun CalculatorHelpContent() {
                         PngIcon(R.drawable.calc_def, "DEF", modifier = Modifier.size(40.dp))
                     }
                     BulletPoint(text = "Apply the accumulated result to the Attack or Defend value on the main screen.")
-                    BulletPoint(text = "ATT: Apply to Attacker.")
-                    BulletPoint(text = "DEF: Apply to Defender.")
+                    Column(Modifier.padding(start = 16.dp)) {
+                        BulletPoint(text = "ATT: Apply to Attacker.")
+                        BulletPoint(text = "DEF: Apply to Defender.")
+                    }
+                    BulletPoint(text = "The value is added to the existing value on the main screen.")
+                    BulletPoint(text = "EXCEPTION: Upon entry into the calculator, the first tap of the button replaces the value on the main screen; subsequent taps add to the existing value.")
+                    Spacer(Modifier.height(16.dp))
+                }
+            }
+
+            item {
+                HelpSection(title = "Example") {
+                    Text(
+                        "Calculate the total melee strength of 3 units.",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                    BulletPoint(text = "Enter the Size, Loss, and Strength values for the first unit.")
+                    BulletPoint(text = "Tap the ATT or DEF button to apply the result to the Attack or Defend value, as appropriate.")
+                    BulletPoint(text = "Enter the full strength of the second unit using the number pad (it has no losses), tap the PLUS button and finally tap the ATT or DEF button.")
+                    BulletPoint(text = "Enter the Size, Loss, and Strength values for the third unit.")
+                    BulletPoint(text = "Tap the ATT or DEF button to apply the result to the Attack or Defend value, as appropriate.")
+                    BulletPoint(text = "Result: the accumulated strength of all units is presented on the main screen.")
                     Spacer(Modifier.height(16.dp))
                 }
             }

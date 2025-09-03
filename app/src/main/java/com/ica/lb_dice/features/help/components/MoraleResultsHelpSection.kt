@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ica.lb_dice.features.help.BulletPoint
 import com.ica.lb_dice.ui.Die
 import com.ica.lb_dice.ui.ModifierButtonsRow
 
@@ -21,7 +22,7 @@ import com.ica.lb_dice.ui.ModifierButtonsRow
 fun MoraleResultsHelpSection(modifier: Modifier = Modifier, details: String = "") {
     var text = "The morale dice are used to determine the morale results"
     if (details.isNotEmpty()) {
-        text += " $details"
+        text += "$details"
     } else {
         text += "."
     }

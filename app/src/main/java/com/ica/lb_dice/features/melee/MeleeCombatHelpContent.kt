@@ -3,7 +3,6 @@ package com.ica.lb_dice.features.melee
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,27 +18,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ica.lb_dice.features.help.components.BulletPoint
+import com.ica.lb_dice.R
+import com.ica.lb_dice.features.help.BulletPoint
 import com.ica.lb_dice.features.help.components.CombatResultsHelpSection
-import com.ica.lb_dice.features.help.components.HelpSection
+import com.ica.lb_dice.features.help.HelpSection
 import com.ica.lb_dice.features.help.components.LeaderCasualtyResultsHelpSection
 import com.ica.lb_dice.features.help.components.MoraleResultsHelpSection
 import com.ica.lb_dice.features.help.components.RollDiceHelpSection
 import com.ica.lb_dice.ui.Die
 import com.ica.lb_dice.ui.ModifierButtonsRow
 import com.ica.lb_dice.ui.PngIcon
-import com.ica.lb_dice.ui.ResultImage
 
 @Composable
 fun MeleeCombatHelpContent() {
     var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabTitles = listOf("Odds", "Pre-Melee", "Combat")
+    val tabTitles = listOf("Odds", "Assault", "Melee")
 
     Column(
         modifier = Modifier
@@ -83,11 +81,11 @@ fun MeleeCombatHelpContent() {
 fun OddsHelpSection() {
     HelpSection(title = "Odds Determination") {
         Column(Modifier.padding(16.dp)) {
-            PngIcon(com.ica.lb_dice.R.drawable.calc, "Calculator", modifier = Modifier.size(30.dp))
-            BulletPoint(text = "Tap the calculator button to open the calculator.")
-            BulletPoint(text = "Enter the attacker and defender strength values.")
-            BulletPoint(text = "The odds are calculated and displayed.")
             BulletPoint(text = "Odds determination is a convenience feature only.")
+            BulletPoint(text = "Enter the attacker and defender strength values using the number pad.")
+            BulletPoint(text = "The odds are calculated and displayed.")
+            PngIcon(R.drawable.calc, "Calculator", modifier = Modifier.size(30.dp))
+            BulletPoint(text = "Tap the calculator button to open the calculator.")
             Spacer(Modifier.height(12.dp))
         }
     }
@@ -193,7 +191,7 @@ fun MeleeCombatHelpSection() {
             MoraleResultsHelpSection(
                 modifier = Modifier
                     .fillMaxWidth(),
-                details = ", the the event the combat result calls for a morale check"
+                details = ", in the event the combat result calls for a morale check"
             )
         }
 

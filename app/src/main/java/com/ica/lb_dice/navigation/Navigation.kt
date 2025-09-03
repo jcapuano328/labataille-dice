@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HelpOutline
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -55,6 +56,7 @@ import com.ica.lb_dice.features.help.HelpDialog
 import com.ica.lb_dice.features.melee.MeleeCombatHelpContent
 import com.ica.lb_dice.features.morale.MoraleHelpContent
 import com.ica.lb_dice.features.common.DiceRollViewModel
+import com.ica.lb_dice.features.common.LbDiceAboutContent
 import com.ica.lb_dice.features.fire.FireCombatScreen
 import com.ica.lb_dice.features.melee.MeleeCombatScreen
 import com.ica.lb_dice.features.morale.MoraleCheckScreen
@@ -70,6 +72,7 @@ fun MainNavigation() {
     val currentRoute = navBackStackEntry?.destination?.route
     val diceRollViewModel: DiceRollViewModel = viewModel()
     var showHelp by remember { mutableStateOf(false) }
+    var showAbout by remember { mutableStateOf(false) }
     var dialogRequest: CalculatorDialogRequest? by remember { mutableStateOf(null) }
     val openDialog: (Float, (Float) -> Unit, (Float) -> Unit) -> Unit =
         { initial, onSetAttack, onSetDefend ->
@@ -98,6 +101,9 @@ fun MainNavigation() {
                 },
                 title = { Text("La Bataille Dice") },
                 actions = {
+                    IconButton(onClick = { showAbout = true }) {
+                        Icon(Icons.Default.Info, contentDescription = "About")
+                    }
                     IconButton(onClick = { showHelp = true }) {
                         Icon(Icons.Default.HelpOutline, contentDescription = "Help")
                     }
@@ -174,6 +180,15 @@ fun MainNavigation() {
                     else -> Text("No help available for this screen")
                 }
             }
+        }
+    }
+    if (showAbout) {
+        HelpDialog(
+            onDismiss = {showAbout = false},
+            title = "About",
+            currentTopic = "La Bataille Dice"
+        ) {
+            LbDiceAboutContent()
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.ica.lb_dice.features.help.components
+package com.ica.lb_dice.features.help
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope

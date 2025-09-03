@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ica.lb_dice.features.help.BulletPoint
 import com.ica.lb_dice.ui.Die
 import com.ica.lb_dice.ui.PngIcon
 import com.ica.lb_dice.ui.ResultImage

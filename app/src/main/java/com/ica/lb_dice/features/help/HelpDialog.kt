@@ -26,6 +26,7 @@ import com.ica.lb_dice.features.general.GeneralHelpContent
 @Composable
 fun HelpDialog(
     onDismiss: () -> Unit,
+    title: String = "Help",
     currentTopic: String,
     content: @Composable ColumnScope.() -> Unit
 ) {
@@ -52,7 +53,7 @@ fun HelpDialog(
                     ),
                     title = {
                         Text(
-                            text = "Help: $currentTopic",
+                            text = "$title: $currentTopic",
                             style = MaterialTheme.typography.headlineSmall,
                             //modifier = Modifier.padding(bottom = 16.dp)
                         )

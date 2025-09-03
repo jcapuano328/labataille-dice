@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ica.lb_dice.features.help.BulletPoint
 import com.ica.lb_dice.ui.Die
 import com.ica.lb_dice.ui.ModifierButtonsRow
 
@@ -44,13 +45,13 @@ fun CombatResultsHelpSection(modifier: Modifier = Modifier) {
                 dieValue = 1
             )
         }
-        BulletPoint(text = "The fire dice are used to determine the results of the combat.")
+        BulletPoint(text = "The combat dice are used to determine the results of the combat.")
         BulletPoint(text = "Tap a die to increase its value by 1.")
         Spacer(Modifier.height(12.dp))
 
         // modifier buttons
         ModifierButtonsRow(
-            label = "Fire",
+            label = "Combat",
             foregroundColor = Color.White,
             backgroundColor = Color.Blue,
             modifier = Modifier
@@ -65,7 +66,7 @@ fun CombatResultsHelpSection(modifier: Modifier = Modifier) {
 
         // results explanation
         BulletPoint(text = "The combat results are a list of the possible outcomes based on the dice.")
-        BulletPoint(text = "Each result indicates the loss for the odds ratio.")
+        BulletPoint(text = "Each result indicates the outcome for the odds ratio.")
         BulletPoint(text = "Estimate or calculate the odds of the combat and choose the corresponding row.")
         Spacer(Modifier.height(16.dp))
     }
