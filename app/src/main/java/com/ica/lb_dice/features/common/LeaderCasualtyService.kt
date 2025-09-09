@@ -26,10 +26,10 @@ class LeaderCasualtyService {
 
         when (casualtyDie) {
             1 -> {
-                return LeaderCasualtyResult(side, "Head", "Mortal")
+                return LeaderCasualtyResult(side, "Mortal", "Head")
             }
             2 -> {
-                return LeaderCasualtyResult(side, "Chest", "Mortal")
+                return LeaderCasualtyResult(side, "Mortal", "Chest")
             }
             3 -> {
                 val duration = durationDie1 + durationDie2

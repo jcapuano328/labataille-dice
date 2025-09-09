@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LabelImportant
+import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,10 +66,10 @@ fun LeaderCasualtyResultsHelpSection(modifier: Modifier = Modifier, melee: Boole
         Spacer(Modifier.height(12.dp))
 
         BulletPoint(text = "1: Head. Mortal.")
-        PngIcon(ResultImage.iconForResult("Mortal"), "Head", modifier = Modifier.size(40.dp))
+        PngIcon(ResultImage.iconForResult("Head"), "Head", modifier = Modifier.size(40.dp))
         Spacer(Modifier.height(4.dp))
         BulletPoint(text = "2: Chest. Mortal.")
-        PngIcon(ResultImage.iconForResult("Mortal"), "Chest", modifier = Modifier.size(40.dp))
+        PngIcon(ResultImage.iconForResult("Chest"), "Chest", modifier = Modifier.size(40.dp))
         Spacer(Modifier.height(4.dp))
         BulletPoint(text = "3: Leg. 2 dice hours out of battle.")
         PngIcon(ResultImage.iconForResult("Leg"), "Leg", modifier = Modifier.size(40.dp))
@@ -82,11 +86,17 @@ fun LeaderCasualtyResultsHelpSection(modifier: Modifier = Modifier, melee: Boole
 
         if (melee) {
             BulletPoint(text = "The victim of the casualty is indicated by a leading icon.")
-            BulletPoint(text = "Attacker.")
-            PngIcon(ResultImage.iconForResult("A"), "Attacker", modifier = Modifier.size(32.dp))
-            Spacer(Modifier.height(4.dp))
-            BulletPoint(text = "Defender.")
-            PngIcon(ResultImage.iconForResult("D"), "Defender", modifier = Modifier.size(32.dp))
+            Column(modifier.padding(16.dp)) {
+                BulletPoint(text = "Attacker.")
+                Icon(
+                    Icons.Default.LabelImportant,
+                    contentDescription = "Attacker",
+                    tint = Color.Red
+                )
+                Spacer(Modifier.height(4.dp))
+                BulletPoint(text = "Defender.")
+                Icon(Icons.Default.Shield, contentDescription = "Defender", tint = Color.Blue)
+            }
             Spacer(Modifier.height(4.dp))
         }
         Spacer(Modifier.height(12.dp))

@@ -163,7 +163,7 @@ fun LbDiceMoraleResolutionSection() {
                     .background(MaterialTheme.colorScheme.secondary), // Sets the background color
                 contentAlignment = Alignment.Center // Centers the icon within the Box
             ) {
-                PngIcon(R.drawable.rally, "Morale", modifier = Modifier.size(40.dp))
+                PngIcon(R.drawable.morale, "Morale", modifier = Modifier.size(40.dp))
             }
             BulletPoint(text = "Roll the dice and consult the quick reference morale results.")
             BulletPoint(text = "Adjust the dice for applicable modifiers.")

@@ -56,6 +56,9 @@ fun PreviewFireCombatResults() {
     val leaderCasualtyResult = LeaderCasualtyResult(lcr.side, lcr.result, lcr.icon)
 
     val results = FireCombatResultsSet(
+        attackerStrength = "1",
+        defenderStrength = "1",
+        fireOdds = "1:1",
         fireDice = 52,
         fireResults = fireCombatService.resolve(53).map { CombatResult(it.odds, it.result) },
         leaderCasualtyDice = 3,

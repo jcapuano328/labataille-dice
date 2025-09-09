@@ -27,6 +27,7 @@ import com.ica.lb_dice.features.morale.MoraleService
 import com.ica.lb_dice.util.DieConfig
 import com.ica.lb_dice.features.common.CombatResult
 import com.ica.lb_dice.features.common.LeaderCasualtyResult
+import com.ica.lb_dice.features.common.CombatOddsSection
 import com.ica.lb_dice.features.common.MoraleResult
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -248,15 +249,15 @@ fun PreviewMeleeCombat() {
     val defenderPreMeleeMoraleResults = moraleService.check(21)
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(2.dp)) {
-        MeleeCombatOddsSection(
+        CombatOddsSection(
             modifier = Modifier
                 .fillMaxWidth()
             ,
-            attackerMeleeStrength = "1",
-            onAttackerMeleeStrengthChange = {},
-            defenderMeleeStrength = "1",
-            onDefenderMeleeStrengthChange = {},
-            meleeOdds = "1:1"
+            attackerStrength = "1",
+            onAttackerStrengthChange = {},
+            defenderStrength = "1",
+            onDefenderStrengthChange = {},
+            combatOdds = "1:1"
         )
         PreMeleeMoraleCheckSection(
             modifier = Modifier

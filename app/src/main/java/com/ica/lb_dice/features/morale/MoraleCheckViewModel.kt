@@ -19,7 +19,7 @@ class MoraleCheckViewModel : ViewModel() {
     private val _diceSetMorale = MutableStateFlow(DiceSet(emptyList(), MutableStateFlow(emptyList())))
     val diceSetMorale = _diceSetMorale.asStateFlow()
 
-    private val _resultsSet = MutableStateFlow(FireCombatResultsSet(0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
+    private val _resultsSet = MutableStateFlow(FireCombatResultsSet("", "", "", 0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
     val resultsSet = _resultsSet.asStateFlow()
 
     init {

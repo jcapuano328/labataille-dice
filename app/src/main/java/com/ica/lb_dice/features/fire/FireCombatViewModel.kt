@@ -25,6 +25,10 @@ data class DiceSet(
 )
 
 data class FireCombatResultsSet(
+    val attackerStrength: String,
+    val defenderStrength: String,
+    val fireOdds: String,
+
     val fireDice: Int,
     val fireResults: List<CombatResult>,
     val leaderCasualtyDice: Int,
@@ -44,7 +48,7 @@ class FireCombatViewModel : ViewModel() {
     private val _diceSetMorale = MutableStateFlow(DiceSet(emptyList(), MutableStateFlow(emptyList())))
     val diceSetMorale = _diceSetMorale.asStateFlow()
 
-    private val _resultsSet = MutableStateFlow(FireCombatResultsSet(0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
+    private val _resultsSet = MutableStateFlow(FireCombatResultsSet("1", "1", "1:1",0, emptyList(), 0, 0, LeaderCasualtyResult("", "", ""), 0, emptyList()))
     val resultsSet = _resultsSet.asStateFlow()
 
     init {
@@ -63,6 +67,19 @@ class FireCombatViewModel : ViewModel() {
             _diceSetFire.value.dieValues.value = List(_diceSetFire.value.dieConfigs.size) { 1 }
             _diceSetLeader.value.dieValues.value = List(_diceSetLeader.value.dieConfigs.size) { 1 }
             _diceSetMorale.value.dieValues.value = List(_diceSetMorale.value.dieConfigs.size) { 1 }
+        }
+    }
+
+    fun setAttackerStrength(value: String) {
+        viewModelScope.launch {
+            _resultsSet.value = _resultsSet.value.copy(attackerStrength = value)
+            updateResults()
+        }
+    }
+    fun setDefenderStrength(value: String) {
+        viewModelScope.launch {
+            _resultsSet.value = _resultsSet.value.copy(defenderStrength = value)
+            updateResults()
         }
     }
 
@@ -137,10 +154,35 @@ class FireCombatViewModel : ViewModel() {
     }
 
     private fun updateResults() {
+        updateFireOdds()
         updateFireCombatResults()
         updateLeaderCasualtyResults()
         updateMoraleResults()
     }
+
+    private fun updateFireOdds() {
+        var odds = 1f
+        val attackerStr = _resultsSet.value.attackerStrength.toFloatOrNull() ?: 1f
+        val defenderStr = _resultsSet.value.defenderStrength.toFloatOrNull() ?: 1f
+        val attackerAdvantage = attackerStr >= defenderStr
+
+        if (attackerAdvantage) {
+            odds = attackerStr / defenderStr
+        } else {
+            odds = defenderStr / attackerStr
+        }
+
+        // Round the odds to the nearest 0.5, rounding up
+        val roundedOdds = MathUtils().roundFloatToNearestHalf(odds, !attackerAdvantage)
+        var oddsString = ""
+        if (attackerAdvantage) {
+            oddsString = "$roundedOdds:1"
+        } else {
+            oddsString = "1:$roundedOdds"
+        }
+        _resultsSet.value = _resultsSet.value.copy(fireOdds = oddsString)
+    }
+
 
     private fun updateFireCombatResults() {
         println("FireCombatViewModel: updateFireCombatResults:")

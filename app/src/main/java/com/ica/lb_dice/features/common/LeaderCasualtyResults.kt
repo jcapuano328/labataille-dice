@@ -9,6 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LabelImportant
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -70,11 +75,17 @@ fun LeaderCasualtyResults(modifier: Modifier = Modifier, data: LeaderCasualtyRes
                         Row(modifier = Modifier.weight(1f),
                             horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.CenterVertically) {
-                            PngIcon(
-                                ResultImage.iconForResult(data.side),
-                                data.side,
-                                modifier = Modifier.height(40.dp)
-                            )
+                            //PngIcon(
+                            //    ResultImage.iconForResult(data.side),
+                            //    data.side,
+                            //    modifier = Modifier.height(40.dp)
+                            //)
+                            if (data.side == "A") {
+                                Icon(Icons.Default.LabelImportant, contentDescription = "Attacker", tint = Color.Red)
+                            }
+                            else if (data.side == "D") {
+                                Icon(Icons.Default.Shield, contentDescription = "Defender", tint = Color.Blue)
+                            }
                         }
                     }
                     PngIcon(ResultImage.iconForResult(data.icon), data.icon, modifier = Modifier.weight(2f))

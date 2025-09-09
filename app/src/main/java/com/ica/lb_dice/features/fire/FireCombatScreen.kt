@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,12 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.ica.lb_dice.features.common.CombatOddsSection
 
 import com.ica.lb_dice.features.common.DiceRollViewModel
 
 
 @Composable
-fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
+fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel,
+                     openDialog: (initial: Float, onSetAttack: (Float) -> Unit, onSetDefend: (Float) -> Unit) -> Unit) {
     val scope = rememberCoroutineScope()
     // 1. Get the FireCombatViewModel instance
     val fireCombatViewModel: FireCombatViewModel = viewModel()
@@ -40,9 +43,30 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
         }
     }
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(8.dp)) {
-        // Display Fire Combat.kt Screen Text
-        //Text("Fire Combat.kt Screen")
-        //Spacer(modifier = Modifier.height(16.dp))
+        CombatOddsSection(
+            modifier = Modifier
+                .fillMaxWidth()
+            ,
+            resultsSet.attackerStrength,
+            onAttackerStrengthChange = { value ->
+                fireCombatViewModel.setAttackerStrength(value)
+            },
+            resultsSet.defenderStrength,
+            onDefenderStrengthChange = { value ->
+                fireCombatViewModel.setDefenderStrength(value)
+            },
+            combatOdds = resultsSet.fireOdds,
+            onShowCalculatorClicked = {
+                openDialog(/*uiState.attack*/0f,
+                    { value ->
+                        fireCombatViewModel.setAttackerStrength(value.toString())
+                    },
+                    { value ->
+                        fireCombatViewModel.setDefenderStrength(value.toString())
+                    })
+            }
+        )
+
         FireCombatDice(
             diceSetFire = diceSetFire,
             onFireDieIncrement = { die ->
@@ -78,7 +102,8 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
 fun PreviewFireCombatScreen() {
     FireCombatScreen(
         navController = NavController(LocalContext.current),
-        diceRollViewModel = DiceRollViewModel()
+        diceRollViewModel = DiceRollViewModel(),
+        openDialog = { _, _, _ -> }
     )
 }
 

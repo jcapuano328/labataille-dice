@@ -14,6 +14,7 @@ import com.ica.lb_dice.features.help.HelpSection
 import com.ica.lb_dice.features.help.components.CombatResultsHelpSection
 import com.ica.lb_dice.features.help.components.LeaderCasualtyResultsHelpSection
 import com.ica.lb_dice.features.help.components.MoraleResultsHelpSection
+import com.ica.lb_dice.features.help.components.OddsHelpSection
 import com.ica.lb_dice.features.help.components.RollDiceHelpSection
 
 @Composable
@@ -34,6 +35,10 @@ fun FireCombatHelpContent() {
                             .fillMaxWidth()
                     )
                 }
+            }
+
+            item {
+                OddsHelpSection()
             }
 
             // Section 2

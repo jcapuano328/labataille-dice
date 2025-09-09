@@ -3,7 +3,6 @@ package com.ica.lb_dice.features.melee
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -23,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.ica.lb_dice.features.calculator.CalculatorDialog
 import com.ica.lb_dice.features.common.DiceRollViewModel
+import com.ica.lb_dice.features.common.CombatOddsSection
 
 @Composable
 fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel,
@@ -41,13 +40,7 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
 
     var selectedTabIndex by remember { mutableStateOf(0) }
 
-    data class TabItem(val title: String, val icon: Int)
-    val tabs = listOf(
-        TabItem("Assault", com.ica.lb_dice.R.drawable.melee_premelee),
-        TabItem("Melee", com.ica.lb_dice.R.drawable.melee_combat)
-    )
-
-    //val tabTitles = listOf("Pre-Melee", "Melee")
+    val tabTitles = listOf("Assault", "Melee")
 
     LaunchedEffect(key1 = Unit) {
         diceRollViewModel.fabEvent.collect {
@@ -57,19 +50,19 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
         }
     }
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(2.dp)) {
-        MeleeCombatOddsSection(
+        CombatOddsSection(
             modifier = Modifier
                 .fillMaxWidth()
             ,
             meleeResults.value.attackerMeleeStrength,
-            onAttackerMeleeStrengthChange = { value ->
+            onAttackerStrengthChange = { value ->
                 meleeCombatViewModel.setAttackerMeleeStrength(value)
             },
             meleeResults.value.defenderMeleeStrength,
-            onDefenderMeleeStrengthChange = { value ->
+            onDefenderStrengthChange = { value ->
                 meleeCombatViewModel.setDefenderMeleeStrength(value)
             },
-            meleeOdds = meleeResults.value.meleeOdds,
+            combatOdds = meleeResults.value.meleeOdds,
             onShowCalculatorClicked = {
                 openDialog(/*uiState.attack*/0f,
                     { value ->
@@ -82,13 +75,11 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
         )
 
         TabRow(selectedTabIndex = selectedTabIndex) {
-            //tabTitles.forEachIndexed { index, title ->
-            tabs.forEachIndexed { index, tab ->
+            tabTitles.forEachIndexed { index, title ->
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(text = tab.title, fontSize = 12.sp) },
-                    icon = { com.ica.lb_dice.ui.PngIcon(tab.icon, tab.title, Modifier.height(48.dp)) }
+                    text = { Text(text = title, fontSize = 12.sp) }
                 )
             }
         }

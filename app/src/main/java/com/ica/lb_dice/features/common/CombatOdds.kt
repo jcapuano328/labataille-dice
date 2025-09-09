@@ -1,4 +1,4 @@
-package com.ica.lb_dice.features.melee
+package com.ica.lb_dice.features.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,12 +25,12 @@ import com.ica.lb_dice.ui.InputNumeric
 import com.ica.lb_dice.ui.PngIcon
 
 @Composable
-fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
-                           attackerMeleeStrength: String = "1", onAttackerMeleeStrengthChange: (value: String) -> Unit,
-                           defenderMeleeStrength: String = "1", onDefenderMeleeStrengthChange: (value: String) -> Unit,
-                           meleeOdds: String = "1:1",
-                           onShowCalculatorClicked : () -> Unit = {}) {
-    //Text(text = "Melee Combat Odds", modifier = modifier)
+fun CombatOddsSection(modifier: Modifier = Modifier,
+                      attackerStrength: String = "1", onAttackerStrengthChange: (value: String) -> Unit,
+                      defenderStrength: String = "1", onDefenderStrengthChange: (value: String) -> Unit,
+                      combatOdds: String = "1:1",
+                      onShowCalculatorClicked : () -> Unit = {}) {
+    //Text(text = "Combat Odds", modifier = modifier)
     Column(
         modifier = modifier
             //.clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
@@ -92,15 +92,15 @@ fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically
         ) {
             InputNumeric(
-                value = attackerMeleeStrength,
-                onValueChange = onAttackerMeleeStrengthChange,
+                value = attackerStrength,
+                onValueChange = onAttackerStrengthChange,
                 label = "Attacker",
                 modifier = Modifier.weight(1f)
             )
-            Text(text = meleeOdds, modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+            Text(text = combatOdds, modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
             InputNumeric(
-                value = defenderMeleeStrength,
-                onValueChange = onDefenderMeleeStrengthChange,
+                value = defenderStrength,
+                onValueChange = onDefenderStrengthChange,
                 label = "Defender",
                 modifier = Modifier.weight(1f)
             )
@@ -110,13 +110,13 @@ fun MeleeCombatOddsSection(modifier: Modifier = Modifier,
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewMeleeCombatOdds() {
-    MeleeCombatOddsSection(
+fun PreviewCombatOdds() {
+    CombatOddsSection(
         modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-        attackerMeleeStrength = "1",
-        onAttackerMeleeStrengthChange = {},
-        defenderMeleeStrength = "1",
-        onDefenderMeleeStrengthChange = {},
-        meleeOdds = "1:1"
+        attackerStrength = "1",
+        onAttackerStrengthChange = {},
+        defenderStrength = "1",
+        onDefenderStrengthChange = {},
+        combatOdds = "1:1"
     )
 }
