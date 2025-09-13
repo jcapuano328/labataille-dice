@@ -16,14 +16,16 @@ import com.ica.lb_dice.features.help.HelpSection
 import com.ica.lb_dice.ui.PngIcon
 
 @Composable
-fun OddsHelpSection() {
+fun OddsHelpSection(showCalculator: Boolean = true) {
     HelpSection(title = "Odds Determination") {
         Column(Modifier.padding(16.dp)) {
             BulletPoint(text = "Odds determination is a convenience feature only.")
             BulletPoint(text = "Enter the attacker and defender strength values using the number pad.")
             BulletPoint(text = "The odds are calculated and displayed.")
-            PngIcon(R.drawable.calc, "Calculator", modifier = Modifier.size(30.dp))
-            BulletPoint(text = "Tap the calculator button to open the calculator.")
+            if (showCalculator) {
+                PngIcon(R.drawable.calc, "Calculator", modifier = Modifier.size(30.dp))
+                BulletPoint(text = "Tap the calculator button to open the calculator.")
+            }
             Spacer(Modifier.height(12.dp))
         }
     }

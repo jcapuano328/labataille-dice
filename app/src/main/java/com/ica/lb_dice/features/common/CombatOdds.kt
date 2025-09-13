@@ -26,9 +26,12 @@ import com.ica.lb_dice.ui.PngIcon
 
 @Composable
 fun CombatOddsSection(modifier: Modifier = Modifier,
+                      attackerLabel: String = "Attacker",
                       attackerStrength: String = "1", onAttackerStrengthChange: (value: String) -> Unit,
+                      defenderLabel: String = "Defender",
                       defenderStrength: String = "1", onDefenderStrengthChange: (value: String) -> Unit,
                       combatOdds: String = "1:1",
+                      showCalculator: Boolean = true,
                       onShowCalculatorClicked : () -> Unit = {}) {
     //Text(text = "Combat Odds", modifier = modifier)
     Column(
@@ -52,32 +55,33 @@ fun CombatOddsSection(modifier: Modifier = Modifier,
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                text = "Attacker",
+                text = attackerLabel,
                 style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
                 modifier = Modifier
                     .weight(1f)
             )
             //*
             Box(modifier = Modifier.weight(0.5f)) {
-                IconButton(
-                    onClick = onShowCalculatorClicked,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                ) {
-                    PngIcon(
-                        resId = com.ica.lb_dice.R.drawable.calc,
-                        desc = "Calculator",
+                if (showCalculator) {
+                    IconButton(
+                        onClick = onShowCalculatorClicked,
                         modifier = Modifier
-                            .size(32.dp)
                             .align(Alignment.Center)
-                    )
+                    ) {
+                        PngIcon(
+                            resId = com.ica.lb_dice.R.drawable.calc,
+                            desc = "Calculator",
+                            modifier = Modifier
+                                .size(32.dp)
+                                .align(Alignment.Center)
+                        )
+                    }
                 }
-
             }
             //*/
             //Spacer(modifier = Modifier.weight(0.5f))
             Text(
-                text = "Defender",
+                text = defenderLabel,
                 style = TextStyle(color = Color.Blue, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
                 modifier = Modifier
                     .weight(1f)
@@ -113,10 +117,14 @@ fun CombatOddsSection(modifier: Modifier = Modifier,
 fun PreviewCombatOdds() {
     CombatOddsSection(
         modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+        attackerLabel = "Fubar",
         attackerStrength = "1",
         onAttackerStrengthChange = {},
+        defenderLabel = "Foobar",
         defenderStrength = "1",
         onDefenderStrengthChange = {},
-        combatOdds = "1:1"
+        combatOdds = "1:1",
+        showCalculator = false,
+        onShowCalculatorClicked = {}
     )
 }

@@ -126,8 +126,7 @@ fun MainNavigation() {
             composable(NavigationDestinations.FireCombat.route) {
                 FireCombatScreen(
                     navController,
-                    diceRollViewModel,
-                    openDialog = openDialog
+                    diceRollViewModel
                 )
             }
             composable(NavigationDestinations.MeleeCombat.route) {

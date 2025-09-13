@@ -24,8 +24,7 @@ import com.ica.lb_dice.features.common.DiceRollViewModel
 
 
 @Composable
-fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel,
-                     openDialog: (initial: Float, onSetAttack: (Float) -> Unit, onSetDefend: (Float) -> Unit) -> Unit) {
+fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
     val scope = rememberCoroutineScope()
     // 1. Get the FireCombatViewModel instance
     val fireCombatViewModel: FireCombatViewModel = viewModel()
@@ -42,29 +41,24 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
             fireCombatViewModel.onFabClicked()
         }
     }
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(8.dp)) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(2.dp)) {
         CombatOddsSection(
             modifier = Modifier
                 .fillMaxWidth()
             ,
-            resultsSet.attackerStrength,
+            attackerLabel = "Fire Value",
+            attackerStrength = resultsSet.attackerStrength,
             onAttackerStrengthChange = { value ->
                 fireCombatViewModel.setAttackerStrength(value)
             },
-            resultsSet.defenderStrength,
+            defenderLabel = "Defense Value",
+            defenderStrength = resultsSet.defenderStrength,
             onDefenderStrengthChange = { value ->
                 fireCombatViewModel.setDefenderStrength(value)
             },
             combatOdds = resultsSet.fireOdds,
-            onShowCalculatorClicked = {
-                openDialog(/*uiState.attack*/0f,
-                    { value ->
-                        fireCombatViewModel.setAttackerStrength(value.toString())
-                    },
-                    { value ->
-                        fireCombatViewModel.setDefenderStrength(value.toString())
-                    })
-            }
+            showCalculator = false,
+            onShowCalculatorClicked = {}
         )
 
         FireCombatDice(
@@ -102,8 +96,7 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
 fun PreviewFireCombatScreen() {
     FireCombatScreen(
         navController = NavController(LocalContext.current),
-        diceRollViewModel = DiceRollViewModel(),
-        openDialog = { _, _, _ -> }
+        diceRollViewModel = DiceRollViewModel()
     )
 }
 

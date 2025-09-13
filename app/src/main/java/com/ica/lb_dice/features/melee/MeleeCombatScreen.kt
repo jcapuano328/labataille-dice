@@ -54,11 +54,13 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
             modifier = Modifier
                 .fillMaxWidth()
             ,
-            meleeResults.value.attackerMeleeStrength,
+            attackerLabel = "Attacker Melee",
+            attackerStrength = meleeResults.value.attackerMeleeStrength,
             onAttackerStrengthChange = { value ->
                 meleeCombatViewModel.setAttackerMeleeStrength(value)
             },
-            meleeResults.value.defenderMeleeStrength,
+            defenderLabel = "Defender Melee",
+            defenderStrength = meleeResults.value.defenderMeleeStrength,
             onDefenderStrengthChange = { value ->
                 meleeCombatViewModel.setDefenderMeleeStrength(value)
             },

@@ -38,7 +38,7 @@ fun FireCombatHelpContent() {
             }
 
             item {
-                OddsHelpSection()
+                OddsHelpSection(showCalculator = false)
             }
 
             // Section 2
