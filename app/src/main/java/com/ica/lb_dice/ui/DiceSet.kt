@@ -1,7 +1,10 @@
 package com.ica.lb_dice.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,8 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
-import com.ica.lb_dice.util.DieConfig
+import com.ica.lb_dice.R
 
 @Composable
 fun DiceSet(
@@ -38,7 +40,8 @@ fun DiceSet(
                     .size(40.dp)
                 ,
                 onDieClicked = onDieClicked,
-                backgroundColor = dieConfigs[i].backgroundColor,
+                sides = dieConfigs[i].sides,
+                dieColor = dieConfigs[i].dieColor,
                 dotColor = dieConfigs[i].dotColor,
                 dieValue = dieValues[i]
             )
@@ -51,70 +54,95 @@ fun DiceSet(
 fun PreviewDiceSet() {
     var dieValues1 by remember { mutableStateOf(List(2) { 6 }) }
     val dieConfigs1 = listOf(
-        DieConfig(backgroundColor = Color.Red, dotColor = Color.White),
-        DieConfig(backgroundColor = Color.White, dotColor = Color.Black)
+        DieConfig(dieColor = Color.Red, dotColor = Color.White),
+        DieConfig(dieColor = Color.White, dotColor = Color.Black)
     )
 
     var dieValues2 by remember { mutableStateOf(List(3) { 6 }) }
     val dieConfigs2 = listOf(
-        DieConfig(backgroundColor = Color.Blue, dotColor = Color.White),
-        DieConfig(backgroundColor = Color.Yellow, dotColor = Color.Black),
-        DieConfig(backgroundColor = Color.Green, dotColor = Color.Black),
+        DieConfig(dieColor = Color.Blue, dotColor = Color.White),
+        DieConfig(dieColor = Color.Yellow, dotColor = Color.Black),
+        DieConfig(dieColor = Color.Green, dotColor = Color.Black),
     )
 
     var dieValues3 by remember { mutableStateOf(List(2) { 6 }) }
     val dieConfigs3 = listOf(
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.Red),
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.White)
+        DieConfig(dieColor = Color.Black, dotColor = Color.Red),
+        DieConfig(dieColor = Color.Black, dotColor = Color.White)
     )
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-        ,horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ,verticalAlignment = Alignment.Top
+    var dieValues4 by remember { mutableStateOf(List(1) { R.drawable.flag_french }) }
+    val dieConfigs4 = listOf(
+        DieConfig(dieColor = Color.White, sides = 0)
+    )
 
+    Column(
+        modifier = Modifier.fillMaxSize().padding(2.dp),
+        verticalArrangement = Arrangement.Top,
     ) {
-        DiceSet(
+        Row(
             modifier = Modifier
-                .weight(2/7f)
-                .height(40.dp)
-            ,
-            dieConfigs = dieConfigs1,
-            dieValues = dieValues1,
-            onDieClicked = { die ->
-                dieValues1 = dieValues1.mapIndexed { index, value ->
-                    if (index == die) (1..6).random() else value
-                }
-            }
-        )
-        DiceSet(
-            modifier = Modifier
-                .weight(3/7f)
-                .height(40.dp)
-            ,
-            dieConfigs = dieConfigs2,
-            dieValues = dieValues2,
-            onDieClicked = { die ->
-                dieValues2 = dieValues2.mapIndexed { index, value ->
-                    if (index == die) (1..6).random() else value
-                }
-            }
-        )
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.Top
 
-        DiceSet(
-            modifier = Modifier
-                .weight(2/7f)
-                .height(40.dp)
-            ,
-            dieConfigs = dieConfigs3,
-            dieValues = dieValues3,
-            onDieClicked = { die ->
-                dieValues3 = dieValues3.mapIndexed { index, value ->
-                    if (index == die) (1..6).random() else value
+        ) {
+            DiceSet(
+                modifier = Modifier
+                    .weight(2 / 7f)
+                    .height(40.dp),
+                dieConfigs = dieConfigs1,
+                dieValues = dieValues1,
+                onDieClicked = { die ->
+                    dieValues1 = dieValues1.mapIndexed { index, value ->
+                        if (index == die) (1..6).random() else value
+                    }
                 }
-            }
-        )
+            )
+            DiceSet(
+                modifier = Modifier
+                    .weight(3 / 7f)
+                    .height(40.dp),
+                dieConfigs = dieConfigs2,
+                dieValues = dieValues2,
+                onDieClicked = { die ->
+                    dieValues2 = dieValues2.mapIndexed { index, value ->
+                        if (index == die) (1..6).random() else value
+                    }
+                }
+            )
 
+            DiceSet(
+                modifier = Modifier
+                    .weight(2 / 7f)
+                    .height(40.dp),
+                dieConfigs = dieConfigs3,
+                dieValues = dieValues3,
+                onDieClicked = { die ->
+                    dieValues3 = dieValues3.mapIndexed { index, value ->
+                        if (index == die) (1..6).random() else value
+                    }
+                }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.Top
+
+        ) {
+            DiceSet(
+                modifier = Modifier
+                    .height(40.dp),
+                dieConfigs = dieConfigs4,
+                dieValues = dieValues4,
+                onDieClicked = { die ->
+                }
+            )
+        }
     }
 }

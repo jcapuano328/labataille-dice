@@ -96,7 +96,8 @@ fun PreMeleeMoraleCheckHelpSection() {
                             .size(40.dp)
                         ,
                         onDieClicked = { },
-                        backgroundColor = Color.Black,
+                        sides = 6,
+                        dieColor = Color.Black,
                         dotColor = Color.White,
                         dieValue = 1
                     )
@@ -107,7 +108,8 @@ fun PreMeleeMoraleCheckHelpSection() {
                             .size(40.dp)
                         ,
                         onDieClicked = { },
-                        backgroundColor = Color.Black,
+                        sides = 6,
+                        dieColor = Color.Black,
                         dotColor = Color.Red,
                         dieValue = 1
                     )

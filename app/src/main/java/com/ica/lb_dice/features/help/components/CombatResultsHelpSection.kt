@@ -29,7 +29,8 @@ fun CombatResultsHelpSection(modifier: Modifier = Modifier) {
                     .size(40.dp)
                 ,
                 onDieClicked = { },
-                backgroundColor = Color.Red,
+                sides = 6,
+                dieColor = Color.Red,
                 dotColor = Color.White,
                 dieValue = 1
             )
@@ -40,7 +41,8 @@ fun CombatResultsHelpSection(modifier: Modifier = Modifier) {
                     .size(40.dp)
                 ,
                 onDieClicked = { },
-                backgroundColor = Color.White,
+                sides = 6,
+                dieColor = Color.White,
                 dotColor = Color.Black,
                 dieValue = 1
             )

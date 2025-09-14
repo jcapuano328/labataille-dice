@@ -7,7 +7,7 @@ import com.ica.lb_dice.features.common.LeaderCasualtyResult
 import com.ica.lb_dice.features.fire.DiceSet
 import com.ica.lb_dice.features.fire.FireCombatResultsSet
 import com.ica.lb_dice.util.DiceBase6
-import com.ica.lb_dice.util.DieConfig
+import com.ica.lb_dice.ui.DieConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ class MoraleCheckViewModel : ViewModel() {
     }
 
     private fun createDiceSets() {
-        _diceSetMorale.value = DiceSet(listOf(DieConfig(backgroundColor = Color.Black, dotColor = Color.White), DieConfig(backgroundColor = Color.Black, dotColor = Color.Red)), MutableStateFlow(emptyList()))
+        _diceSetMorale.value = DiceSet(listOf(DieConfig(dieColor = Color.Black, dotColor = Color.White), DieConfig(dieColor = Color.Black, dotColor = Color.Red)), MutableStateFlow(emptyList()))
     }
     private fun setInitialDieValues() {
         viewModelScope.launch {

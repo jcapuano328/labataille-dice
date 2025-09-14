@@ -20,7 +20,7 @@ import com.ica.lb_dice.features.common.MoraleResults
 import com.ica.lb_dice.features.morale.MoraleService
 import com.ica.lb_dice.ui.DiceSet
 import com.ica.lb_dice.ui.ModifierButtonsRow
-import com.ica.lb_dice.util.DieConfig
+import com.ica.lb_dice.ui.DieConfig
 import com.ica.lb_dice.features.fire.DiceSet
 import com.ica.lb_dice.features.common.MoraleResult
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -165,15 +165,15 @@ fun PreMeleeMoraleCheckResults(modifier: Modifier = Modifier, attackerPreMeleeMo
 fun PreviewPreMeleeMoraleCheckDice() {
     val dieValuesMoraleAttacker = MutableStateFlow(List(2) { 6 })
     val dieConfigsMoraleAttacker = listOf(
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.Red),
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.White)
+        DieConfig(dieColor = Color.Black, dotColor = Color.Red),
+        DieConfig(dieColor = Color.Black, dotColor = Color.White)
     )
     val diceSetMoraleAttacker = DiceSet(dieConfigsMoraleAttacker, dieValuesMoraleAttacker)
 
     val dieValuesMoraleDefender = MutableStateFlow(List(2) { 6 })
     val dieConfigsMoraleDefender = listOf(
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.Red),
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.White)
+        DieConfig(dieColor = Color.Black, dotColor = Color.Red),
+        DieConfig(dieColor = Color.Black, dotColor = Color.White)
     )
     val diceSetMoraleDefender = DiceSet(dieConfigsMoraleDefender, dieValuesMoraleDefender)
 
@@ -213,15 +213,15 @@ fun PreviewPreMeleeMoraleCheckResults() {
 fun PreviewPreMeleeMoraleCheckSection() {
     val dieValuesMoraleAttacker = MutableStateFlow(List(2) { 6 })
     val dieConfigsMoraleAttacker = listOf(
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.Red),
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.White)
+        DieConfig(dieColor = Color.Black, dotColor = Color.Red),
+        DieConfig(dieColor = Color.Black, dotColor = Color.White)
     )
     val diceSetMoraleAttacker = DiceSet(dieConfigsMoraleAttacker, dieValuesMoraleAttacker)
 
     val dieValuesMoraleDefender = MutableStateFlow(List(2) { 6 })
     val dieConfigsMoraleDefender = listOf(
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.Red),
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.White)
+        DieConfig(dieColor = Color.Black, dotColor = Color.Red),
+        DieConfig(dieColor = Color.Black, dotColor = Color.White)
     )
     val diceSetMoraleDefender = DiceSet(dieConfigsMoraleDefender, dieValuesMoraleDefender)
 

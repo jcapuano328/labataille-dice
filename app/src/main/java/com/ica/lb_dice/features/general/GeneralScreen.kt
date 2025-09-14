@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,6 +34,8 @@ fun GeneralScreen(navController: NavController, diceRollViewModel: DiceRollViewM
     val diceSet1 by generalViewModel.diceSet1.collectAsState()
     val diceSet2 by generalViewModel.diceSet2.collectAsState()
     val diceSet3 by generalViewModel.diceSet3.collectAsState()
+    val diceSet4 by generalViewModel.diceSet4.collectAsState()
+    val diceSet5 by generalViewModel.diceSet5.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         diceRollViewModel.fabEvent.collect {
@@ -43,11 +46,34 @@ fun GeneralScreen(navController: NavController, diceRollViewModel: DiceRollViewM
     }
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(2.dp)) {
         /*
-        Text("General Screen")
-        Button(onClick = { navController.popBackStack() }) { // navigate back
-            Text("Go Back")
-        }
+        GeneralDice(
+            modifier = Modifier
+                .fillMaxWidth()
+            ,
+            showModifierButtons = false,
+            diceSet = diceSet5,
+            onDieIncrement = { die ->
+                generalViewModel.incrementDieSet5(die)
+            },
+            onDiceModify = { }
+        )
         */
+        Initiative(
+            modifier = Modifier.fillMaxWidth(),
+            dieImperial = diceSet5.dieValues.collectAsState().value[0],
+            onDieImperialClicked = {
+                generalViewModel.incrementDieSet5(0)
+            },
+            dieAllies = diceSet5.dieValues.collectAsState().value[1],
+            onDieAlliesClicked = {
+                generalViewModel.incrementDieSet5(1)
+            }
+        )
+
+
+        //Spacer(modifier = Modifier.height(16.dp))
+        HorizontalDivider(modifier = Modifier.height(16.dp).padding(vertical = 8.dp, horizontal = 16.dp), thickness = 1.dp, color = Color.DarkGray)
+
         GeneralDice(
             modifier = Modifier
                 .fillMaxWidth()
@@ -93,13 +119,27 @@ fun GeneralScreen(navController: NavController, diceRollViewModel: DiceRollViewM
                 generalViewModel.modifyDiceSet3(value)
             }
         )
+        //Spacer(modifier = Modifier.height(12.dp))
+        HorizontalDivider(modifier = Modifier.height(16.dp).padding(vertical = 8.dp, horizontal = 16.dp), thickness = 1.dp, color = Color.DarkGray)
+        GeneralDice(
+            modifier = Modifier
+                .fillMaxWidth()
+            ,
+            showModifierButtons = false,
+            diceSet = diceSet4,
+            onDieIncrement = { die ->
+                generalViewModel.incrementDieSet4(die)
+            },
+            onDiceModify = { }
+        )
     }
 }
 
 @Composable
 fun GeneralDice(modifier: Modifier = Modifier,
-                buttonForegroundColor: Color,
-                buttonBackgroundColor: Color,
+                showModifierButtons: Boolean = true,
+                buttonForegroundColor: Color = Color.Transparent,
+                buttonBackgroundColor: Color = Color.Transparent,
                 fullRow: Boolean = true,
                 diceSet: DiceSet,
                 onDieIncrement: (die: Int) -> Unit,
@@ -124,20 +164,21 @@ fun GeneralDice(modifier: Modifier = Modifier,
                 }
             )
         }
-        Spacer(modifier = modifier.height(4.dp))
-        ModifierButtonsRow(
-            label = "General",
-            foregroundColor = buttonForegroundColor,
-            backgroundColor = buttonBackgroundColor,
-            fullRow = fullRow,
-            modifier = modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-            ,
-            onModifierButtonClicked = { value ->
-                onDiceModify(value)
-            }
-        )
+        if (showModifierButtons) {
+            Spacer(modifier = modifier.height(4.dp))
+            ModifierButtonsRow(
+                label = "General",
+                foregroundColor = buttonForegroundColor,
+                backgroundColor = buttonBackgroundColor,
+                fullRow = fullRow,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                onModifierButtonClicked = { value ->
+                    onDiceModify(value)
+                }
+            )
+        }
     }
 }
 

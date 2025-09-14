@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ica.lb_dice.ui.DiceSet
 import com.ica.lb_dice.ui.ModifierButtonsRow
-import com.ica.lb_dice.util.DieConfig
+import com.ica.lb_dice.ui.DieConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
@@ -100,23 +100,23 @@ fun FireCombatDice(
 fun PreviewFireCombatDice() {
     val dieValuesCombat = MutableStateFlow(List(2) { 6 })
     val dieConfigsCombat = listOf(
-        DieConfig(backgroundColor = Color.Red, dotColor = Color.White),
-        DieConfig(backgroundColor = Color.White, dotColor = Color.Black)
+        DieConfig(dieColor = Color.Red, dotColor = Color.White),
+        DieConfig(dieColor = Color.White, dotColor = Color.Black)
     )
     val diceSetCombat = DiceSet(dieConfigsCombat, dieValuesCombat)
 
     val dieValuesLeaderCasualty = MutableStateFlow(List(3) { 6 })
     val dieConfigsLeaderCasualty = listOf(
-        DieConfig(backgroundColor = Color.Blue, dotColor = Color.White),
-        DieConfig(backgroundColor = Color.Yellow, dotColor = Color.Black),
-        DieConfig(backgroundColor = Color.Green, dotColor = Color.Black),
+        DieConfig(dieColor = Color.Blue, dotColor = Color.White),
+        DieConfig(dieColor = Color.Yellow, dotColor = Color.Black),
+        DieConfig(dieColor = Color.Green, dotColor = Color.Black),
     )
     val diceSetLeaderCasualty = DiceSet(dieConfigsLeaderCasualty, dieValuesLeaderCasualty)
 
     val dieValuesMorale = MutableStateFlow(List(2) { 6 })
     val dieConfigsMorale = listOf(
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.Red),
-        DieConfig(backgroundColor = Color.Black, dotColor = Color.White)
+        DieConfig(dieColor = Color.Black, dotColor = Color.Red),
+        DieConfig(dieColor = Color.Black, dotColor = Color.White)
     )
     val diceSetMorale = DiceSet(dieConfigsMorale, dieValuesMorale)
 

@@ -36,7 +36,8 @@ fun MoraleResultsHelpSection(modifier: Modifier = Modifier, details: String = ""
                     .size(40.dp)
                 ,
                 onDieClicked = { },
-                backgroundColor = Color.Black,
+                sides = 6,
+                dieColor = Color.Black,
                 dotColor = Color.White,
                 dieValue = 1
             )
@@ -47,7 +48,8 @@ fun MoraleResultsHelpSection(modifier: Modifier = Modifier, details: String = ""
                     .size(40.dp)
                 ,
                 onDieClicked = { },
-                backgroundColor = Color.Black,
+                sides = 6,
+                dieColor = Color.Black,
                 dotColor = Color.Red,
                 dieValue = 1
             )

@@ -32,7 +32,8 @@ fun LeaderCasualtyResultsHelpSection(modifier: Modifier = Modifier, melee: Boole
                     .size(40.dp)
                 ,
                 onDieClicked = { },
-                backgroundColor = Color.Blue,
+                sides = 6,
+                dieColor = Color.Blue,
                 dotColor = Color.White,
                 dieValue = 1
             )
@@ -43,7 +44,8 @@ fun LeaderCasualtyResultsHelpSection(modifier: Modifier = Modifier, melee: Boole
                     .size(40.dp)
                 ,
                 onDieClicked = { },
-                backgroundColor = Color.Yellow,
+                sides = 6,
+                dieColor = Color.Yellow,
                 dotColor = Color.Black,
                 dieValue = 1
             )
@@ -54,7 +56,8 @@ fun LeaderCasualtyResultsHelpSection(modifier: Modifier = Modifier, melee: Boole
                     .size(40.dp)
                 ,
                 onDieClicked = { },
-                backgroundColor = Color.Green,
+                sides = 6,
+                dieColor = Color.Green,
                 dotColor = Color.Black,
                 dieValue = 1
             )

@@ -184,7 +184,7 @@ fun LbDiceGeneralSection() {
                     .background(MaterialTheme.colorScheme.secondary), // Sets the background color
                 contentAlignment = Alignment.Center // Centers the icon within the Box
             ) {
-                PngIcon(R.drawable.dicecup, "Dice", modifier = Modifier.size(40.dp))
+                PngIcon(R.drawable.dice, "Dice", modifier = Modifier.size(40.dp))
             }
             BulletPoint(text = "Sets of dice are provided for miscellaneous tasks:")
             Column(Modifier.padding(start = 16.dp)) {
