@@ -18,13 +18,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.ica.lb_dice.features.calculator.CalculatorDialogType
 import com.ica.lb_dice.features.common.CombatOddsSection
 
 import com.ica.lb_dice.features.common.DiceRollViewModel
 
 
 @Composable
-fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
+fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel,
+                     openDialog: (initial: Float, onSetAttack: (Float) -> Unit, onSetDefend: (Float) -> Unit, type: CalculatorDialogType) -> Unit) {
     val scope = rememberCoroutineScope()
     // 1. Get the FireCombatViewModel instance
     val fireCombatViewModel: FireCombatViewModel = viewModel()
@@ -57,8 +59,18 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
                 fireCombatViewModel.setDefenderStrength(value)
             },
             combatOdds = resultsSet.fireOdds,
-            showCalculator = false,
-            onShowCalculatorClicked = {}
+            showCalculator = true,
+            onShowCalculatorClicked = {
+                openDialog(/*uiState.attack*/0f,
+                    { value ->
+                        fireCombatViewModel.setAttackerStrength(value.toString())
+                    },
+                    { value ->
+                        fireCombatViewModel.setDefenderStrength(value.toString())
+                    },
+                    CalculatorDialogType.Combat)
+            }
+
         )
 
         FireCombatDice(
@@ -96,7 +108,8 @@ fun FireCombatScreen(navController: NavController, diceRollViewModel: DiceRollVi
 fun PreviewFireCombatScreen() {
     FireCombatScreen(
         navController = NavController(LocalContext.current),
-        diceRollViewModel = DiceRollViewModel()
+        diceRollViewModel = DiceRollViewModel(),
+        openDialog = { _, _, _, _ -> }
     )
 }
 

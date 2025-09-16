@@ -23,10 +23,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ica.lb_dice.features.help.HelpDialog
 
+enum class CalculatorDialogType {
+    Combat,
+    Strength
+}
+
 data class CalculatorDialogRequest(
     val initialValue: Float,
     val onSetAttack: (Float) -> Unit,
-    val onSetDefend: (Float) -> Unit
+    val onSetDefend: (Float) -> Unit,
+    val type: CalculatorDialogType
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +41,8 @@ fun CalculatorDialog(
     modifier: Modifier = Modifier,
     onSetAttack: (Float) -> Unit,
     onSetDefend: (Float) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    type: CalculatorDialogType
 ) {
     var showHelp by remember { mutableStateOf(false) }
 
@@ -65,10 +72,17 @@ fun CalculatorDialog(
                 }
             )
 
-            ProportionalStrengthCalculator(
-                onSetAttack = onSetAttack,
-                onSetDefend = onSetDefend
-            )
+            if (type == CalculatorDialogType.Combat) {
+                CombatCalculator(
+                    onAttackCommitted = onSetAttack,
+                    onDefendCommitted = onSetDefend
+                )
+            } else if (type == CalculatorDialogType.Strength) {
+                ProportionalStrengthCalculator(
+                    onSetAttack = onSetAttack,
+                    onSetDefend = onSetDefend
+                )
+            }
         }
     }
 
@@ -77,7 +91,11 @@ fun CalculatorDialog(
             onDismiss = {showHelp = false},
             currentTopic = "Calculator"
         ) {
-            CalculatorHelpContent()
+            if (type == CalculatorDialogType.Combat) {
+                CombatCalculatorHelpContent()
+            } else if (type == CalculatorDialogType.Strength) {
+                ProportionalStrengthCalculatorHelpContent()
+            }
         }
     }
 }
@@ -96,6 +114,7 @@ fun PreviewCalculatorDialog() {
         },
         onDismissRequest = {
             println("Dialog dismissed")
-        }
+        },
+        type = CalculatorDialogType.Combat
     )
 }

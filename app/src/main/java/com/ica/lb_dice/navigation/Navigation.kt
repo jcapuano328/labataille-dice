@@ -50,6 +50,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ica.lb_dice.R
 import com.ica.lb_dice.features.calculator.CalculatorDialog
 import com.ica.lb_dice.features.calculator.CalculatorDialogRequest
+import com.ica.lb_dice.features.calculator.CalculatorDialogType
 import com.ica.lb_dice.features.fire.FireCombatHelpContent
 import com.ica.lb_dice.features.general.GeneralHelpContent
 import com.ica.lb_dice.features.help.HelpDialog
@@ -74,9 +75,9 @@ fun MainNavigation() {
     var showHelp by remember { mutableStateOf(false) }
     var showAbout by remember { mutableStateOf(false) }
     var dialogRequest: CalculatorDialogRequest? by remember { mutableStateOf(null) }
-    val openDialog: (Float, (Float) -> Unit, (Float) -> Unit) -> Unit =
-        { initial, onSetAttack, onSetDefend ->
-            dialogRequest = CalculatorDialogRequest(initial, onSetAttack, onSetDefend)
+    val openDialog: (Float, (Float) -> Unit, (Float) -> Unit, CalculatorDialogType) -> Unit =
+        { initial, onSetAttack, onSetDefend, type ->
+            dialogRequest = CalculatorDialogRequest(initial, onSetAttack, onSetDefend, type)
         }
 
     Scaffold(
@@ -126,7 +127,8 @@ fun MainNavigation() {
             composable(NavigationDestinations.FireCombat.route) {
                 FireCombatScreen(
                     navController,
-                    diceRollViewModel
+                    diceRollViewModel,
+                    openDialog = openDialog
                 )
             }
             composable(NavigationDestinations.MeleeCombat.route) {
@@ -162,7 +164,8 @@ fun MainNavigation() {
             },
             onDismissRequest = {
                 dialogRequest = null
-            }
+            },
+            type = req.type
         )
     }
 

@@ -126,12 +126,10 @@ fun ProportionalStrengthCalculator(
                 modifier = Modifier
                     .weight(4f) // 1 small + 1 standard (1 + 3)
                     .fillMaxHeight()
-                    .background(CalculatorDisplay.getCellColor(0, 0))
+                    .background(ProportionalCalculatorDisplay.getCellColor(0, 0))
                 ,
                 contentAlignment = Alignment.Center
             ) {
-                //Text("R0C0")
-                //CalculatorDisplay.getCellContent(0, 0, modifier)
                 Text(
                     text = if (result > 0f) "%.1f".format(result) else "",
                     fontSize = 30.sp,
@@ -142,12 +140,10 @@ fun ProportionalStrengthCalculator(
                 modifier = Modifier
                     .weight(6f) // 2 standard (3 + 3)
                     .fillMaxHeight()
-                    //.background(CalculatorDisplay.getCellColor(0, 1))
+                    //.background(ProportionalCalculatorDisplay.getCellColor(0, 1))
                 ,
                 contentAlignment = Alignment.CenterEnd
             ) {
-                //Text("R0C1")
-                //CalculatorDisplay.getCellContent(0, 1, modifier)
                 Text(
                     text = display,
                     fontSize = 50.sp,
@@ -158,14 +154,12 @@ fun ProportionalStrengthCalculator(
                 modifier = Modifier
                     .weight(3f) // 1 standard
                     .fillMaxHeight()
-                    //.background(CalculatorDisplay.getCellColor(0, 2))
+                    //.background(ProportionalCalculatorDisplay.getCellColor(0, 2))
                 ,
                 contentAlignment = Alignment.Center
             ) {
-                //Text("R0C2")
-                //CalculatorDisplay.getCellContent(0, 2, modifier)
                 CalculatorIconButton(
-                    CalculatorDisplay.iconForKey("calc-bksp"),
+                    ProportionalCalculatorDisplay.iconForKey("calc-bksp"),
                     onClick = { processKey("bksp") }
                 )
             }
@@ -183,13 +177,10 @@ fun ProportionalStrengthCalculator(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight()
-                        .background(CalculatorDisplay.getCellColor(row, 0))
+                        .background(ProportionalCalculatorDisplay.getCellColor(row, 0))
                     ,
                     contentAlignment = Alignment.Center
                 ) {
-                    //Text("R${row}C0")
-                    //CalculatorDisplay.getCellContent(row, 0, modifier)
-
                     if (row == 3) {
                         Text(text = "%.0f".format(size), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
                     } else if (row == 4) {
@@ -209,15 +200,13 @@ fun ProportionalStrengthCalculator(
                         ,
                         contentAlignment = Alignment.Center
                     ) {
-                        //Text("R${row}C$col")
-                        //CalculatorDisplay.getCellContent(row, col, modifier)
                         if (row == 6 && (col == 1 || col == 2 || col == 4)) {
                             Spacer(modifier = modifier)
                             //Spacer(modifier = Modifier.height(16.dp))
                         } else {
                             CalculatorIconButton(
-                                CalculatorDisplay.iconForCell(row, col),
-                                onClick = { processKey(CalculatorDisplay.keyForCell(row, col)) }
+                                ProportionalCalculatorDisplay.iconForCell(row, col),
+                                onClick = { processKey(ProportionalCalculatorDisplay.keyForCell(row, col)) }
                             )
                         }
                     }
@@ -229,7 +218,7 @@ fun ProportionalStrengthCalculator(
     }
 }
 
-object CalculatorDisplay {
+object ProportionalCalculatorDisplay {
 
     fun iconForCell(row: Int, column: Int) : Int {
         val icon = when {
@@ -357,104 +346,7 @@ object CalculatorDisplay {
             )
         }
     }
-    fun getCellContent(row: Int, column: Int, modifier: Modifier = Modifier): @Composable () -> Unit {
-        return when {
-            row == 0 && column == 0 -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 0 && column == 1 -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 0 && column == 2 -> {
-                { Spacer(modifier = modifier) }
-            }
-
-            row == 1 && column == 0 -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 1 && column == 1 -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 1 && (column == 2 || column == 3 || column == 4) -> {
-                { Spacer(modifier = modifier) }
-            }
-
-            row == 2 && column == 0 -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 2 && (column == 1 || column == 2 || column == 3 || column == 4) -> {
-                { Spacer(modifier = modifier) }
-            }
-
-            row == 3 && (column == 0 || column == 1) -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 3 && (column == 2 || column == 3 || column == 4) -> {
-                { Spacer(modifier = modifier) }
-            }
-
-            row == 4 && (column == 0 || column == 1) -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 4 && (column == 2 || column == 3 || column == 4) -> {
-                { Spacer(modifier = modifier) }
-            }
-
-            row == 5 && (column == 0 || column == 1) -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 5 && (column == 2 || column == 3 || column == 4) -> {
-                { Spacer(modifier = modifier) }
-            }
-
-            row == 6 && (column == 0 || column == 1 || column == 2 || column == 4) -> {
-                { Spacer(modifier = modifier) }
-            }
-            row == 6 && column == 3 -> {
-                { Spacer(modifier = modifier) }
-            }
-
-            else -> {
-                { Spacer(modifier = modifier) }
-            }
-        }
-    }
 }
-
-@Composable
-fun CalculatorIconButton(
-    imageResId: Int, // drawable resource ID
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    width: Dp? = null,
-    height: Dp? = null,
-    contentDescription: String? = null,
-    scale: Float = 1f,
-    resizeMode: ContentScale = ContentScale.FillBounds // equivalent to 'contain'
-) {
-    var layoutSize by remember { mutableStateOf(IntSize.Zero) }
-
-    val finalWidth = width ?: (layoutSize.width.takeIf { it != 0 }?.dp?.times(scale) ?: 32.dp)
-    val finalHeight = height ?: (layoutSize.height.takeIf { it != 0 }?.dp?.times(scale) ?: 32.dp)
-
-    Box(
-        modifier = modifier
-            .onGloballyPositioned { coordinates ->
-                layoutSize = coordinates.size
-            }
-            .clickable { onClick() }
-            .size(width = finalWidth, height = finalHeight)
-    ) {
-        Image(
-            painter = painterResource(id = imageResId),
-            contentDescription = contentDescription,
-            contentScale = resizeMode,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-
-
 
 @Preview(showBackground = true)
 @Composable

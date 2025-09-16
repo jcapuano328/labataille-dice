@@ -22,12 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.ica.lb_dice.features.calculator.CalculatorDialogType
 import com.ica.lb_dice.features.common.DiceRollViewModel
 import com.ica.lb_dice.features.common.CombatOddsSection
 
 @Composable
 fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollViewModel,
-                      openDialog: (initial: Float, onSetAttack: (Float) -> Unit, onSetDefend: (Float) -> Unit) -> Unit) {
+                      openDialog: (initial: Float, onSetAttack: (Float) -> Unit, onSetDefend: (Float) -> Unit, type: CalculatorDialogType) -> Unit) {
     val meleeCombatViewModel: MeleeCombatViewModel = viewModel()
 
     val diceSetAttackerPreMeleeMorale by meleeCombatViewModel.diceSetAttackerPreMeleeMorale.collectAsState()
@@ -72,7 +73,8 @@ fun MeleeCombatScreen(navController: NavController, diceRollViewModel: DiceRollV
                     },
                     { value ->
                         meleeCombatViewModel.setDefenderMeleeStrength(value.toString())
-                    })
+                    },
+                    CalculatorDialogType.Strength)
             }
         )
 
@@ -140,7 +142,7 @@ fun PreviewMeleeCombatScreen() {
     MeleeCombatScreen(
         navController = NavController(LocalContext.current),
         diceRollViewModel = DiceRollViewModel(),
-        openDialog = { _, _, _ -> }
+        openDialog = { _, _, _, _ -> }
     )
 }
 
