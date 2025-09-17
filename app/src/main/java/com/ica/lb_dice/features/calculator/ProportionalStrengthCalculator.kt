@@ -1,8 +1,6 @@
 package com.ica.lb_dice.features.calculator
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,13 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -39,7 +31,8 @@ fun ProportionalStrengthCalculator(
     onSetDefend: (Float) -> Unit
 ) {
     var display by remember { mutableStateOf("0") }
-    var result by remember { mutableStateOf(0f) }
+    var accumulated by remember { mutableStateOf(0f) }
+    var calculated by remember { mutableStateOf(0f) }
     var size by remember { mutableStateOf(0f) }
     var loss by remember { mutableStateOf(0f) }
     var strength by remember { mutableStateOf(0f) }
@@ -64,45 +57,50 @@ fun ProportionalStrengthCalculator(
             "size" -> {
                 size = display.toFloatOrNull() ?: 0f
                 display = "0"
-                result = calculate(size, loss, strength) ?: 0f
+                calculated = calculate(size, loss, strength) ?: 0f
             }
             "loss" -> {
                 loss = display.toFloatOrNull() ?: 0f
                 display = "0"
-                result = calculate(size, loss, strength) ?: 0f
+                calculated = calculate(size, loss, strength) ?: 0f
             }
             "strength" -> {
                 strength = display.toFloatOrNull() ?: 0f
                 display = "0"
-                result = calculate(size, loss, strength) ?: 0f
+                calculated = calculate(size, loss, strength) ?: 0f
             }
-            "1/3" -> result /= 3f
-            "1/2" -> result /= 2f
-            "3/2" -> result *= 1.5f
-            "2" -> result *= 2f
+            "1/3" -> calculated /= 3f
+            "1/2" -> calculated /= 2f
+            "3/2" -> calculated *= 1.5f
+            "2" -> calculated *= 2f
             "clear" -> {
+                if (calculated == 0f && display == "0") accumulated = 0f
                 display = "0"
                 size = 0f; loss = 0f; strength = 0f
-                result = 0f; attack = 0f; defend = 0f
+                calculated = 0f; attack = 0f; defend = 0f
             }
             "add" -> {
-                result += display.toFloatOrNull() ?: 0f
+                if (calculated > 0f) accumulated += calculated
+                else accumulated += display.toFloatOrNull() ?: 0f
+                calculated = 0f
                 display = "0"
             }
             "equals" -> {
-                result = calculate(size, loss, strength) ?: 0f
+                calculated = calculate(size, loss, strength) ?: 0f
                 display = "0"
             }
             "att" -> {
-                attack += result
+                attack += accumulated
                 display = "0"
-                result = 0f
+                accumulated = 0f
+                calculated = 0f
                 onSetAttack(attack)
             }
             "def" -> {
-                defend += result
+                defend += accumulated
                 display = "0"
-                result = 0f
+                accumulated = 0f
+                calculated = 0f
                 onSetDefend(defend)
             }
         }
@@ -115,13 +113,14 @@ fun ProportionalStrengthCalculator(
         ,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        // First row: 3 cells with custom widths
+        // First row: 4 cells with custom widths
         Row(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
+            // accumulator
             Box(
                 modifier = Modifier
                     .weight(4f) // 1 small + 1 standard (1 + 3)
@@ -131,16 +130,32 @@ fun ProportionalStrengthCalculator(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (result > 0f) "%.1f".format(result) else "",
+                    text = if (accumulated > 0f) "%.1f".format(accumulated) else "",
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
+            // calculated
             Box(
                 modifier = Modifier
-                    .weight(6f) // 2 standard (3 + 3)
+                    .weight(3f) // 1 standard (3)
                     .fillMaxHeight()
-                    //.background(ProportionalCalculatorDisplay.getCellColor(0, 1))
+                    .background(ProportionalCalculatorDisplay.getCellColor(0, 1))
+                ,
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = if (calculated > 0f) "%.1f".format(calculated) else "",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            // current value
+            Box(
+                modifier = Modifier
+                    .weight(3f) // 1 standard (3)
+                    .fillMaxHeight()
+                    //.background(ProportionalCalculatorDisplay.getCellColor(0, 2))
                 ,
                 contentAlignment = Alignment.CenterEnd
             ) {
@@ -150,6 +165,7 @@ fun ProportionalStrengthCalculator(
                     fontWeight = FontWeight.Bold
                 )
             }
+            // backspace
             Box(
                 modifier = Modifier
                     .weight(3f) // 1 standard
@@ -316,9 +332,10 @@ object ProportionalCalculatorDisplay {
 
     fun getCellColor(row: Int, column: Int): Color {
         return when {
-            row == 0 && column == 0 -> Color(0xffA5FF7F)
-            row == 0 && column == 1 -> Color.Transparent
-            row == 0 && column == 2 -> Color.DarkGray
+            row == 0 && column == 0 -> Color(0xffA5FF7F)    // green-ish
+            row == 0 && column == 1 -> Color(0xffFF7F7F)    // rose-ish
+            row == 0 && column == 2 -> Color.Transparent
+            row == 0 && column == 3 -> Color.DarkGray
 
             row == 1 && column == 0 -> Color.Transparent
             row == 1 && column == 1 -> Color.DarkGray

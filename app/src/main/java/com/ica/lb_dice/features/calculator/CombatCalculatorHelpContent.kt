@@ -54,13 +54,24 @@ fun CombatCalculatorHelpContent() {
             // Section 2
             item {
                 HelpSection(title = "ATT, DEF") {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    BulletPoint(text = "Apply the current value to the Attack or Defend value on the main screen.")
+                    Spacer(Modifier.height(4.dp))
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                         PngIcon(R.drawable.calc_att, "ATT", modifier = Modifier.size(40.dp))
-                        PngIcon(R.drawable.calc_def, "DEF", modifier = Modifier.size(40.dp))
+                        Text("Apply to Attacker.", style = MaterialTheme.typography.labelMedium)
                     }
-                    BulletPoint(text = "Apply the value to the Attack or Defend input on the main screen.")
-                    BulletPoint(text = "ATT: Apply to Attacker.")
-                    BulletPoint(text = "DEF: Apply to Defender.")
+                    Spacer(Modifier.height(4.dp))
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        PngIcon(R.drawable.calc_def, "DEF", modifier = Modifier.size(40.dp))
+                        Text("Apply to Defender.", style = MaterialTheme.typography.labelMedium)
+                    }
+
+                    Spacer(Modifier.height(4.dp))
+                    BulletPoint(text = "The value is added to the existing value on the main screen.")
+                    BulletPoint(text = "EXCEPTION: Upon entry into the calculator, the first tap of the button replaces the value on the main screen; subsequent taps add to the existing value.")
+
                     Spacer(Modifier.height(16.dp))
                 }
             }
