@@ -221,7 +221,7 @@ fun ProportionalStrengthCalculator(
                             //Spacer(modifier = Modifier.height(16.dp))
                         } else {
                             CalculatorIconButton(
-                                ProportionalCalculatorDisplay.iconForCell(row, col),
+                                ProportionalCalculatorDisplay.iconForCell(row, col, accumulated == 0f),
                                 onClick = { processKey(ProportionalCalculatorDisplay.keyForCell(row, col)) }
                             )
                         }
@@ -236,9 +236,9 @@ fun ProportionalStrengthCalculator(
 
 object ProportionalCalculatorDisplay {
 
-    fun iconForCell(row: Int, column: Int) : Int {
+    fun iconForCell(row: Int, column: Int, flag: Boolean) : Int {
         val icon = when {
-            row == 1 && column == 1 -> "calc-add"
+            row == 1 && column == 1 -> if (flag) "calc-set" else "calc-add"
             row == 1 && column == 2 -> "calc-att"
             row == 1 && column == 3 -> "calc-def"
             row == 1 && column == 4 -> "calc-clear"
@@ -316,6 +316,7 @@ object ProportionalCalculatorDisplay {
         if (result == "calc-8") return com.ica.lb_dice.R.drawable.calc_8
         if (result == "calc-9") return com.ica.lb_dice.R.drawable.calc_9
         if (result == "calc-add") return com.ica.lb_dice.R.drawable.calc_add
+        if (result == "calc-set") return com.ica.lb_dice.R.drawable.calc_set
         if (result == "calc-att") return com.ica.lb_dice.R.drawable.calc_att
         if (result == "calc-bksp") return com.ica.lb_dice.R.drawable.calc_backspace
         if (result == "calc-clear") return com.ica.lb_dice.R.drawable.calc_clear

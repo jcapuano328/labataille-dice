@@ -47,8 +47,8 @@ fun ProportionalStrengthCalculatorHelpContent() {
                 HelpSection(title = "Procedure") {
                     BulletPoint(text = "Enter a value using the number pad and assign it to the Size, Loss, or Strength using appropriate button: the proportional strength is automatically calculated.")
                     BulletPoint(text = "Apply the optional strength modifier to the value by tapping the appropriate button.")
-                    BulletPoint(text = "Add the result to the total value by tapping the + (PLUS) button.")
-                    BulletPoint(text = "Add whole number values to the total using the number pad and + (PLUS) button.")
+                    BulletPoint(text = "Add the result to the total value by tapping the <-/+ (SET/PLUS) button.")
+                    BulletPoint(text = "Add whole number values to the total using the number pad and the <-/+ (SET/PLUS) button.")
                     BulletPoint(text = "Add final result to the Attack or Defend value by choosing the appropriate button.")
                     Spacer(Modifier.height(16.dp))
                 }
@@ -141,10 +141,14 @@ fun ProportionalStrengthCalculatorHelpContent() {
 
             // Section 5
             item {
-                HelpSection(title = "+ (PLUS)") {
+                HelpSection(title = "the <-/+ (SET/PLUS)") {
                     BulletPoint(text = "Add the Calculated OR the Current value to the Total.")
                     Spacer(Modifier.height(4.dp))
-
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        PngIcon(R.drawable.calc_set, "SET", modifier = Modifier.size(40.dp))
+                        Text("Set the total to whole value.", style = MaterialTheme.typography.labelMedium)
+                    }
+                    Spacer(Modifier.height(4.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                         PngIcon(R.drawable.calc_add, "PLUS", modifier = Modifier.size(40.dp))
                         Text("Add whole value to the total.", style = MaterialTheme.typography.labelMedium)
@@ -194,13 +198,13 @@ fun ProportionalStrengthCalculatorHelpContent() {
                         BulletPoint(text = "Enter the value 15 using the number pad")
                         BulletPoint(text = "Tap the STR button")
                         BulletPoint(text = "The Red Calculated area shows the value 12.5")
-                        BulletPoint(text = "Tap the + (PLUS) button")
+                        BulletPoint(text = "Tap the <- (SET) button")
                         Column(Modifier.padding(start = 16.dp)) {
                             BulletPoint(text = "The Green Total area shows the value 12.5")
                             BulletPoint(text = "The Red Calculated and Clear Current areas are cleared")
+                            BulletPoint(text = "The <- (SET) button becomes the + (PLUS) button")
                         }
                     }
-
 
                     Text(
                         "Step 2. Add the strength of the second unit:",
@@ -246,6 +250,7 @@ fun ProportionalStrengthCalculatorHelpContent() {
                         Column(Modifier.padding(start = 16.dp)) {
                             BulletPoint(text = "The Attack value on the main screen is set to 31.0")
                             BulletPoint(text = "The Green Total area is cleared")
+                            BulletPoint(text = "The + (PLUS) button becomes the <- (SET) button")
                         }
                     }
                     Spacer(Modifier.height(16.dp))
