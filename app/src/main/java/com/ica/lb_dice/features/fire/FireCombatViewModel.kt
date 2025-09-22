@@ -97,7 +97,6 @@ class FireCombatViewModel : ViewModel() {
                 _diceSetFire.value.dieValues.value[0],
                 _diceSetFire.value.dieValues.value[1]
             ).plus(value)
-            println("FireCombatViewModel.modifyFireDice() New Value: ${newValue.toDiceBase6()}")
             _diceSetFire.value.dieValues.value = newValue.decompose().toList()
             updateResults()
         }
@@ -127,7 +126,6 @@ class FireCombatViewModel : ViewModel() {
                 _diceSetMorale.value.dieValues.value[0],
                 _diceSetMorale.value.dieValues.value[1]
             ).plus(value)
-            println("FireCombatViewModel.modifyMoraleDice() New Value: ${newValue.toDiceBase6()}")
             _diceSetMorale.value.dieValues.value = newValue.decompose().toList()
             updateResults()
         }
@@ -141,16 +139,12 @@ class FireCombatViewModel : ViewModel() {
     }
 
     private fun rollDice() {
-        println("FireCombatViewModel: roll dice:")
         val random = MathUtils()
 
         // Generate random numbers from 1 to 6
         _diceSetFire.value.dieValues.value = List(_diceSetFire.value.dieConfigs.size) { random.randomDie6() }
         _diceSetLeader.value.dieValues.value = List(_diceSetLeader.value.dieConfigs.size) { random.randomDie6() }
         _diceSetMorale.value.dieValues.value = List(_diceSetMorale.value.dieConfigs.size) { random.randomDie6() }
-        println("Set Fire: ${_diceSetFire.value.dieValues.value}")
-        println("Set Leader: ${_diceSetLeader.value.dieValues.value}")
-        println("Set Morale: ${_diceSetMorale.value.dieValues.value}")
     }
 
     private fun updateResults() {
@@ -185,14 +179,12 @@ class FireCombatViewModel : ViewModel() {
 
 
     private fun updateFireCombatResults() {
-        println("FireCombatViewModel: updateFireCombatResults:")
         val fireDice = DiceBase6.fromDice(_diceSetFire.value.dieValues.value[0], _diceSetFire.value.dieValues.value[1]).toDiceBase6()
         val fireResults = FireCombatService().resolve(fireDice)
         _resultsSet.value = _resultsSet.value.copy(fireResults = fireResults.map { CombatResult(it.odds, it.result) })
     }
 
     private fun updateLeaderCasualtyResults() {
-        println("FireCombatViewModel: updateLeaderCasualtyResults:")
         val fireDice = DiceBase6.fromDice(_diceSetFire.value.dieValues.value[0], _diceSetFire.value.dieValues.value[1]).toDiceBase6()
         val leaderCasualtyDie = _diceSetLeader.value.dieValues.value[0]
         val leaderCasualtyDurationDie1 = _diceSetLeader.value.dieValues.value[1]
@@ -202,7 +194,6 @@ class FireCombatViewModel : ViewModel() {
     }
 
     private fun updateMoraleResults() {
-        println("FireCombatViewModel: updateMoraleResults:")
         val moraleDice = DiceBase6.fromDice(_diceSetMorale.value.dieValues.value[0], _diceSetMorale.value.dieValues.value[1]).toDiceBase6()
         val moraleResults = MoraleService().check(moraleDice)
         _resultsSet.value = _resultsSet.value.copy(moraleResults = moraleResults.map { MoraleResult(it.result, it.modifier, it.icon) })

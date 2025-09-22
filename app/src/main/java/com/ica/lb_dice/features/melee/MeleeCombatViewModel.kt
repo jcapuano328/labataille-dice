@@ -96,7 +96,6 @@ class MeleeCombatViewModel : ViewModel() {
                 _diceSetAttackerPreMeleeMorale.value.dieValues.value[0],
                 _diceSetAttackerPreMeleeMorale.value.dieValues.value[1]
             ).plus(value)
-            println("MeleeCombatViewModel.modifyAttackerPreMeleeMoraleDice() New Value: ${newValue.toDiceBase6()}")
             _diceSetAttackerPreMeleeMorale.value.dieValues.value = newValue.decompose().toList()
             updateResults()
         }
@@ -116,7 +115,6 @@ class MeleeCombatViewModel : ViewModel() {
                 _diceSetDefenderPreMeleeMorale.value.dieValues.value[0],
                 _diceSetDefenderPreMeleeMorale.value.dieValues.value[1]
             ).plus(value)
-            println("MeleeCombatViewModel.modifyDefenderPreMeleeMoraleDice() New Value: ${newValue.toDiceBase6()}")
             _diceSetDefenderPreMeleeMorale.value.dieValues.value = newValue.decompose().toList()
             updateResults()
         }
@@ -166,7 +164,6 @@ class MeleeCombatViewModel : ViewModel() {
                 _diceSetMelee.value.dieValues.value[0],
                 _diceSetMelee.value.dieValues.value[1]
             ).plus(value)
-            println("MeleeCombatViewModel.modifyFireDice() New Value: ${newValue.toDiceBase6()}")
             _diceSetMelee.value.dieValues.value = newValue.decompose().toList()
             updateResults()
         }
@@ -196,7 +193,6 @@ class MeleeCombatViewModel : ViewModel() {
                 _diceSetMorale.value.dieValues.value[0],
                 _diceSetMorale.value.dieValues.value[1]
             ).plus(value)
-            println("MeleeCombatViewModel.modifyMoraleDice() New Value: ${newValue.toDiceBase6()}")
             _diceSetMorale.value.dieValues.value = newValue.decompose().toList()
             updateResults()
         }
@@ -210,7 +206,6 @@ class MeleeCombatViewModel : ViewModel() {
     }
 
     private fun rollDice() {
-        println("MeleeCombatViewModel: roll dice:")
         val random = MathUtils()
 
         // Generate random numbers from 1 to 6
@@ -219,11 +214,6 @@ class MeleeCombatViewModel : ViewModel() {
         _diceSetMelee.value.dieValues.value = List(_diceSetMelee.value.dieConfigs.size) { random.randomDie6() }
         _diceSetLeader.value.dieValues.value = List(_diceSetLeader.value.dieConfigs.size) { random.randomDie6() }
         _diceSetMorale.value.dieValues.value = List(_diceSetMorale.value.dieConfigs.size) { random.randomDie6() }
-        println("Set Attacker Pre-Melee: ${_diceSetAttackerPreMeleeMorale.value.dieValues.value}")
-        println("Set Defender Pre-Melee: ${_diceSetDefenderPreMeleeMorale.value.dieValues.value}")
-        println("Set Melee: ${_diceSetMelee.value.dieValues.value}")
-        println("Set Leader: ${_diceSetLeader.value.dieValues.value}")
-        println("Set Morale: ${_diceSetMorale.value.dieValues.value}")
     }
 
     private fun updateResults() {
@@ -236,14 +226,12 @@ class MeleeCombatViewModel : ViewModel() {
     }
 
     private fun updateAttackerPreMeleeMoraleResults() {
-        println("MeleeCombatViewModel: updateAttackerPreMeleeMoraleResults:")
         val moraleDice = DiceBase6.fromDice(_diceSetAttackerPreMeleeMorale.value.dieValues.value[0], _diceSetAttackerPreMeleeMorale.value.dieValues.value[1]).toDiceBase6()
         val moraleResults = MoraleService().check(moraleDice)
         _meleeResultsSet.value = _meleeResultsSet.value.copy(attackerPreMeleeMoraleResults = moraleResults.map { MoraleResult(it.result, it.modifier, it.icon) })
     }
 
     private fun updateDefenderPreMeleeMoraleResults() {
-        println("MeleeCombatViewModel: updateDefenderPreMeleeMoraleResults:")
         val moraleDice = DiceBase6.fromDice(_diceSetDefenderPreMeleeMorale.value.dieValues.value[0], _diceSetDefenderPreMeleeMorale.value.dieValues.value[1]).toDiceBase6()
         val moraleResults = MoraleService().check(moraleDice)
         _meleeResultsSet.value = _meleeResultsSet.value.copy(defenderPreMeleeMoraleResults = moraleResults.map { MoraleResult(it.result, it.modifier, it.icon) })
@@ -260,30 +248,24 @@ class MeleeCombatViewModel : ViewModel() {
         } else {
             odds = defenderStr / attackerStr
         }
-        println("MeleeCombatViewModel: updateMeleeOdds: raw: $odds ($attackerAdvantage)")
-
         // Round the odds to the nearest 0.5, rounding up
         val roundedOdds = MathUtils().roundFloatToNearestHalf(odds, !attackerAdvantage)
-        println("MeleeCombatViewModel: updateMeleeOdds: rounded: $roundedOdds ($attackerAdvantage)")
         var oddsString = ""
         if (attackerAdvantage) {
             oddsString = "$roundedOdds:1"
         } else {
             oddsString = "1:$roundedOdds"
         }
-        println("MeleeCombatViewModel: updateMeleeOdds: odds: $oddsString")
         _meleeResultsSet.value = _meleeResultsSet.value.copy(meleeOdds = oddsString)
     }
 
     private fun updateMeleeCombatResults() {
-        println("MeleeCombatViewModel: updateFireCombatResults:")
         val meleeDice = DiceBase6.fromDice(_diceSetMelee.value.dieValues.value[0], _diceSetMelee.value.dieValues.value[1]).toDiceBase6()
         val meleeResults = MeleeCombatService().resolve(meleeDice)
         _meleeResultsSet.value = _meleeResultsSet.value.copy(meleeResults = meleeResults.map { CombatResult(it.odds, it.result) })
     }
 
     private fun updateLeaderCasualtyResults() {
-        println("MeleeCombatViewModel: updateLeaderCasualtyResults:")
         val meleeDice = DiceBase6.fromDice(_diceSetMelee.value.dieValues.value[0], _diceSetMelee.value.dieValues.value[1]).toDiceBase6()
         val leaderCasualtyDie = _diceSetLeader.value.dieValues.value[0]
         val leaderCasualtyDurationDie1 = _diceSetLeader.value.dieValues.value[1]
@@ -293,7 +275,6 @@ class MeleeCombatViewModel : ViewModel() {
     }
 
     private fun updateMoraleResults() {
-        println("MeleeCombatViewModel: updateMoraleResults:")
         val moraleDice = DiceBase6.fromDice(_diceSetMorale.value.dieValues.value[0], _diceSetMorale.value.dieValues.value[1]).toDiceBase6()
         val moraleResults = MoraleService().check(moraleDice)
         _meleeResultsSet.value = _meleeResultsSet.value.copy(moraleResults = moraleResults.map { MoraleResult(it.result, it.modifier, it.icon) })

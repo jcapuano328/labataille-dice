@@ -52,7 +52,6 @@ class MoraleCheckViewModel : ViewModel() {
                 _diceSetMorale.value.dieValues.value[0],
                 _diceSetMorale.value.dieValues.value[1]
             ).plus(value)
-            println("MoraleCheckViewModel.modifyMoraleDice() New Value: ${newValue.toDiceBase6()}")
             _diceSetMorale.value.dieValues.value = newValue.decompose().toList()
             updateResults()
         }
@@ -66,12 +65,10 @@ class MoraleCheckViewModel : ViewModel() {
     }
 
     private fun rollDice() {
-        println("MoraleCheckViewModel: roll dice:")
         val random = MathUtils()
 
         // Generate random numbers from 1 to 6
         _diceSetMorale.value.dieValues.value = List(_diceSetMorale.value.dieConfigs.size) { random.randomDie6() }
-        println("Set Morale: ${_diceSetMorale.value.dieValues.value}")
     }
 
     private fun updateResults() {
@@ -79,7 +76,6 @@ class MoraleCheckViewModel : ViewModel() {
     }
 
     private fun updateMoraleResults() {
-        println("MoraleCheckViewModel: updateMoraleResults:")
         val moraleDice = DiceBase6.fromDice(_diceSetMorale.value.dieValues.value[0], _diceSetMorale.value.dieValues.value[1]).toDiceBase6()
         val moraleResults = MoraleService().check(moraleDice)
         _resultsSet.value = _resultsSet.value.copy(moraleResults = moraleResults.map { MoraleResult(it.result, it.modifier, it.icon) })

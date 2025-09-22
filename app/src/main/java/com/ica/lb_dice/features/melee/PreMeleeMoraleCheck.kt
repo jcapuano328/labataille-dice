@@ -33,32 +33,10 @@ fun PreMeleeMoraleCheckSection(modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
-            //.clip(RoundedCornerShape(16.dp)) // Rounded corners for the whole table
-            //.border(2.dp, Color.Black, RoundedCornerShape(16.dp)) // Black border around the entire table
             .fillMaxWidth()
-            //.fillMaxHeight()
-            .background(Color(0xFFFFFAE5)) // Light Yellow
         ,
         verticalArrangement = Arrangement.Top
     ) {
-        /*
-        // Header Row (Gray)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(Color.Gray)
-                .padding(4.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Pre-Melee Morale Check",
-                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center),
-                //modifier = Modifier.weight(2f)
-            )
-        }
-        */
         PreMeleeMoraleCheckDice(Modifier.fillMaxWidth(),
             diceSetAttackerPreMeleeMorale, onPreMeleeMoraleAttackerDieIncrement, onPreMeleeMoraleAttackerDiceModify,
             diceSetDefenderPreMeleeMorale, onPreMeleeMoraleDefenderDieIncrement, onPreMeleeMoraleDefenderDiceModify
@@ -90,7 +68,6 @@ fun PreMeleeMoraleCheckDice(modifier: Modifier = Modifier,
                 dieValues = diceSetAttackerPreMeleeMorale.dieValues.collectAsState().value,
                 modifier = modifier.weight(1f),
                 onDieClicked = { dieNumber ->
-                    println("Attacker Pre-Melee Morale Die $dieNumber clicked")
                     onPreMeleeMoraleAttackerDieIncrement(dieNumber)
                 }
             )
@@ -100,7 +77,6 @@ fun PreMeleeMoraleCheckDice(modifier: Modifier = Modifier,
                 dieValues = diceSetDefenderPreMeleeMorale.dieValues.collectAsState().value,
                 modifier = modifier.weight(1f),
                 onDieClicked = { dieNumber ->
-                    println("Defender Pre-Melee Morale Die $dieNumber clicked")
                     onPreMeleeMoraleDefenderDieIncrement(dieNumber)
                 }
             )
@@ -115,7 +91,6 @@ fun PreMeleeMoraleCheckDice(modifier: Modifier = Modifier,
                 .wrapContentHeight()
             ,
             onModifierButtonClicked = { value ->
-                println("Fire Modifier clicked: $value")
                 onPreMeleeMoraleAttackerDiceModify(value)
             }
         )
@@ -129,7 +104,6 @@ fun PreMeleeMoraleCheckDice(modifier: Modifier = Modifier,
                 .wrapContentHeight()
             ,
             onModifierButtonClicked = { value ->
-                println("Morale Modifier clicked: $value")
                 onPreMeleeMoraleDefenderDiceModify(value)
             }
         )

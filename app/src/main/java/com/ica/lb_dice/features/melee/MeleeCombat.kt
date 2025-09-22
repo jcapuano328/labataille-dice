@@ -101,7 +101,6 @@ fun MeleeCombatDice(modifier: Modifier = Modifier,
                 modifier = Modifier.weight(2/7f),
                 //modifier = Modifier.fillMaxWidth(),
                 onDieClicked = { dieNumber ->
-                    println("Fire Die $dieNumber clicked")
                     onMeleeDieIncrement(dieNumber)
                 }
             )
@@ -111,7 +110,6 @@ fun MeleeCombatDice(modifier: Modifier = Modifier,
                 modifier = Modifier.weight(3/7f),
                 //modifier = Modifier.fillMaxWidth(),
                 onDieClicked = { dieNumber ->
-                    println("Leader Die $dieNumber clicked")
                     onLeaderDieIncrement(dieNumber)
                 }
             )
@@ -121,7 +119,6 @@ fun MeleeCombatDice(modifier: Modifier = Modifier,
                 modifier = Modifier.weight(2/7f),
                 //modifier = Modifier.fillMaxWidth(),
                 onDieClicked = { dieNumber ->
-                    println("Morale Die $dieNumber clicked")
                     onMoraleDieIncrement(dieNumber)
                 }
             )
@@ -136,7 +133,6 @@ fun MeleeCombatDice(modifier: Modifier = Modifier,
             //.weight(1 / 10f)
             ,
             onModifierButtonClicked = { value ->
-                println("Melee Modifier clicked: $value")
                 onMeleeDiceModify(value)
             }
         )

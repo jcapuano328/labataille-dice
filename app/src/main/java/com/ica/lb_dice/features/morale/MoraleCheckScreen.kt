@@ -1,5 +1,6 @@
 package com.ica.lb_dice.features.morale
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,10 +11,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,9 +34,14 @@ import com.ica.lb_dice.ui.ModifierButtonsRow
 import com.ica.lb_dice.features.common.DiceRollViewModel
 import com.ica.lb_dice.features.fire.DiceSet
 import com.ica.lb_dice.features.common.MoraleResult
+import com.ica.lb_dice.ui.FlashingBackground
+import kotlinx.coroutines.launch
 
 @Composable
 fun MoraleCheckScreen(navController: NavController, diceRollViewModel: DiceRollViewModel) {
+    val scope = rememberCoroutineScope()
+    var rollTrigger by remember { mutableStateOf(0) }
+
     val moraleCheckViewModel: MoraleCheckViewModel = viewModel()
     // 2. Get the state from the viewmodel.
     val diceSetMorale by moraleCheckViewModel.diceSetMorale.collectAsState()
@@ -39,36 +50,52 @@ fun MoraleCheckScreen(navController: NavController, diceRollViewModel: DiceRollV
     LaunchedEffect(key1 = Unit) {
         diceRollViewModel.fabEvent.collect {
             // Perform MoralCheckScreen-specific logic here
-            println("FAB tapped in MoraleCheckScreen!")
-            moraleCheckViewModel.onFabClicked()
+            rollTrigger++
+            //moraleCheckViewModel.onFabClicked()
         }
     }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(2.dp)) {
-        /*
-        Text("Morale Check Screen")
-        Button(onClick = { navController.popBackStack() }) { // navigate back
-            Text("Go Back")
-        }
-        */
-        MoraleCheckDice(Modifier.fillMaxWidth(),
-            diceSetMorale,
-            onMoraleDieIncrement = { die ->
-                println("Morale Dice Changed")
-                moraleCheckViewModel.incrementMoraleDie(die)
-            },
-            onMoraleDiceModify = { value ->
-                moraleCheckViewModel.modifyMoraleDice(value)
+    FlashingBackground(
+        trigger = rollTrigger,
+        flashColor = Color(0xffffff9f),
+        baseColor = MaterialTheme.colorScheme.surfaceVariant,
+        animationSpecIn = tween(durationMillis = 50),  //300
+        holdDurationMillis = 50, //200
+        animationSpecOut = tween(durationMillis = 50), //300
+        onFlashFull = {
+            // Optional: Do something when the flash cycle is at full brightness
+            scope.launch {
+                moraleCheckViewModel.onFabClicked()
             }
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        MoraleCheckResults(
-            Modifier
-                .fillMaxWidth()
-                .height(400.dp)
-            ,
-            resultsSet.moraleResults
-        )
+        },
+        onFlashComplete = {
+            // Optional: Do something when the flash cycle is done
+            //moraleCheckViewModel.onFabClicked()
+        }
+    ) {
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize().padding(2.dp)
+        ) {
+            MoraleCheckDice(
+                Modifier.fillMaxWidth(),
+                diceSetMorale,
+                onMoraleDieIncrement = { die ->
+                    moraleCheckViewModel.incrementMoraleDie(die)
+                },
+                onMoraleDiceModify = { value ->
+                    moraleCheckViewModel.modifyMoraleDice(value)
+                }
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            MoraleCheckResults(
+                Modifier
+                    .fillMaxWidth()
+                    .height(400.dp),
+                resultsSet.moraleResults
+            )
+        }
     }
 }
 
@@ -93,7 +120,6 @@ fun MoraleCheckDice(modifier: Modifier = Modifier,
                 dieConfigs = diceSetMorale.dieConfigs,
                 dieValues = diceSetMorale.dieValues.collectAsState().value,
                 onDieClicked = { dieNumber ->
-                    println("Morale Die $dieNumber clicked")
                     onMoraleDieIncrement(dieNumber)
                 }
             )
@@ -108,7 +134,6 @@ fun MoraleCheckDice(modifier: Modifier = Modifier,
                 .wrapContentHeight()
             ,
             onModifierButtonClicked = { value ->
-                println("Morale Modifier clicked: $value")
                 onMoraleDiceModify(value)
             }
         )

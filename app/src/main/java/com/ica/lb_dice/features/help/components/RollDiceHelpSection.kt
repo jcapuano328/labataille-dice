@@ -25,6 +25,7 @@ fun RollDiceHelpSection(modifier: Modifier = Modifier) {
             PngIcon(com.ica.lb_dice.R.drawable.dice_round, "Dice", modifier = Modifier.size(60.dp))
         }
         BulletPoint(text = "Tap the button to roll the dice.")
+        BulletPoint(text = "A brief animation will occur while the dice are rolling.")
         BulletPoint(text = "Dice rolls are unique for each screen.")
         Spacer(Modifier.height(16.dp))
     }

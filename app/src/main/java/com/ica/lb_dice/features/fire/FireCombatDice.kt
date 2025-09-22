@@ -41,8 +41,7 @@ fun FireCombatDice(
                 dieConfigs = diceSetFire.dieConfigs,
                 dieValues = diceSetFire.dieValues.collectAsState().value,
                 modifier = Modifier.weight(2/7f),
-                onDieClicked = { dieNumber ->
-                    println("Fire Die $dieNumber clicked")
+                onDieClicked = { dieNumber ->                    
                     onFireDieIncrement(dieNumber)
                 }
             )
@@ -51,7 +50,6 @@ fun FireCombatDice(
                 dieValues = diceSetLeader.dieValues.collectAsState().value,
                 modifier = Modifier.weight(3/7f),
                 onDieClicked = { dieNumber ->
-                    println("Leader Die $dieNumber clicked")
                     onLeaderDieIncrement(dieNumber)
                 }
             )
@@ -60,7 +58,6 @@ fun FireCombatDice(
                 dieValues = diceSetMorale.dieValues.collectAsState().value,
                 modifier = Modifier.weight(2/7f),
                 onDieClicked = { dieNumber ->
-                    println("Morale Die $dieNumber clicked")
                     onMoraleDieIncrement(dieNumber)
                 }
             )
@@ -74,7 +71,6 @@ fun FireCombatDice(
                 .wrapContentHeight()
             ,
             onModifierButtonClicked = { value ->
-                println("Fire Modifier clicked: $value")
                 onFireDiceModify(value)
             }
         )
@@ -88,7 +84,6 @@ fun FireCombatDice(
                 .wrapContentHeight()
             ,
             onModifierButtonClicked = { value ->
-                println("Morale Modifier clicked: $value")
                 onMoraleDiceModify(value)
             }
         )
